@@ -1,0 +1,9 @@
+migrate.py
+setup.cfg
+setup.py
+migrate.egg-info/PKG-INFO
+migrate.egg-info/SOURCES.txt
+migrate.egg-info/dependency_links.txt
+migrate.egg-info/entry_points.txt
+migrate.egg-info/not-zip-safe
+migrate.egg-info/top_level.txt

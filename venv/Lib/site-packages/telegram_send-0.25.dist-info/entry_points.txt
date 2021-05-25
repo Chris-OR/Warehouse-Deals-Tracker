@@ -1,0 +1,3 @@
+[console_scripts]
+telegram-send = telegram_send:main
+

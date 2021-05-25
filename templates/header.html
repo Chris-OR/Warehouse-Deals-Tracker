@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!--    Required Meta Tags-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!--Bootstrap CSS-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+  <!--FontAwesome-->
+  <script src="https://kit.fontawesome.com/f7c1a1add2.js" crossorigin="anonymous"></script>
+
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet">
+
+  <title>Warehouse Game Deals</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="{{ url_for('home') }}">🍁 Amazon Warehouse Tracker 🍁</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <!--      <li class="nav-item active">-->
+        <!--        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
+        <!--      </li>-->
+        <!--      <li class="nav-item">-->
+        <!--        <a class="nav-link" href="#">PS4</a>-->
+        <!--      </li>-->
+        <!--        <li class="nav-item">-->
+        <!--        <a class="nav-link" href="#">PS5</a>-->
+        <!--      </li>-->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fab fa-playstation"></i> PlayStation
+          </a>
+          <div class="dropdown-menu" id="ps-dropdown" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{ url_for('ps4') }}">PS4</a>
+            <a class="dropdown-item" href="{{ url_for('ps5') }}">PS5</a>
+            <!--          <div class="dropdown-divider"></div>-->
+            <!--          <a class="dropdown-item" href="#">Something else here</a>-->
+          </div>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fab fa-xbox"></i> Xbox
+          </a>
+          <div class="dropdown-menu" id="xbox-dropdown" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{ url_for('xbox_one') }}">Xbox One</a>
+            <a class="dropdown-item" href="{{ url_for('xbox_series') }}">Xbox Series X</a>
+            <!--          <div class="dropdown-divider"></div>-->
+            <!--          <a class="dropdown-item" href="#">Something else here</a>-->
+          </div>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('switch') }}"><img class="switch-logo" src="{{ url_for('static', filename='gray-switch-logo.png') }}"></img> Switch</a>
+        </li>
+      </ul>
+      <div class="dropdown-divider"></div>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+        </li>
+        <li>
+          <a href="{{ url_for('help') }}" class="nav-link">Help</a>
+        </li>
+      </ul>
+      <!--    <form class="form-inline my-2 my-lg-0">-->
+      <!--      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+      <!--      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
+      <!--    </form>-->
+    </div>
+  </nav>

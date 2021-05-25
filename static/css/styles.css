@@ -1,0 +1,268 @@
+body {
+    color: #f3f4ed;
+    background-color: #424642;
+    text-align: center;
+}
+
+.navbar {
+    background-color: #424642;
+    color:  #f3f4ed;
+    padding: 1rem 2rem;
+    margin: 0 0 2rem;
+}
+
+#xbox-dropdown {
+    background-color: #0e7a0d;
+}
+
+#ps-dropdown {
+    background-color: #003087;
+}
+
+.dropdown-item {
+    color: white;
+    text-align: center;
+}
+
+.switch-logo {
+    width: 20px;
+    color: white;
+}
+
+.homepage-teaser-image {
+    width: 50px;
+}
+
+.game-image {
+    height: 15rem;
+    padding: 1rem 0;
+}
+
+.carousel-item {
+    height: 100%;
+    background-color: #4b5859;
+    padding: 2% 10%;
+    margin: 0 0 1rem 0;
+}
+
+.help-link {
+    color: #c06014;
+}
+
+.help-link:hover {
+    color: #df6f17;
+}
+
+.faq {
+    text-align: left;
+    padding: 0 3%;
+}
+
+.android-download {
+    margin: 1rem; 1rem;
+}
+
+.game-card-accordion {
+    margin: 0 2rem;
+    text-align: left;
+}
+
+.game-expand {
+    color: #c06014;
+}
+
+.game-expand:hover {
+    color: #df6f17;
+}
+
+.data-card {
+    background-color: #4b5859;
+}
+
+.showcase-container {
+    padding: 1rem;
+    background-color: green;
+}
+
+.game-image-container {
+    height: 13rem;
+    margin: 1rem;
+    text-align: center;
+}
+
+.full-game-container {
+    text-align: left;
+}
+
+.game-screen {
+    margin: 0 2rem;
+}
+
+.game-info-container {
+    padding: 1rem 0 1rem 2rem;
+    color: #c06014;
+}
+
+.colour-background {
+    background-color: #536162;
+}
+
+.download-buttons {
+    padding-bottom: 1rem;
+}
+
+.header {
+    text-align: left;
+    margin-left: 2%;
+
+}
+
+.header-link {
+    color: #f3f4ed;
+}
+
+.header-link:hover {
+    color: #df6f17;
+}
+
+.send-button {
+    background-color: #c06014;
+}
+
+.send-button:hover {
+    background-color: #df6f17;
+}
+
+.dropdown-menu {
+    background-color: #536162;
+}
+
+.sort-dropdown {
+    text-align: left;
+    margin: 1rem 0 0 2%;
+}
+
+.carousel-image {
+    width: 25%;
+    float: left;
+}
+
+.carousel-button {
+    margin: 0 90% 2%;
+    text-align: center;
+}
+
+.ps-btn {
+    background-color: #003087;
+    color: #f3f4ed;
+}
+
+.ps-btn:hover {
+    background-color: #001f56;
+}
+
+.ps-dropdown-menu {
+    background-color: #003087;
+}
+
+.xbox-btn {
+    background-color: #0e7a0d;
+    color: #f3f4ed;
+}
+
+.xbox-btn:hover {
+    background-color: #0b5f0a
+}
+
+.xbox-dropdown-menu {
+    background-color: #0e7a0d;
+}
+
+.switch-btn {
+    background-color: #e60012;
+    color: #f3f4ed;
+    text-align: left;
+}
+
+.switch-btn:hover {
+    background-color: #b9000e;
+}
+
+.card-image-game {
+    padding: 0 1rem 1rem 0;
+}
+
+.card-body {
+    text-align: left;
+    color: #c06014;
+    padding: 0;
+    }
+
+.card {
+    margin: 1rem;
+    padding: 1rem 1rem 0;
+    background-color: #536162;
+}
+
+
+.flex-row {
+    margin: 1rem;
+}
+
+.d-flex {
+    padding: 0;
+}
+
+.game-row {
+    margin: 1%;
+}
+
+.card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+}
+
+.price-data {
+     color: #f3f4ed;
+}
+
+.index-link:hover {
+    text-decoration-color: #df6f17;
+}
+
+.carousel-image-game {
+    height: 40%;
+}
+
+.image-square-wrapper {
+    height: auto;
+    width: auto;
+}
+
+.carousel-body {
+    text-align: center;
+}
+
+.carousel-game {
+    padding: 2%;
+}
+
+.wrapper {
+    padding: 0;
+}
+
+@media (min-width: 900px) {
+
+    .wrapper {
+        padding: 0 20%;
+    }
+
+    .carousel-image-game {
+    height: 40%;
+}
+
+}
+
+.donate-button {
+    padding-top: 0.5%;
+}

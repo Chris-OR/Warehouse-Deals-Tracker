@@ -1,0 +1,40 @@
+{% include "header.html" %}
+
+<div class="faq">
+
+    <h3>What are <a class="help-link" target="_blank" href="https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011&dc&qid=1621353579&ref=sr_ex_n_1">Amazon Warehouse Deals</a>?</h3>
+    <li>These are deals on used and returned products that are available directly from Amazon.  Often times, you can find products that have significant price reductions, without sacrificing quality.</li>
+    <br>
+    <br>
+    <h3>What is <a class="help-link" target="_blank" href="https://telegram.org/">Telegram</a>?</h3>
+    <li>Telegram is a messaging app that offers a secure, fast, and simple messaging experience - all while staying completely free!</li>
+    <br>
+    <br>
+    <h3>How can I get Telegram?</h3>
+    <li>Telegram offers both mobile and desktop applications.  Click on your preferred system to get started.</li>
+    <div class="row">
+        <div class="col-lg-6 download-buttons">
+          <a href="https://telegram.org/dl/ios" target="_blank" class="btn btn-dark btn-md download-button" role="button"><i class="fab fa-apple"></i> Download</a>
+          <a href="https://telegram.org/android" target="_blank" class="btn btn-outline-light btn-md download-button android-download" role="button"><i class="fab fa-google-play"></i> Download</a>
+            <a href="https://desktop.telegram.org/" target="_blank" class="btn btn-md btn-dark" role="button">Telegram for Desktop</a>
+        </div>
+<!--        <div class="col-sm-6">-->
+<!--          <a href="https://desktop.telegram.org/" class="btn btn-md btn-dark" role="button">Telegram for Desktop</a>-->
+<!--        </div>-->
+    </div>
+    <h3>How can I use Telegram to be notified of Warehouse Deals?</h3>
+    <li>Simple!  Just create an account, find one of our bot accounts, and start a thread with it.</li>
+    <ul>
+        <li>The PlayStation Bot can be found here: @PSWarehouseDealsBot</li>
+        <li>The Xbox Bot can be found here: @XboxWarehouseDealsBot</li>
+        <li>The Nintendo Switch Bot can be found here: @SwitchWarehouseDealsBot</li>
+    </ul>
+    <div class="d-flex justify-content-left flex-row flex-wrap">
+        <img class="help-image p-2" src="{{ url_for('static', filename='ps_bot_help.png') }}" alt="search help image">
+        <img class="help-image p-2" src="{{ url_for('static', filename='xbox_bot_help.png') }}" alt="search help image">
+        <img class="help-image p-2" src="{{ url_for('static', filename='switch_bot_help.png') }}" alt="search help image">
+    </div>
+    <li>Once you find your desired bot, click on it and either type "/start" or click on the "start" button.  You will now be notified of any deals that we detect!</li>
+</div>
+
+{% include "footer.html" %}

@@ -1,0 +1,96 @@
+{% include "header.html" %}
+{% if in_stock: %}
+<a class="header-link" href="{{ url }}" target="_blank"><h1 class="header">Active Games:</h1></a>
+
+<div class="game-row row">
+
+  {% for game in in_stock: %}
+  <div class="col-xl-3 col-lg-4 col-md-6 d-flex align-items-stretch">
+    <div class="card">
+      <div class="card-horizontal">
+        <div class="img-square-wrapper">
+          <a target="_blank" class="help-link" href="{{ game.url }}">
+            <img class="card-image-game img-fluid" src="{{ game.img_url }}" alt="Card image cap">
+        </div>
+        <br>
+        <div class="card-body">
+          <h6 class="card-title">{{ game.title }}</h6>
+          <h7 class="card-text">${{ game.price }}</h7>
+          </a>
+          <hr>
+<p class="price-data">Avg. Price: ${{ game.average }}, High: ${{ game.high }}, Low: ${{ game.low }}</p>
+        </div>
+      </div>
+      <!--        <div class="card-footer">-->
+      <!--            <small class="text-muted">Last updated 3 mins ago</small>-->
+      <!--        </div>-->
+
+    </div>
+  </div>
+
+  {% endfor %}
+  {% else: %}
+  <h1>There are currently no {{ all_games[0].system }} games in stock.</h1>
+  {% endif %}
+</div>
+
+
+<br>
+
+<h1 class="header">All Games:</h1>
+
+<div class="dropdown sort-dropdown">
+  <button class="btn send-button dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {% if sort_method: %}
+    {{ sort_method }}
+    {% else: %}
+    Sort By
+    {% endif %}
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='oldest') }}">Oldest First</a>
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='newest') }}">Newest First</a>
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='cheapest') }}">Price: Low to High</a>
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='priciest') }}">Price: High to Low</a>
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='rarest') }}">Rarity: Most to Least</a>
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='most-common') }}">Rarity: Least to Most</a>
+  </div>
+</div>
+
+<div class="game-row row">
+
+  {% for game in all_games: %}
+  <div class="col-xl-3 col-lg-4 col-md-6 d-flex align-items-stretch">
+    <div class="card">
+      <div class="card-horizontal">
+        <div class="img-square-wrapper">
+          <a target="_blank" class="help-link" href="{{ game.url }}">
+            <img class="card-image-game img-fluid" src="{{ game.img_url }}" alt="Card image cap">
+        </div>
+        <div class="card-body">
+
+          {% if game.in_stock: %}
+          <h6 class="card-title">{{ game.title }}</h6>
+          <h7 class="card-text">${{ game.price }}</h7>
+          {% else: %}
+          <h6 class="card-title">{{ game.title }}</h6>
+          <h7 class="card-text">${{ game.price }} 🚫 out of stock</h7>
+          {% endif %}
+          </a>
+          <hr>
+          <p class="price-data">Avg. Price: ${{ game.average }}, High: ${{ game.high }}, Low: ${{ game.low }}</p>
+
+        </div>
+      </div>
+      <!--        <div class="card-footer">-->
+      <!--            <small class="text-muted">Last updated 3 mins ago</small>-->
+      <!--        </div>-->
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
+
+
+
+{% include "footer.html" %}

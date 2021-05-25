@@ -1,0 +1,126 @@
+{% include "header.html" %}
+<!--Game Showcase-->
+<h1>Welcome to the Amazon Warehouse Deals Tracker</h1>
+<h4>Subscribe to our <a class="help-link" href="{{ url_for('help') }}">Telegram</a> bots to get instantly notified of new deals!</h4>
+<br>
+<br>
+
+<div class="wrapper container-fluid">
+
+
+
+
+
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      {% for i in range(1, length) %}
+      <li data-target="#carouselExampleIndicators" data-slide-to="{{ i }}"></li>
+      {% endfor %}
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item active container-fluid carousel-game">
+              <div class="card carousel-card">
+      <div class="carousel-card-horizontal">
+        <div class="img-square-wrapper">
+          <a target="_blank" class="help-link" href="{{ all_games[0].url }}">
+            <img class="carousel-image-game img-fluid" src="{{ all_games[0].img_url }}" alt="Card image cap">
+
+        </div>
+          <br>
+        <div class="card-body carousel-body">
+          <h2 class="card-title">{{ all_games[0].title }}</h2>
+          <h4 class="card-text">${{ all_games[0].price }}</h4>
+          </a>
+          <hr>
+          <h6 class="price-data">Avg. Price: ${{ all_games[0].average }}, High: ${{ all_games[0].high }}, Low: ${{ all_games[0].low }}</h6>
+        </div>
+      </div>
+      <!--        <div class="card-footer">-->
+      <!--            <small class="text-muted">Last updated 3 mins ago</small>-->
+      <!--        </div>-->
+    </div>
+        </div>
+        {% for i in range (1, length): %}
+        <div class="carousel-item container-fluid carousel-game">
+          <div class="card carousel-card">
+      <div class="carousel-card-horizontal">
+        <div class="img-square-wrapper">
+          <a target="_blank" class="help-link" href="{{ all_games[i].url }}">
+            <img class="carousel-image-game img-fluid" src="{{ all_games[i].img_url }}" alt="Card image cap">
+
+        </div>
+          <br>
+        <div class="card-body carousel-body">
+          <h2 class="card-title">{{ all_games[i].title }}</h2>
+          <h4 class="card-text">${{ all_games[i].price }}</h4>
+          </a>
+          <hr>
+          <h6 class="price-data">Avg. Price: ${{ all_games[i].average }}, High: ${{ all_games[i].high }}, Low: ${{ all_games[i].low }}</h6>
+        </div>
+      </div>
+      <!--        <div class="card-footer">-->
+      <!--            <small class="text-muted">Last updated 3 mins ago</small>-->
+      <!--        </div>-->
+    </div>
+      </div>
+    {% endfor %}
+    </div>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    </div>
+
+
+
+
+
+
+</div>
+
+  <br>
+        <h5>Check out all of the games! Choose your system:</h5>
+        <div>
+
+          <div class="d-flex justify-content-center flex-row flex-wrap">
+
+
+              <div class="dropdown p-2">
+                <button class="btn ps-btn dropdown-toggle" type="button" id="dropdownMenuButton{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fab fa-playstation"></i> PlayStation
+                </button>
+                <div class="dropdown-menu ps-dropdown-menu" aria-labelledby="dropdownMenuButton{{i}}">
+                  <a class="dropdown-item" href="{{ url_for('ps4') }}">PS4</a>
+                  <a class="dropdown-item" href="{{ url_for('ps5') }}">PS5</a>
+                </div>
+              </div>
+
+
+
+              <div class="dropdown p-2">
+                <button class="btn xbox-btn dropdown-toggle" type="button" id="dropdownMenuButton2{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fab fa-xbox"></i> Xbox
+                </button>
+                <div class="dropdown-menu xbox-dropdown-menu" aria-labelledby="dropdownMenuButton2{{i}}">
+                  <a class="dropdown-item" href="{{ url_for('xbox_one') }}">Xbox One</a>
+                  <a class="dropdown-item" href="#">Series X</a>
+                </div>
+              </div>
+
+
+            <div class="p-2">
+              <a href="{{ url_for('switch') }}"><button type="button" class="btn switch-btn"><img class="switch-logo" src="{{ url_for('static', filename='white-switch-logo.png') }}"></img> Nintendo Switch</button></a>
+            </div>
+            </div>
+
+            </div>
+        </div>
+
+
+
+{% include "footer.html" %}
