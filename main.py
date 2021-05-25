@@ -212,6 +212,6 @@ def get_date_list(game):
 
 
 if __name__ == "__main__":
-    # threading.Thread(target=checker_thread, daemon=True).start()
+    threading.Thread(target=checker_thread, daemon=True).start()
     app.run(debug=False)
 
