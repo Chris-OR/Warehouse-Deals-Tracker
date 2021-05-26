@@ -58,7 +58,7 @@ class Games(db.Model):
 
 
 def initialize_webpages(url, console):
-    secret = os.environ.get("TEST")
+    secret = os.environ("TEST")
     print(secret)
     print(f"trying to load {console} games...")
 
