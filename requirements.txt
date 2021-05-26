@@ -22,5 +22,5 @@ visitor==0.1.3
 Werkzeug==1.0.1
 WTForms==2.3.3
 beautifulsoup4~=4.9.3
-telegram==0.0.1
 proxy-requests==0.5.2
+python-telegram-bot==13.5
