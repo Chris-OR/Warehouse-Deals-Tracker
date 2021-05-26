@@ -35,23 +35,23 @@ def checker_thread():
         gc.clear_stock("PlayStation 4")
         gc.initialize_webpages(PS4_URL, "PlayStation 4")
         price_data()
-        time.sleep(100)
+        time.sleep(300)
         gc.clear_stock("PlayStation 5")
         gc.initialize_webpages(PS5_URL, "PlayStation 5")
         price_data()
-        time.sleep(100)
+        time.sleep(300)
         gc.clear_stock("Xbox One")
         gc.initialize_webpages(XBOX_ONE, "Xbox One")
         price_data()
-        time.sleep(100)
+        time.sleep(300)
         gc.clear_stock("Xbox Series X")
         gc.initialize_webpages(XBOX_SERIES, "Xbox Series X")
         price_data()
-        time.sleep(100)
+        time.sleep(300)
         gc.clear_stock("Nintendo Switch")
         gc.initialize_webpages(SWITCH, "Nintendo Switch")
         price_data()
-        time.sleep(100)
+        time.sleep(300)
         print("\nDone with this round\n")
 
 
@@ -213,6 +213,6 @@ def get_date_list(game):
 
 
 if __name__ == "__main__":
-    # threading.Thread(target=checker_thread, daemon=True).start()
+    threading.Thread(target=checker_thread, daemon=True).start()
     app.run(debug=False)
 

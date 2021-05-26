@@ -44,6 +44,7 @@ class Games(db.Model):
 
 
 def initialize_webpages(url, console):
+    print("trying to load games...")
     response = requests.get(url, headers=headers)
     response.raise_for_status()
     webpage = response.text
@@ -63,6 +64,7 @@ def initialize_webpages(url, console):
     game_image = [link.get("src") for link in game_image]
 
     if len(game_titles) == len(game_price):
+        print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
         available_games = Games.query.filter_by(available=True).all()
         all_games = db.session.query(Games).all()
         for i in range(len(game_titles)):
