@@ -58,9 +58,9 @@ class Games(db.Model):
 
 
 def initialize_webpages(url, console):
-    print("trying to load games...")
+    print(f"trying to load {console} games...")
 
-    r = ProxyRequests(url)
+    r = ProxyRequests("https://www.google.com/")
     r.set_headers(headers)
     r.get_with_headers()
     r.get()
