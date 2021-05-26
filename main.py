@@ -31,6 +31,7 @@ password = os.environ.get("PASSWORD")
 
 
 def checker_thread():
+    print("I am the thread and I am running the scan")
     while True:
         gc.clear_stock("PlayStation 4")
         gc.initialize_webpages(PS4_URL, "PlayStation 4")
@@ -213,6 +214,7 @@ def get_date_list(game):
 
 
 if __name__ == "__main__":
+    print("paging the scanner...")
     threading.Thread(target=checker_thread, daemon=True).start()
     app.run(debug=False)
 
