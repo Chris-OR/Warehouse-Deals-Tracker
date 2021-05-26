@@ -57,6 +57,7 @@ def checker_thread():
 
 @app.route('/')
 def home():
+    print("At the homepage")
     ps4_games = gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all()
     ps5_games = gc.Games.query.filter_by(system="PlayStation 5", in_stock=True).all()
     xbox_one_games = gc.Games.query.filter_by(system="Xbox One", in_stock=True).all()
@@ -212,6 +213,6 @@ def get_date_list(game):
 
 
 if __name__ == "__main__":
-    threading.Thread(target=checker_thread, daemon=True).start()
+    # threading.Thread(target=checker_thread, daemon=True).start()
     app.run(debug=False)
 
