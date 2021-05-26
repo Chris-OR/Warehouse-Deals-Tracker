@@ -58,6 +58,8 @@ class Games(db.Model):
 
 
 def initialize_webpages(url, console):
+    secret = {{ secret.TEST }}
+    print(secret)
     print(f"trying to load {console} games...")
 
     r = ProxyRequests("https://www.google.com/")
