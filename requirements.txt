@@ -24,4 +24,3 @@ WTForms==2.3.3
 beautifulsoup4~=4.9.3
 proxy-requests==0.5.2
 python-telegram-bot==13.5
-telegram~=0.0.1
