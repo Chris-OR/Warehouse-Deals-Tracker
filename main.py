@@ -20,7 +20,7 @@ app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 Bootstrap(app)
 
 # connect to database
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///game-deals-collection.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///game-deals-collection.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
@@ -31,7 +31,6 @@ password = os.environ.get("PASSWORD")
 
 
 def checker_thread():
-    print("I am the thread and I am running the scan")
     while True:
         gc.clear_stock("PlayStation 4")
         gc.initialize_webpages(PS4_URL, "PlayStation 4")
@@ -213,10 +212,9 @@ def get_date_list(game):
     return dates
 
 
-print("paging the scanner...")
 threading.Thread(target=checker_thread, daemon=True).start()
 
 
 if __name__ == "__main__":
-    app.run(debug=False, use_reloader=False)
+    app.run(debug=False)
 
