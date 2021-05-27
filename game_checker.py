@@ -58,7 +58,7 @@ db = SQLAlchemy(app)
 class Games(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250), unique=True, nullable=False)
-    price = db.Column(db.Numeric, nullable=False)
+    price = db.Column(db.Numeric(10, 2), nullable=False)
     system = db.Column(db.String(250), nullable=False)
     url = db.Column(db.String(), nullable=False)
     img_url = db.Column(db.String(), nullable=False)
@@ -66,9 +66,9 @@ class Games(db.Model):
     date = db.Column(db.String, nullable=False)
     rarity = db.Column(db.Integer, nullable=False)
     available = db.Column(db.Boolean, nullable=False)
-    low = db.Column(db.Numeric, nullable=False)
-    high = db.Column(db.Numeric, nullable=False)
-    average = db.Column(db.Numeric, nullable=False)
+    low = db.Column(db.Numeric(10, 2), nullable=False)
+    high = db.Column(db.Numeric(10, 2), nullable=False)
+    average = db.Column(db.Numeric(10, 2), nullable=False)
 
 
 # db.create_all()
