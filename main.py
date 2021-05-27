@@ -57,7 +57,6 @@ def checker_thread():
 
 @app.route('/')
 def home():
-    print("At the homepage")
     ps4_games = gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all()
     ps5_games = gc.Games.query.filter_by(system="PlayStation 5", in_stock=True).all()
     xbox_one_games = gc.Games.query.filter_by(system="Xbox One", in_stock=True).all()
