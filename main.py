@@ -62,10 +62,10 @@ def home():
     # xbox_one_games = gc.Games.query.filter_by(system="Xbox One", in_stock=True).all()
     # xbox_series_games = gc.Games.query.filter_by(system="Xbox Series X", in_stock=True).all()
     # switch_games = gc.Games.query.filter_by(system="Nintendo Switch", in_stock=True).all()
-    # all_games = gc.Games.query.filter_by(in_stock=True).all()
+    all_games = gc.Games.query.filter_by(in_stock=True).all()
     all_games_rarest = gc.Games.query.filter_by(in_stock=True).order_by("rarity")
     # return render_template("index.html", all_games=all_games_rarest, ps4_games=ps4_games, ps5_games=ps5_games, xbox_one_games=xbox_one_games, xbox_series_games=xbox_series_games, switch_games=switch_games, length=len(all_games))
-    return render_template("index.html", all_games=all_games_rarest, length=len(all_games_rarest))
+    return render_template("index.html", all_games=all_games_rarest, length=len(all_games))
 
 
 @app.route('/help')
