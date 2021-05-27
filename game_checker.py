@@ -71,7 +71,7 @@ class Games(db.Model):
     average = db.Column(db.Numeric, nullable=False)
 
 
-db.create_all()
+# db.create_all()
 
 
 def initialize_webpages(url, console):
