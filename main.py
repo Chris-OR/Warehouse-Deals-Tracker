@@ -212,10 +212,12 @@ def get_date_list(game):
         dates.append(date_list[i][0])
     return dates
 
+
 print("paging the scanner...")
 threading.Thread(target=checker_thread, daemon=True).start()
 
-if __name__ == "__main__":
+app.run(debug=False, use_reloader=False)
 
-    app.run(debug=False)
+# if __name__ == "__main__":
+#     app.run(debug=False, use_reloader=False)
 
