@@ -85,7 +85,7 @@ def initialize_webpages(url, console):
 
     webpage = response.text
     webpage_soup = BeautifulSoup(webpage, "html.parser")
-    print(webpage_soup)
+    # print(webpage_soup)
     game_titles = webpage_soup.find_all(name="span", class_="a-size-base-plus a-color-base a-text-normal")
     game_titles = [game.getText() for game in game_titles]
 
