@@ -32,7 +32,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 
 # connect to database
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///game-deals-collection.db"
+# app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///game-deals-collection.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///game-deals-collection.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
@@ -55,7 +56,7 @@ class Games(db.Model):
     average = db.Column(db.DECIMAL(0, 2), nullable=False)
 
 
-# db.create_all()
+db.create_all()
 
 
 def initialize_webpages(url, console):
