@@ -54,36 +54,38 @@ class Games(db.Model):
     high = db.Column(db.DECIMAL(0, 2), nullable=False)
     average = db.Column(db.DECIMAL(0, 2), nullable=False)
 
+
 # db.create_all()
 
 
 def initialize_webpages(url, console):
-    secret = os.environ.get("TEST")
-    print(secret)
     print(f"trying to load {console} games...")
+    searching = True
+    while searching:
+        r = ProxyRequests("https://www.google.com/")
+        r.set_headers(headers)
+        r.get_with_headers()
+        # print(r.get_status_code())
+        proxy = r.get_proxy_used()
+        # print(proxy)
 
-    r = ProxyRequests("https://www.google.com/")
-    r.set_headers(headers)
-    r.get_with_headers()
-    r.get()
-    # print(r.get_status_code())
-    proxy = r.get_proxy_used()
-    # print(proxy)
-    r = str(r)
+        proxy = {
+            "http": f"http://{proxy}",
+            "https": f"https://{proxy}",
+        }
 
-    proxy = {
-        "http": f"http://{proxy}",
-        "https": f"https://{proxy}",
-    }
-
-    response = requests.get(url, headers=headers, proxies=proxy)
-    response.raise_for_status()
+        try:
+            response = requests.get(url, headers=headers, proxies=proxy)
+            response.raise_for_status()
+            searching = False
+        except:
+            print("something went wrong")
 
     # webpage = r
 
     webpage = response.text
     webpage_soup = BeautifulSoup(webpage, "html.parser")
-    # print(webpage_soup)
+    print(webpage_soup)
     game_titles = webpage_soup.find_all(name="span", class_="a-size-base-plus a-color-base a-text-normal")
     game_titles = [game.getText() for game in game_titles]
 
@@ -124,7 +126,7 @@ def initialize_webpages(url, console):
                 
                 uncomment me in a few days """
 
-                checked_price = game_price[i] # delete this when you uncomment above
+                checked_price = game_price[i]  # delete this when you uncomment above
 
                 new_game = Games(title=game_titles[i],
                                  price=checked_price,
@@ -198,6 +200,7 @@ def initialize_webpages(url, console):
 
     else:
         print("uh oh")
+    print("moving on to next console...")
 
 
 def clear_stock(console):
@@ -246,8 +249,6 @@ def send_telegram_message(title, price, url, console):
 
     bot = telegram.Bot(token)
 
-
     message = f"<b>Price Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title} is back in stock for ${price}</a>\n\n<a href='{section_url}'>Or, click here for all {console} deals</a>"
 
     bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
-
