@@ -231,7 +231,7 @@ def initialize_webpages(url, console):
         # check if a previously tracked game is back in stock
         for game in updated_available_games:
             if game not in available_games and game in all_games:
-                send_telegram_message(game.title, game.price, game.url, console, price_change=True)
+                send_telegram_message(game.title, game.price, game.url, console, price_change=False)
         # set availability to false if it is out of stock
         for game in all_games:
             if game not in in_stock and game in updated_available_games:
