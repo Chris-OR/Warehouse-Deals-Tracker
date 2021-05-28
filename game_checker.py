@@ -219,8 +219,9 @@ def initialize_webpages(url, console):
                     if game.price != last_price:
                         print(f"we found a new price for {game.title}.  The old price was ${last_price}.  The new price is ${game.price}")
                     game.date += f"{date}: {game.price},"
-                else:
-                    game.date += f"{date}: 0,"
+                    db.session.commit()
+                # else:
+                #     game.date += f"{date}: 0,"
             db.session.commit()
 
         updated_available_games = Games.query.filter_by(available=True).all()
