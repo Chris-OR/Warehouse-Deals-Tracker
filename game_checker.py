@@ -116,6 +116,7 @@ def initialize_webpages(url, console):
     game_image = [link.get("src") for link in game_image]
 
     if len(game_titles) == len(game_price):
+        clear_stock(console)
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
         available_games = Games.query.filter_by(available=True).all()
         all_games = db.session.query(Games).all()
@@ -202,7 +203,9 @@ def initialize_webpages(url, console):
                 else:
                     game.date += f"{date}: 0,"
             db.session.commit()
+
         updated_available_games = Games.query.filter_by(available=True).all()
+        in_stock = Games.query.filter_by(in_stock=True).all()
 
         # check if a previously tracked game is back in stock
         for game in updated_available_games:
@@ -210,7 +213,8 @@ def initialize_webpages(url, console):
                 send_telegram_message(game.title, game.price, game.url, console)
         # set availability to false if it is out of stock
         for game in all_games:
-            if game not in updated_available_games:
+            if game not in in_stock:
+                print(f"{game.title} is now unavailable")
                 game.available = False
                 db.session.commit()
 
