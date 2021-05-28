@@ -115,7 +115,14 @@ def initialize_webpages(url, console):
     game_image = webpage_soup.find_all(name="img", class_="s-image")
     game_image = [link.get("src") for link in game_image]
 
-    if len(game_titles) == len(game_price):
+    captcha_catcher = webpage_soup.find(name="p", class_="a-last")
+    captcha = False
+
+    if captcha_catcher is not None:
+        print("caught a captcha - we will move on")
+        captcha = True
+
+    if len(game_titles) == len(game_price) and not captcha:
         clear_stock(console)
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
         available_games = Games.query.filter_by(available=True).all()
@@ -213,7 +220,7 @@ def initialize_webpages(url, console):
                 send_telegram_message(game.title, game.price, game.url, console)
         # set availability to false if it is out of stock
         for game in all_games:
-            if game not in in_stock:
+            if game not in in_stock and game in updated_available_games:
                 print(f"{game.title} is now unavailable")
                 game.available = False
                 db.session.commit()
