@@ -199,13 +199,25 @@ def initialize_webpages(url, console):
             game.price = game_price[i]  # delete this line if you can get around the captcha on the price check
             tracked_dates = game.date.split(",")
             tracked_dates = [dates.split(":") for dates in tracked_dates]
+            tracked_prices = game.date.split(",")
+            print(tracked_prices)
+            last_tracked = tracked_prices[-2]
+            print(last_tracked)
+            last_tracked_split = last_tracked.split(": ")
+            last_price = last_tracked_split[1]
+
+            print(last_price)
+
             tracked = False
             for tracked_date in tracked_dates:
-                if date in tracked_date:
+                if date in tracked_date and game.price == last_price:
+                    # print(f"{game.title} has a price of ${game.price} which matches its last price of ${last_price}")
                     tracked = True
                     break
             if not tracked:
                 if game.in_stock:
+                    if game.price != last_price:
+                        print(f"we found a new price for {game.title}.  The old price was ${last_price}.  The new price is ${game.price}")
                     game.date += f"{date}: {game.price},"
                 else:
                     game.date += f"{date}: 0,"
