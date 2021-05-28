@@ -72,6 +72,7 @@ def help():
 def contact():
     alert = False
     if request.method == "POST":
+        print("Trying to send an email...")
         data = request.form
         with smtplib.SMTP("smtp.gmail.com", 587) as connection:
             connection.starttls()
