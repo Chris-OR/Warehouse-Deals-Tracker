@@ -200,13 +200,13 @@ def initialize_webpages(url, console):
             tracked_dates = game.date.split(",")
             tracked_dates = [dates.split(":") for dates in tracked_dates]
             tracked_prices = game.date.split(",")
-            print(tracked_prices)
+            # print(tracked_prices)
             last_tracked = tracked_prices[-2]
-            print(last_tracked)
+            # print(last_tracked)
             last_tracked_split = last_tracked.split(": ")
             last_price = last_tracked_split[1]
 
-            print(last_price)
+            # print(last_price)
 
             tracked = False
             for tracked_date in tracked_dates:
