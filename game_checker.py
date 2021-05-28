@@ -38,6 +38,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
+warehouse_deals_url = "https://warehouse-deals.herokuapp.com/"
 
 # template for adding new entries into database
 # class Games(db.Model):
@@ -291,8 +292,8 @@ def send_telegram_message(title, price, url, console, price_change):
     bot = telegram.Bot(token)
 
     if price_change:
-        message = f"<b>Price Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title} has had a price change.  Its price is now ${price}</a>\n\n<a href='{section_url}'>Or, click here for all {console} deals</a>"
+        message = f"<b>Price Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title} has had a price change.  Its price is now ${price}</a>\n\n<a href='{section_url}'>Or, click here for all {console} deals</a>\n<a href='{warehouse_deals_url}'>Check out our Website!</a>"
     else:
-        message = f"<b>Price Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title} is back in stock for ${price}</a>\n\n<a href='{section_url}'>Or, click here for all {console} deals</a>"
+        message = f"<b>Price Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title} is back in stock for ${price}</a>\n\n<a href='{section_url}'>Or, click here for all {console} deals</a>\n<a href='{warehouse_deals_url}'>Check out our Website!</a>"
 
     bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
