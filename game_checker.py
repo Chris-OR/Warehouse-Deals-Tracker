@@ -79,6 +79,9 @@ def initialize_webpages(url, console):
     print(f"trying to load {console} games...")
     searching = True
     list_of_price_changes = []
+    new_game = False
+    price_change = False
+    back_in_stock = False
 
     while searching:
         r = ProxyRequests("https://www.google.com/")
