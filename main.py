@@ -86,65 +86,75 @@ def contact():
 def ps4():
     in_stock = gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).order_by("rarity")
     all_games = gc.Games.query.filter_by(system="PlayStation 4").all()
-    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sorter="ps4_sorted", url=PS4_URL)
+    length = len(gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all())
+    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sorter="ps4_sorted", url=PS4_URL, length=length)
 
 
 @app.route('/ps5')
 def ps5():
     in_stock = gc.Games.query.filter_by(system="PlayStation 5", in_stock=True).order_by("rarity")
     all_games = gc.Games.query.filter_by(system="PlayStation 5").all()
-    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sorter="ps5_sorted", url=PS5_URL)
+    length = len(gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all())
+    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sorter="ps5_sorted", url=PS5_URL, length=length)
 
 
 @app.route('/xbox-one')
 def xbox_one():
     in_stock = gc.Games.query.filter_by(system="Xbox One", in_stock=True).order_by("rarity")
     all_games = gc.Games.query.filter_by(system="Xbox One").all()
-    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sorter="xbox_one_sorted", url=XBOX_ONE)
+    length = len(gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all())
+    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sorter="xbox_one_sorted", url=XBOX_ONE, length=length)
 
 
 @app.route('/xbox-series-x')
 def xbox_series():
     in_stock = gc.Games.query.filter_by(system="Xbox Series X", in_stock=True).order_by("rarity")
     all_games = gc.Games.query.filter_by(system="Xbox Series X").all()
-    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sorter="xbox_series_sorted", url=XBOX_SERIES)
+    length = len(gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all())
+    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sorter="xbox_series_sorted", url=XBOX_SERIES, length=length)
 
 
 @app.route('/switch')
 def switch():
     in_stock = gc.Games.query.filter_by(system="Nintendo Switch", in_stock=True).order_by("rarity")
     all_games = gc.Games.query.filter_by(system="Nintendo Switch").all()
-    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sorter="switch_sorted", url=SWITCH)
+    length = len(gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all())
+    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sorter="switch_sorted", url=SWITCH, length=length)
 
 
 @app.route('/ps4/<sort_method>')
 def ps4_sorted(sort_method):
     in_stock, all_games, sort_method = sorter(sort_method, "PlayStation 4")
-    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sort_method=sort_method, sorter="ps4_sorted", url=PS4_URL)
+    length = len(gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all())
+    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sort_method=sort_method, sorter="ps4_sorted", url=PS4_URL, length=length)
 
 
 @app.route('/ps5/<sort_method>')
 def ps5_sorted(sort_method):
     in_stock, all_games, sort_method = sorter(sort_method, "PlayStation 5")
-    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sort_method=sort_method, sorter="ps5_sorted", url=PS5_URL)
+    length = len(gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all())
+    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sort_method=sort_method, sorter="ps5_sorted", url=PS5_URL, length=length)
 
 
 @app.route('/switch/<sort_method>')
 def switch_sorted(sort_method):
     in_stock, all_games, sort_method = sorter(sort_method, "Nintendo Switch")
-    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sort_method=sort_method, sorter="switch_sorted", url=SWITCH)
+    length = len(gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all())
+    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sort_method=sort_method, sorter="switch_sorted", url=SWITCH, length=length)
 
 
 @app.route('/xbox-one/<sort_method>')
 def xbox_one_sorted(sort_method):
     in_stock, all_games, sort_method = sorter(sort_method, "Xbox One")
-    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sort_method=sort_method, sorter="xbox_one_sorted", url=XBOX_ONE)
+    length = len(gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all())
+    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sort_method=sort_method, sorter="xbox_one_sorted", url=XBOX_ONE, length=length)
 
 
 @app.route('/xbox-series-x/<sort_method>')
 def xbox_series_sorted(sort_method):
     in_stock, all_games, sort_method = sorter(sort_method, "Xbox Series X")
-    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sort_method=sort_method, sorter="xbox_series_sorted", url=XBOX_SERIES)
+    length = len(gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all())
+    return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sort_method=sort_method, sorter="xbox_series_sorted", url=XBOX_SERIES, length=length)
 
 
 def sorter(sort_method, system):
