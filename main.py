@@ -111,7 +111,6 @@ def xbox_series():
     in_stock = gc.Games.query.filter_by(system="Xbox Series X", in_stock=True).order_by("rarity")
     all_games = gc.Games.query.filter_by(system="Xbox Series X").all()
     length = len(gc.Games.query.filter_by(system="Xbox Series X", in_stock=True).all())
-    print(length)
     return render_template("console-game-page.html", in_stock=in_stock, all_games=all_games, sorter="xbox_series_sorted", url=XBOX_SERIES, length=length)
 
 

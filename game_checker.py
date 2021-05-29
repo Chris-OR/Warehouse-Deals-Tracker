@@ -78,6 +78,8 @@ class Games(db.Model):
 def initialize_webpages(url, console):
     print(f"trying to load {console} games...")
     searching = True
+    list_of_price_changes = []
+
     while searching:
         r = ProxyRequests("https://www.google.com/")
         r.set_headers(headers)
@@ -129,6 +131,9 @@ def initialize_webpages(url, console):
         available_games = Games.query.filter_by(available=True).all()
         all_games = db.session.query(Games).all()
         for i in range(len(game_titles)):
+            new_game = False
+            price_change = False
+            back_in_stock = False
             date = dt.datetime.now()
             date = date.strftime("%b %d %Y")
             print(game_titles[i])
@@ -169,8 +174,8 @@ def initialize_webpages(url, console):
                 db.session.add(new_game)
                 db.session.commit()
                 print(f"added {game_titles[i]} to the database")
-                send_telegram_message(game_titles[i], checked_price, game_link[i], console, price_change=False)
-
+                # send_telegram_message(game_titles[i], checked_price, game_link[i], console, price_change=False)
+                new_game = True
             # check for price changes
             """ uncomment me in a few days
             try:
@@ -219,12 +224,17 @@ def initialize_webpages(url, console):
                 if game.in_stock:
                     if game.price != last_price:
                         print(f"we found a new price for {game.title}.  The old price was ${last_price}.  The new price is ${game.price}")
-                        send_telegram_message(game.title, game.price, game.url, console, price_change=True)
+                        # send_telegram_message(game.title, game.price, game.url, console, price_change=True)
+                        price_change = True
+                        list_of_price_changes.append(game.title)
                     game.date += f"{date}: {game.price},"
                     db.session.commit()
                 # else:
                 #     game.date += f"{date}: 0,"
             db.session.commit()
+
+            if new_game | price_change | back_in_stock:
+                send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
 
         updated_available_games = Games.query.filter_by(available=True).all()
         in_stock = Games.query.filter_by(in_stock=True).all()
@@ -232,7 +242,10 @@ def initialize_webpages(url, console):
         # check if a previously tracked game is back in stock
         for game in updated_available_games:
             if game not in available_games and game in all_games:
-                send_telegram_message(game.title, game.price, game.url, console, price_change=False)
+                print(list_of_price_changes)
+                print(game.title)
+                if game.title not in list_of_price_changes:
+                    send_telegram_message(game.title, game.price, game.url, console, new_game=False, price_change=False, back_in_stock=True)
         # set availability to false if it is out of stock
         for game in all_games:
             if game not in in_stock and game in updated_available_games:
@@ -242,6 +255,8 @@ def initialize_webpages(url, console):
 
     else:
         print("uh oh")
+    if new_game | price_change | back_in_stock:
+        send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
     print("moving on to next console...")
 
 
@@ -255,7 +270,7 @@ def check_price():
     pass
 
 
-def send_telegram_message(title, price, url, console, price_change):
+def send_telegram_message(title, price, url, console, new_game, price_change, back_in_stock):
     print("sending message...")
     ps_bot_token = os.environ.get("PS_TOKEN")
     ps_bot_chat_id = os.environ.get("CHAT_ID")
@@ -291,9 +306,10 @@ def send_telegram_message(title, price, url, console, price_change):
 
     bot = telegram.Bot(token)
 
-    if price_change:
-        message = f"<b>Price Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title} has had a price change.  Its price is now ${price}</a>\n\n<a href='{section_url}'>Or, click here for all {console} deals</a>\n<a href='{warehouse_deals_url}'>Check out our Website!</a>"
+    if new_game:
+        message = f"<b>New Game Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
+    elif back_in_stock:
+        message = f"<b>Back in Stock Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is back in stock for ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
     else:
-        message = f"<b>Price Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title} is back in stock for ${price}</a>\n\n<a href='{section_url}'>Or, click here for all {console} deals</a>\n<a href='{warehouse_deals_url}'>Check out our Website!</a>"
-
+        message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
     bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
