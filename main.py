@@ -9,6 +9,11 @@ from sqlalchemy import desc
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
+from flask_ckeditor import CKEditorField, CKEditor
+
 PS4_URL = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A7089437011%2Cn%3A6458584011&dc&qid=1613426168&rnid=8929975011&ref=sr_nr_n_2"
 PS5_URL = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A20974860011%2Cn%3A20974876011&dc&qid=1614274309&rnid=8929975011&ref=sr_nr_n_2"
 SWITCH = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A16329248011%2Cn%3A16329255011&dc&qid=1621288946&rnid=8929975011&ref=sr_nr_n_3"
@@ -17,6 +22,8 @@ XBOX_SERIES = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A892997
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+ckeditor = CKEditor(app)
+
 Bootstrap(app)
 
 # connect to database
@@ -28,6 +35,13 @@ db = SQLAlchemy(app)
 
 email = os.environ.get("EMAIL")
 password = os.environ.get("PASSWORD")
+
+
+class ContactForm(FlaskForm):
+    name = StringField("Name", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired()])
+    message = CKEditorField("Your Message", validators=[DataRequired()])
+    submit = SubmitField("Send Message")
 
 
 def checker_thread():
@@ -70,16 +84,35 @@ def help():
 
 @app.route('/contact', methods=["GET", "POST"])
 def contact():
+    form = ContactForm()
     alert = False
-    if request.method == "POST":
+    # if request.method == "POST":
+    #     print("Trying to send an email...")
+    #     data = request.form
+    #     print(data)
+    #     print(data['name'])
+    #     print(data['email'])
+    #     print(data['message'])
+    #     with smtplib.SMTP("smtp.gmail.com", 587) as connection:
+    #         connection.starttls()
+    #         connection.login(user=email, password=password)
+    #         connection.sendmail(from_addr=email, to_addrs="chris.oreilly97@gmail.com", msg=f"Subject:New Message for Warehouse Deals\n\nName: {data['name']}\nEmail: {data['email']}\nMessage: {data['message']}")
+    #     alert = True
+
+    if form.validate_on_submit():
         print("Trying to send an email...")
-        data = request.form
+        name = request.form.get("name")
+        contact_email = request.form.get("email")
+        message = request.form.get("message")
+        print(name)
+        print(contact_email)
+        print(message)
         with smtplib.SMTP("smtp.gmail.com", 587) as connection:
             connection.starttls()
             connection.login(user=email, password=password)
-            connection.sendmail(from_addr=email, to_addrs="chris.oreilly97@gmail.com", msg=f"Subject:New Message for Warehouse Deals\n\nName: {data['name']}\nEmail: {data['email']}\nMessage: {data['message']}")
-        alert = True
-    return render_template('contact.html', alert=alert)
+            connection.sendmail(from_addr=email, to_addrs="chris.oreilly97@gmail.com", msg=f"Subject:New Message for Warehouse Deals\n\nName: {name}\nEmail: {contact_email}\nMessage: {message}")
+
+    return render_template('contact.html', alert=alert, form=form)
 
 
 @app.route('/ps4')
