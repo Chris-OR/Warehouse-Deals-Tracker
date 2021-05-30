@@ -1,6 +1,9 @@
 import game_checker as gc
 import threading
 import os
+
+import email_validator
+
 import requests
 import time
 import smtplib
@@ -11,8 +14,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Email
 from flask_ckeditor import CKEditorField, CKEditor
+from wtforms.fields.html5 import EmailField
+
 
 PS4_URL = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A7089437011%2Cn%3A6458584011&dc&qid=1613426168&rnid=8929975011&ref=sr_nr_n_2"
 PS5_URL = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A20974860011%2Cn%3A20974876011&dc&qid=1614274309&rnid=8929975011&ref=sr_nr_n_2"
@@ -39,7 +44,7 @@ password = os.environ.get("PASSWORD")
 
 class ContactForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
-    email = StringField("Email", validators=[DataRequired()])
+    email = EmailField("Email", validators=[DataRequired(), Email()])
     message = CKEditorField("Your Message", validators=[DataRequired()])
     submit = SubmitField("Send Message")
 
@@ -111,7 +116,7 @@ def contact():
             connection.starttls()
             connection.login(user=email, password=password)
             connection.sendmail(from_addr=email, to_addrs="chris.oreilly97@gmail.com", msg=f"Subject:New Message for Warehouse Deals\n\nName: {name}\nEmail: {contact_email}\nMessage: {message}")
-
+        alert = True
     return render_template('contact.html', alert=alert, form=form)
 
 

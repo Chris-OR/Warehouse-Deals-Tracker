@@ -266,3 +266,11 @@ body {
 .donate-button {
     padding-top: 0.5%;
 }
+
+#submit {
+     background-color: #c06014;
+}
+
+#submit:hover {
+    background-color: #df6f17;
+}
