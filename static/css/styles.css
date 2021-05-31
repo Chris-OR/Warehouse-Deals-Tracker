@@ -269,8 +269,10 @@ body {
 
 #submit {
      background-color: #c06014;
+     color: black;
 }
 
 #submit:hover {
     background-color: #df6f17;
+    color: black;
 }
