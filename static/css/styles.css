@@ -276,3 +276,7 @@ body {
     background-color: #df6f17;
     color: black;
 }
+
+.disabled {
+    margin: 0;
+}
