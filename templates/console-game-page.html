@@ -37,7 +37,7 @@
 
 <br>
 
-<h1 class="header">All Games:</h1>
+<h1 class="header" id="all-games">All Games:</h1>
 
 <div class="dropdown sort-dropdown">
   <button class="btn send-button dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -48,12 +48,12 @@
     {% endif %}
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='oldest') }}">Oldest First</a>
-    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='newest') }}">Newest First</a>
-    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='cheapest') }}">Price: Low to High</a>
-    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='priciest') }}">Price: High to Low</a>
-    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='rarest') }}">Rarity: Most to Least</a>
-    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='most-common') }}">Rarity: Least to Most</a>
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='oldest', _anchor='all-games') }}">Oldest First</a>
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='newest', _anchor='all-games') }}">Newest First</a>
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='cheapest', _anchor='all-games') }}">Price: Low to High</a>
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='priciest', _anchor='all-games') }}">Price: High to Low</a>
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='rarest', _anchor='all-games') }}">Rarity: Most to Least</a>
+    <a class="dropdown-item" href="{{ url_for(sorter, sort_method='most-common', _anchor='all-games') }}">Rarity: Least to Most</a>
   </div>
 </div>
 
