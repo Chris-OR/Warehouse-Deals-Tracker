@@ -117,6 +117,7 @@ def initialize_webpages(url, console):
 
     game_link = webpage_soup.find_all(name="a", class_="a-link-normal s-no-outline")
     game_link = ["https://amazon.ca" + link.get("href") for link in game_link]
+    game_link = [link + "&_encoding=UTF8&tag=awdeals04-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641" for link in game_link]
 
     game_image = webpage_soup.find_all(name="img", class_="s-image")
     game_image = [link.get("src") for link in game_image]
@@ -205,6 +206,7 @@ def initialize_webpages(url, console):
             game.available = True
             game.in_stock = True
             game.rarity += 1
+            game.url = game_link[i]
             game.price = game_price[i]  # delete this line if you can get around the captcha on the price check
             tracked_dates = game.date.split(",")
             tracked_dates = [dates.split(":") for dates in tracked_dates]

@@ -4,6 +4,7 @@ import os
 
 import email_validator
 
+
 import requests
 import time
 import smtplib
@@ -91,18 +92,6 @@ def help():
 def contact():
     form = ContactForm()
     alert = False
-    # if request.method == "POST":
-    #     print("Trying to send an email...")
-    #     data = request.form
-    #     print(data)
-    #     print(data['name'])
-    #     print(data['email'])
-    #     print(data['message'])
-    #     with smtplib.SMTP("smtp.gmail.com", 587) as connection:
-    #         connection.starttls()
-    #         connection.login(user=email, password=password)
-    #         connection.sendmail(from_addr=email, to_addrs="chris.oreilly97@gmail.com", msg=f"Subject:New Message for Warehouse Deals\n\nName: {data['name']}\nEmail: {data['email']}\nMessage: {data['message']}")
-    #     alert = True
 
     if form.validate_on_submit():
         print("Trying to send an email...")
