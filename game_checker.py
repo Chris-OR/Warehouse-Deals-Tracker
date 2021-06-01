@@ -283,16 +283,14 @@ def check_regex(title, game):
             db.session.delete(game)
             db.session.commit()
 
-
         # -- delete this once database is cleaned -- #
-        game_list = Games.query.filter_by(system="PlayStation 4").all()
-        for game in game_list:
-            mo = game_regex.search(game.title.lower())
-            if mo:
-                print(f"We have found a match in the database.  We will now remove {title} from the database")
-                db.session.delete(game)
-                db.session.commit()
-
+        # game_list = Games.query.filter_by(system="PlayStation 4").all()
+        # for game in game_list:
+        #     mo = game_regex.search(game.title.lower())
+        #     if mo:
+        #         print(f"We have found a match in the database.  We will now remove {title} from the database")
+        #         db.session.delete(game)
+        #         db.session.commit()
 
         return False
     else:
