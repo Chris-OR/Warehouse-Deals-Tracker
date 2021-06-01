@@ -1,6 +1,6 @@
 {% include "header.html" %}
 {% if length > 0: %}
-<a class="header-link" href="{{ url }}" target="_blank"><h1 class="header">Active Games:</h1></a>
+<a class="header-link" href="{{ url }}" target="_blank"><h1 class="header">Active {{ console }} Games:</h1></a>
 
 <div class="game-row row">
 
@@ -18,7 +18,7 @@
           <h7 class="card-text">${{ game.price }}</h7>
           </a>
           <hr>
-<p class="price-data">Avg. Price: ${{ game.average }}, High: ${{ game.high }}, Low: ${{ game.low }}</p>
+<p class="price-data">Avg. Price: ${{ game.average }} | High: ${{ game.high }} | Low: ${{ game.low }}</p>
         </div>
       </div>
       <!--        <div class="card-footer">-->
@@ -37,7 +37,7 @@
 
 <br>
 
-<h1 class="header" id="all-games">All Games:</h1>
+<h1 class="header" id="all-games">All {{ console }} Games:</h1>
 
 <div class="dropdown sort-dropdown">
   <button class="btn send-button dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -78,7 +78,7 @@
           {% endif %}
           </a>
           <hr>
-          <p class="price-data">Avg. Price: ${{ game.average }}, High: ${{ game.high }}, Low: ${{ game.low }}</p>
+          <p class="price-data">Avg. Price: ${{ game.average }} | High: ${{ game.high }} | Low: ${{ game.low }}</p>
 
         </div>
       </div>

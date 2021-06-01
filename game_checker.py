@@ -1,6 +1,7 @@
 import requests
 import telegram
 import os
+import re
 from flask import Flask
 
 from proxy_requests import ProxyRequests
@@ -142,104 +143,105 @@ def initialize_webpages(url, console):
             date = date.strftime("%b %d %Y")
             print(game_titles[i])
             game = Games.query.filter_by(title=game_titles[i]).first()
-            # there is a new game not yet added to the database
-            if not game:
-                # check price of all new games to make sure it is good
-                # checked_price = check_price()
-                """ uncomment me in a few days
-                response = requests.get(game_link[i], headers=headers)
-                response.raise_for_status()
-                webpage = response.text
-                webpage_soup = BeautifulSoup(webpage, "html.parser")
-                try:
-                    checked_price = webpage_soup.find(name="span", class_="a-size-base a-color-price offer-price a-text-normal").getText().replace("$", "")
-
-                except AttributeError:
-                    checked_price = game_price[i]
-                    print("tried to scan but was rejected")
-                
-                uncomment me in a few days """
-
-                checked_price = game_price[i]  # delete this when you uncomment above
-
-                new_game = Games(title=game_titles[i],
-                                 price=checked_price,
-                                 system=console,
-                                 url=game_link[i],
-                                 img_url=game_image[i],
-                                 in_stock=True,
-                                 date=f"{date}: {checked_price},",
-                                 rarity=0,
-                                 available=True,
-                                 low=checked_price,
-                                 high=checked_price,
-                                 average=checked_price,
-                                 )
-                db.session.add(new_game)
-                db.session.commit()
-                print(f"added {game_titles[i]} to the database")
-                # send_telegram_message(game_titles[i], checked_price, game_link[i], console, price_change=False)
-                new_game = True
-            # check for price changes
-            """ uncomment me in a few days
-            try:
-                if game.price != float(game_price[i]):
-                    print(f"checking for new price on {game_titles[i]}")
+            if check_regex(game_titles[i], game):
+                # there is a new game not yet added to the database
+                if not game:
+                    # check price of all new games to make sure it is good
+                    # checked_price = check_price()
+                    """ uncomment me in a few days
                     response = requests.get(game_link[i], headers=headers)
                     response.raise_for_status()
                     webpage = response.text
                     webpage_soup = BeautifulSoup(webpage, "html.parser")
                     try:
-                        checked_price = webpage_soup.find(name="span",
-                                                          class_="a-size-base a-color-price offer-price a-text-normal").getText().replace(
-                            "$", "")
-                        game.price = checked_price
-                        print(f"changed {game.title}'s price to {game.price}")
-                        db.session.commit()
+                        checked_price = webpage_soup.find(name="span", class_="a-size-base a-color-price offer-price a-text-normal").getText().replace("$", "")
+    
                     except AttributeError:
-                        print(f"tried to check {game.title}'s price but was rejected")
-            except AttributeError:
-                pass
-            uncomment me in a few days """
+                        checked_price = game_price[i]
+                        print("tried to scan but was rejected")
+                    
+                    uncomment me in a few days """
 
-            game = Games.query.filter_by(title=game_titles[i]).first()
-            game.available = True
-            game.in_stock = True
-            game.rarity += 1
-            game.url = game_link[i]
-            game.price = game_price[i]  # delete this line if you can get around the captcha on the price check
-            tracked_dates = game.date.split(",")
-            tracked_dates = [dates.split(":") for dates in tracked_dates]
-            tracked_prices = game.date.split(",")
-            # print(tracked_prices)
-            last_tracked = tracked_prices[-2]
-            # print(last_tracked)
-            last_tracked_split = last_tracked.split(": ")
-            last_price = last_tracked_split[1]
+                    checked_price = game_price[i]  # delete this when you uncomment above
 
-            # print(last_price)
-
-            tracked = False
-            for tracked_date in tracked_dates:
-                if date in tracked_date and game.price == last_price:
-                    # print(f"{game.title} has a price of ${game.price} which matches its last price of ${last_price}")
-                    tracked = True
-                    break
-            if not tracked:
-                if game.in_stock:
-                    if game.price != last_price:
-                        print(f"we found a new price for {game.title}.  The old price was ${last_price}.  The new price is ${game.price}")
-                        # send_telegram_message(game.title, game.price, game.url, console, price_change=True)
-                        price_change = True
-                        list_of_price_changes.append(game.title)
-                    game.date += f"{date}: {game.price},"
+                    new_game = Games(title=game_titles[i],
+                                     price=checked_price,
+                                     system=console,
+                                     url=game_link[i],
+                                     img_url=game_image[i],
+                                     in_stock=True,
+                                     date=f"{date}: {checked_price},",
+                                     rarity=0,
+                                     available=True,
+                                     low=checked_price,
+                                     high=checked_price,
+                                     average=checked_price,
+                                     )
+                    db.session.add(new_game)
                     db.session.commit()
-                # else:
-                #     game.date += f"{date}: 0,"
-            db.session.commit()
+                    print(f"added {game_titles[i]} to the database")
+                    # send_telegram_message(game_titles[i], checked_price, game_link[i], console, price_change=False)
+                    new_game = True
+                # check for price changes
+                """ uncomment me in a few days
+                try:
+                    if game.price != float(game_price[i]):
+                        print(f"checking for new price on {game_titles[i]}")
+                        response = requests.get(game_link[i], headers=headers)
+                        response.raise_for_status()
+                        webpage = response.text
+                        webpage_soup = BeautifulSoup(webpage, "html.parser")
+                        try:
+                            checked_price = webpage_soup.find(name="span",
+                                                              class_="a-size-base a-color-price offer-price a-text-normal").getText().replace(
+                                "$", "")
+                            game.price = checked_price
+                            print(f"changed {game.title}'s price to {game.price}")
+                            db.session.commit()
+                        except AttributeError:
+                            print(f"tried to check {game.title}'s price but was rejected")
+                except AttributeError:
+                    pass
+                uncomment me in a few days """
 
-            if new_game | price_change | back_in_stock:
-                send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
+                game = Games.query.filter_by(title=game_titles[i]).first()
+                game.available = True
+                game.in_stock = True
+                game.rarity += 1
+                game.url = game_link[i]
+                game.price = game_price[i]  # delete this line if you can get around the captcha on the price check
+                tracked_dates = game.date.split(",")
+                tracked_dates = [dates.split(":") for dates in tracked_dates]
+                tracked_prices = game.date.split(",")
+                # print(tracked_prices)
+                last_tracked = tracked_prices[-2]
+                # print(last_tracked)
+                last_tracked_split = last_tracked.split(": ")
+                last_price = last_tracked_split[1]
+
+                # print(last_price)
+
+                tracked = False
+                for tracked_date in tracked_dates:
+                    if date in tracked_date and game.price == last_price:
+                        # print(f"{game.title} has a price of ${game.price} which matches its last price of ${last_price}")
+                        tracked = True
+                        break
+                if not tracked:
+                    if game.in_stock:
+                        if game.price != last_price:
+                            print(f"we found a new price for {game.title}.  The old price was ${last_price}.  The new price is ${game.price}")
+                            # send_telegram_message(game.title, game.price, game.url, console, price_change=True)
+                            price_change = True
+                            list_of_price_changes.append(game.title)
+                        game.date += f"{date}: {game.price},"
+                        db.session.commit()
+                    # else:
+                    #     game.date += f"{date}: 0,"
+                db.session.commit()
+
+                if new_game | price_change | back_in_stock:
+                    send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
 
         updated_available_games = Games.query.filter_by(available=True).all()
         in_stock = Games.query.filter_by(in_stock=True).all()
@@ -269,6 +271,32 @@ def clear_stock(console):
     game_list = Games.query.filter_by(system=console).all()
     for game in game_list:
         game.in_stock = False
+
+
+def check_regex(title, game):
+    game_regex = re.compile(r'bluetooth')
+    mo = game_regex.search(title.lower())
+    if mo:
+        print(f"{title} has been regexxed.  We will skip its rotation")
+        if game:
+            print(f"We have found a match in the database.  We will now remove {title} from the database")
+            db.session.delete(game)
+            db.session.commit()
+
+
+        # -- delete this once database is cleaned -- #
+        game_list = Games.query.filter_by(system="Nintendo Switch").all()
+        for game in game_list:
+            mo = game_regex.search(game.title.lower())
+            if mo:
+                print(f"We have found a match in the database.  We will now remove {title} from the database")
+                db.session.delete(game)
+                db.session.commit()
+
+
+        return False
+    else:
+        return True
 
 
 def check_price():
