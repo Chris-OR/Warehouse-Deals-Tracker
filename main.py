@@ -13,6 +13,9 @@ from sqlalchemy import desc
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Email
@@ -90,7 +93,7 @@ def help():
 
 
 @app.route('/contact', methods=["GET", "POST"])
-def contact():
+def contact(*args):
     form = ContactForm()
     alert = False
 
@@ -99,14 +102,37 @@ def contact():
         name = request.form.get("name")
         contact_email = request.form.get("email")
         message = request.form.get("message")
-        print(name)
-        print(contact_email)
-        print(message)
+        # print(name)
+        # print(contact_email)
+        # print(message)
         with smtplib.SMTP("smtp.gmail.com", 587) as connection:
             connection.starttls()
+            msg = MIMEMultipart('alternative')
+            msg['Subject'] = "New Message for Warehouse Deals"
+            msg['From'] = email
+            msg['To'] = "chris.oreilly97@gmail.com"
             connection.login(user=email, password=password)
-            connection.sendmail(from_addr=email, to_addrs="chris.oreilly97@gmail.com", msg=f"Subject:New Message for Warehouse Deals\n\nName: {name}\nEmail: {contact_email}\nMessage: {message}")
+            html = f"""\
+            <html>
+              <head></head>
+              <body>
+                <p>New message from {name}:<br>
+                   {message}
+                   <br>
+                   Sender's email: {contact_email}
+                </p>
+              </body>
+            </html>
+            """
+            message_html = MIMEText(html, 'html')
+            msg.attach(message_html)
+            connection.sendmail(from_addr=email, to_addrs="chris.oreilly97@gmail.com", msg=msg.as_string())
+            # connection.sendmail(from_addr=email, to_addrs="chris.oreilly97@gmail.com", msg=f"Subject:New Message for Warehouse Deals\n\nName: {name}\nEmail: {contact_email}\nMessage: {message}")
         alert = True
+        form.name.data = ""
+        form.email.data = ""
+        form.message.data = ""
+        return render_template('contact.html', alert=alert, form=form)
     return render_template('contact.html', alert=alert, form=form)
 
 
