@@ -274,7 +274,7 @@ def clear_stock(console):
 
 
 def check_regex(title, game):
-    game_regex = re.compile(r'bluetooth')
+    game_regex = re.compile(r'bluetooth|playstation 3')
     mo = game_regex.search(title.lower())
     if mo:
         print(f"{title} has been regexxed.  We will skip its rotation")
@@ -285,7 +285,7 @@ def check_regex(title, game):
 
 
         # -- delete this once database is cleaned -- #
-        game_list = Games.query.filter_by(system="Nintendo Switch").all()
+        game_list = Games.query.filter_by(system="PlayStation 4").all()
         for game in game_list:
             mo = game_regex.search(game.title.lower())
             if mo:
