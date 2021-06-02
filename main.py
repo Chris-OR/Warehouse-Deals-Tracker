@@ -272,7 +272,7 @@ def get_date_list(game):
     return dates
 
 
-threading.Thread(target=checker_thread, daemon=True).start()
+# threading.Thread(target=checker_thread, daemon=True).start()
 
 
 if __name__ == "__main__":

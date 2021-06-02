@@ -5,22 +5,25 @@
 <div class="game-row row">
 
   {% for game in in_stock: %}
-  <div class="col-xl-3 col-lg-4 col-md-6 d-flex align-items-stretch">
+  <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 d-flex align-items-stretch">
     <div class="card">
       <div class="card-horizontal">
-        <div class="img-square-wrapper">
+        <div class="game-img-square-wrapper">
           <a target="_blank" class="help-link" href="{{ game.url }}">
             <img class="card-image-game img-fluid" src="{{ game.img_url }}" alt="Card image cap">
         </div>
         <br>
-        <div class="card-body">
+        <div class="card-body game-card">
           <h6 class="card-title">{{ game.title }}</h6>
           <h7 class="card-text">${{ game.price }}</h7>
           </a>
-          <hr>
-<p class="price-data">Avg. Price: ${{ game.average }} | High: ${{ game.high }} | Low: ${{ game.low }}</p>
+
         </div>
+
+
       </div>
+      <hr>
+        <p class="date-last-tracked">Avg. Price: ${{ game.average }} | High: ${{ game.high }} | Low: ${{ game.low }}</p>
       <!--        <div class="card-footer">-->
       <!--            <small class="text-muted">Last updated 3 mins ago</small>-->
       <!--        </div>-->
@@ -60,14 +63,14 @@
 <div class="game-row row">
 
   {% for game in all_games: %}
-  <div class="col-xl-3 col-lg-4 col-md-6 d-flex align-items-stretch">
+  <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 d-flex align-items-stretch">
     <div class="card">
       <div class="card-horizontal">
-        <div class="img-square-wrapper">
+        <div class="game-img-square-wrapper">
           <a target="_blank" class="help-link" href="{{ game.url }}">
             <img class="card-image-game img-fluid" src="{{ game.img_url }}" alt="Card image cap">
         </div>
-        <div class="card-body">
+        <div class="card-body game-card">
 
           {% if game.in_stock: %}
           <h6 class="card-title">{{ game.title }}</h6>
@@ -77,14 +80,18 @@
           <h7 class="card-text">${{ game.price }} 🚫 out of stock</h7>
           {% endif %}
           </a>
-          <hr>
-          <p class="price-data">Avg. Price: ${{ game.average }} | High: ${{ game.high }} | Low: ${{ game.low }}</p>
+
+
 
         </div>
       </div>
       <!--        <div class="card-footer">-->
       <!--            <small class="text-muted">Last updated 3 mins ago</small>-->
       <!--        </div>-->
+      <hr>
+      <p class="date-last-tracked">Avg. Price: ${{ game.average }} | High: ${{ game.high }} | Low: ${{ game.low }}
+        <br>
+        Last Tracked: {{ game.date.split(',')[-2].split(':')[0] }}</p>
     </div>
   </div>
 

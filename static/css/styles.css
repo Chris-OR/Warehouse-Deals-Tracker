@@ -189,7 +189,7 @@ body {
 }
 
 .card-image-game {
-    padding: 0 1rem 1rem 0;
+    padding: 0 1rem 0 0;
 }
 
 .card-body {
@@ -279,4 +279,20 @@ body {
 
 .disabled {
     margin: 0;
+}
+
+.date-last-tracked {
+    padding: 0;
+    margin-bottom: 5%;
+    color: #C0C0C0;
+    font-size: 12px;
+    line-height: 1.75;
+}
+
+.game-img-square-wrapper {
+    width: 50%;
+}
+
+.game-card {
+    width: 50%;
 }
