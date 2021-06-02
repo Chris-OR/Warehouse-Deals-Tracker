@@ -259,11 +259,11 @@ def initialize_webpages(url, console):
                 print(f"{game.title} is now unavailable")
                 game.available = False
                 db.session.commit()
-
+        if new_game | price_change | back_in_stock:
+            send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
     else:
         print("uh oh")
-    if new_game | price_change | back_in_stock:
-        send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
+
     print("moving on to next console...")
 
 
@@ -302,45 +302,52 @@ def check_price():
 
 
 def send_telegram_message(title, price, url, console, new_game, price_change, back_in_stock):
-    print("sending message...")
-    ps_bot_token = os.environ.get("PS_TOKEN")
-    ps_bot_chat_id = os.environ.get("CHAT_ID")
+    console_list = Games.query.filter_by(system=console).all()
+    title_list = [game.title for game in console_list]
+    if title in title_list:
+        print("sending message...")
+        ps_bot_token = os.environ.get("PS_TOKEN")
+        ps_bot_chat_id = os.environ.get("CHAT_ID")
 
-    xbox_bot_token = os.environ.get("XBOX_TOKEN")
-    xbox_bot_chat_id = os.environ.get("CHAT_ID")
+        xbox_bot_token = os.environ.get("XBOX_TOKEN")
+        xbox_bot_chat_id = os.environ.get("CHAT_ID")
 
-    switch_bot_token = os.environ.get("SWITCH_TOKEN")
-    switch_bot_chat_id = os.environ.get("CHAT_ID")
+        switch_bot_token = os.environ.get("SWITCH_TOKEN")
+        switch_bot_chat_id = os.environ.get("CHAT_ID")
 
-    if console == "PlayStation 4":
-        console = "PS4"
-        section_url = PS4_URL
-        token = ps_bot_token
-        chat_id = ps_bot_chat_id
-    elif console == "PlayStation 5":
-        console = "PS5"
-        section_url = PS5_URL
-        token = ps_bot_token
-        chat_id = ps_bot_chat_id
-    elif console == "Xbox One":
-        section_url = XBOX_ONE
-        token = xbox_bot_token
-        chat_id = xbox_bot_chat_id
-    elif console == "Xbox Series X":
-        section_url = XBOX_SERIES
-        token = xbox_bot_token
-        chat_id = xbox_bot_chat_id
-    elif console == "Nintendo Switch":
-        section_url = SWITCH
-        token = switch_bot_token
-        chat_id = switch_bot_chat_id
+        if console == "PlayStation 4":
+            console = "PS4"
+            section_url = PS4_URL
+            token = ps_bot_token
+            chat_id = ps_bot_chat_id
+        elif console == "PlayStation 5":
+            console = "PS5"
+            section_url = PS5_URL
+            token = ps_bot_token
+            chat_id = ps_bot_chat_id
+        elif console == "Xbox One":
+            section_url = XBOX_ONE
+            token = xbox_bot_token
+            chat_id = xbox_bot_chat_id
+        elif console == "Xbox Series X":
+            section_url = XBOX_SERIES
+            token = xbox_bot_token
+            chat_id = xbox_bot_chat_id
+        elif console == "Nintendo Switch":
+            section_url = SWITCH
+            token = switch_bot_token
+            chat_id = switch_bot_chat_id
 
-    bot = telegram.Bot(token)
+        bot = telegram.Bot(token)
 
-    if new_game:
-        message = f"<b>New Game Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
-    elif back_in_stock:
-        message = f"<b>Back in Stock Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is back in stock for ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
+        if new_game:
+            message = f"<b>New Game Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
+        elif back_in_stock:
+            message = f"<b>Back in Stock Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is back in stock for ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
+        else:
+            message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
+        bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
+        print(f"Sent message.  We tracked {title} for {console} at {price}")
     else:
-        message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
-    bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
+        print(f"stopped {title} being sent as a message to {console}")
+
