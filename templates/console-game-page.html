@@ -1,6 +1,6 @@
 {% include "header.html" %}
 {% if length > 0: %}
-<a class="header-link" href="{{ url }}" target="_blank"><h1 class="header">Active {{ console }} Games:</h1></a>
+<a class="header-link" href="{{ url }}" target="_blank"><h3 class="header">Active {{ console }} Games:</h3></a>
 
 <div class="game-row row">
 
@@ -22,7 +22,7 @@
 
 
       </div>
-      <hr>
+      <hr class="game-hr">
         <p class="date-last-tracked">Avg. Price: ${{ game.average }} | High: ${{ game.high }} | Low: ${{ game.low }}</p>
       <!--        <div class="card-footer">-->
       <!--            <small class="text-muted">Last updated 3 mins ago</small>-->
@@ -40,7 +40,7 @@
 
 <br>
 
-<h1 class="header" id="all-games">All {{ console }} Games:</h1>
+<h3 class="header" id="all-games">All {{ console }} Games:</h3>
 
 <div class="dropdown sort-dropdown">
   <button class="btn send-button dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -88,7 +88,7 @@
       <!--        <div class="card-footer">-->
       <!--            <small class="text-muted">Last updated 3 mins ago</small>-->
       <!--        </div>-->
-      <hr>
+      <hr class="game-hr">
       <p class="date-last-tracked">Avg. Price: ${{ game.average }} | High: ${{ game.high }} | Low: ${{ game.low }}
         <br>
         Last Tracked: {{ game.date.split(',')[-2].split(':')[0] }}</p>

@@ -113,7 +113,8 @@ body {
 
 .header {
     text-align: left;
-    margin-left: 2%;
+    margin-left: 1%;
+    padding-left: 1rem;
 
 }
 
@@ -139,7 +140,8 @@ body {
 
 .sort-dropdown {
     text-align: left;
-    margin: 1rem 0 0 2%;
+    margin: 1% 0 0 1%;
+    padding-left: 1rem;
 }
 
 .carousel-image {
@@ -284,7 +286,7 @@ body {
 .date-last-tracked {
     padding: 0;
     margin-bottom: 5%;
-    color: #C0C0C0;
+    color: #ffffff80;
     font-size: 12px;
     line-height: 1.75;
 }
@@ -295,4 +297,9 @@ body {
 
 .game-card {
     width: 50%;
+}
+
+.game-hr {
+    margin: 0.75rem 0 0.5rem;
+    border-color: #ffffff80;
 }
