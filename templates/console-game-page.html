@@ -89,7 +89,7 @@
       <!--            <small class="text-muted">Last updated 3 mins ago</small>-->
       <!--        </div>-->
       <hr class="game-hr">
-      <p class="date-last-tracked">Avg. Price: ${{ game.average }} | High: ${{ game.high }} | Low: ${{ game.low }}
+      <p class="date-last-tracked">Avg. Price: ${{ game.average|round(2) }} | High: ${{ game.high|round(2) }} | Low: ${{ game.low|round(2) }}
         <br>
         Last Tracked: {{ game.date.split(',')[-2].split(':')[0] }}</p>
     </div>
