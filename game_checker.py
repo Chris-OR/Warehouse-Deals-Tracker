@@ -341,11 +341,11 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
         bot = telegram.Bot(token)
 
         if new_game:
-            message = f"<b>New Game Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
+            message = f"<b>New Game Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
         elif back_in_stock:
-            message = f"<b>Back in Stock Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is back in stock for ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
+            message = f"<b>Back in Stock Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is back in stock for ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
         else:
-            message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>Website!</a>"
+            message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
         print(f"Sent message.  We tracked {title} for {console} at {price}")
     else:

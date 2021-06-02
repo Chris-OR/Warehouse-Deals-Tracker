@@ -23,7 +23,7 @@
 
       </div>
       <hr class="game-hr">
-        <p class="date-last-tracked">Avg. Price: ${{ game.average }} | High: ${{ game.high }} | Low: ${{ game.low }}</p>
+        <p class="date-last-tracked">Avg. Price: ${{ game.average|round(2) }} | High: ${{ game.high|round(2) }} | Low: ${{ game.low|round(2) }}</p>
       <!--        <div class="card-footer">-->
       <!--            <small class="text-muted">Last updated 3 mins ago</small>-->
       <!--        </div>-->
