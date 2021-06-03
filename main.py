@@ -4,7 +4,6 @@ import os
 
 import email_validator
 
-
 import requests
 import time
 import smtplib
