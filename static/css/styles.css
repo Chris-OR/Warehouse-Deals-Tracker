@@ -303,3 +303,7 @@ body {
     margin: 0.75rem 0 0.5rem;
     border-color: #ffffff80;
 }
+
+.bot-links {
+    margin-top: 0;
+}
