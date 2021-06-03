@@ -2,6 +2,7 @@ body {
     color: #f3f4ed;
     background-color: #424642;
     text-align: center;
+    font-family: 'Roboto', sans-serif;
 }
 
 .navbar {
@@ -9,6 +10,10 @@ body {
     color:  #f3f4ed;
     padding: 1rem 2rem;
     margin: 0 0 2rem;
+}
+
+.navbar-collapse {
+    font-weight: 300;
 }
 
 #xbox-dropdown {
@@ -56,6 +61,7 @@ body {
 .faq {
     text-align: left;
     padding: 0 3%;
+    text-weight: 300;
 }
 
 .android-download {
