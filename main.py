@@ -8,6 +8,7 @@ import requests
 import time
 import smtplib
 from flask import Flask, render_template, request
+from flask_sitemap import Sitemap
 from sqlalchemy import desc
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -40,6 +41,7 @@ series_x_no_referral = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n
 # series x console = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A20974877011%2Cn%3A20974892011&dc&qid=1623869878&rnid=8929975011&ref=sr_nr_n_2"
 
 app = Flask(__name__)
+ext = Sitemap(app=app)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
 
@@ -279,11 +281,6 @@ def get_date_list(game):
     for i in range(len(date_list)):
         dates.append(date_list[i][0])
     return dates
-
-
-@app.route("/sitemap.xml")
-def sitemap():
-    return render_template("sitemap.xml")
 
 
 threading.Thread(target=checker_thread, daemon=True).start()
