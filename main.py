@@ -281,6 +281,11 @@ def get_date_list(game):
     return dates
 
 
+@app.route("/sitemap.xml")
+def sitemap():
+    return render_template("sitemap.xml")
+
+
 threading.Thread(target=checker_thread, daemon=True).start()
 
 
