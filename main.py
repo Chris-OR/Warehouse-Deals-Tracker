@@ -34,6 +34,10 @@ switch_no_referral = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3
 xbox_one_no_referral = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A7089610011%2Cn%3A6920196011&dc&qid=1621288993&rnid=8929975011&ref=sr_nr_n_2"
 series_x_no_referral = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A20974877011%2Cn%3A20974893011&s=price-desc-rank&dc&qid=1621898797&rnid=8929975011&ref=sr_nr_n_3"
 
+# switch console = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A16329248011%2Cn%3A16329250011&dc&qid=1623869738&rnid=8929975011&ref=sr_nr_n_2"
+# ps4 console = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A20974860011%2Cn%3A20974875011&dc&qid=1623869826&rnid=8929975011&ref=sr_nr_n_2"
+    # - will need to regex some stuff out of that (stand cooling fan)
+# series x console = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A20974877011%2Cn%3A20974892011&dc&qid=1623869878&rnid=8929975011&ref=sr_nr_n_2"
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
