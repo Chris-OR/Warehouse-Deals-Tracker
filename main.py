@@ -85,6 +85,11 @@ def checker_thread():
         print("\nDone with this round\n")
 
 
+@ext.register_generator
+def index():
+    yield 'index', {}
+
+
 @app.route('/')
 def home():
     # ps4_games = gc.Games.query.filter_by(system="PlayStation 4", in_stock=True).all()
