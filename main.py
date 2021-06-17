@@ -87,7 +87,7 @@ def checker_thread():
 
 @ext.register_generator
 def index():
-    yield 'index', {}
+    yield 'home', {}
 
 
 @app.route('/')
