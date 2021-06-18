@@ -7,7 +7,7 @@ import email_validator
 import requests
 import time
 import smtplib
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from flask_sitemap import Sitemap
 from sqlalchemy import desc
 from flask_bootstrap import Bootstrap
@@ -41,7 +41,7 @@ series_x_no_referral = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n
 # series x console = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A20974877011%2Cn%3A20974892011&dc&qid=1623869878&rnid=8929975011&ref=sr_nr_n_2"
 
 app = Flask(__name__)
-ext = Sitemap(app=app)
+# ext = Sitemap(app=app)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
 
@@ -85,9 +85,15 @@ def checker_thread():
         print("\nDone with this round\n")
 
 
-@ext.register_generator
-def index():
-    yield 'home', {}
+# @ext.register_generator
+# def index():
+#     yield 'home', {}
+
+
+# @app.route('/robots.txt')
+@app.route('/sitemap.xml')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 
 @app.route('/')
