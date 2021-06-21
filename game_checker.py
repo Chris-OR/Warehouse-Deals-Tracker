@@ -31,8 +31,6 @@ reddit = praw.Reddit(client_id=client_id,
                      password=password,
                      user_agent=user_agent)
 
-reddit.subreddit("WarehouseConsoleDeals").submit("Test Post", url="https://reddit.com")
-
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36",
     "Accept-Encoding": "gzip,deflate,br",
@@ -357,8 +355,10 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
 
         if new_game:
             message = f"<b>New Game Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
+            reddit.subreddit("WarehouseConsoleDeals").submit(f"{title} is ${price}", url=url)
         elif back_in_stock:
             message = f"<b>Back in Stock Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is back in stock for ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
+            reddit.subreddit("WarehouseConsoleDeals").submit(f"{title} is ${price}", url=url)
         else:
             message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
