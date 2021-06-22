@@ -70,6 +70,7 @@ warehouse_deals_url = "https://warehouse-deals.herokuapp.com/"
 #     high = db.Column(db.DECIMAL(0, 2), nullable=False)
 #     average = db.Column(db.DECIMAL(0, 2), nullable=False)
 
+
 class Games(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250), unique=True, nullable=False)
@@ -86,7 +87,13 @@ class Games(db.Model):
     average = db.Column(db.Numeric(10, 2), nullable=False)
 
 
-# db.create_all()
+class ActivePosts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.String(), nullable=False)
+    title = db.Column(db.String(250), unique=True, nullable=False)
+
+
+db.create_all()
 
 
 def initialize_webpages(url, console):
@@ -272,7 +279,12 @@ def initialize_webpages(url, console):
                 print(f"{game.title} is now unavailable")
                 game.available = False
                 db.session.commit()
-        if new_game | price_change | back_in_stock:
+                post = ActivePosts.query.filter_by(title=game.title).first()
+                post.post_id.reply("spoiler")
+                db.session.dete(post)
+                db.session.commit()
+
+        if new_game | price_change | back_in_stock and game.in_stock:
             send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
     else:
         print("uh oh")
@@ -366,8 +378,11 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
             message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
         post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
-        post.reply("spoiler")
-        print(post)
+        new_post = ActivePosts(
+            post_id=post,
+            title=title,
+        )
+        db.session.commit()
         print(f"Sent message.  We tracked {title} for {console} at {price}")
     else:
         print(f"stopped {title} being sent as a message to {console}")
