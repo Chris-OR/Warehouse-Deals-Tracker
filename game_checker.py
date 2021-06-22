@@ -93,7 +93,7 @@ class ActivePosts(db.Model):
     title = db.Column(db.String(250), unique=True, nullable=False)
 
 
-db.create_all()
+# db.create_all()
 
 
 def initialize_webpages(url, console):
