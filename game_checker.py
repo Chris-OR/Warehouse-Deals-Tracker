@@ -333,35 +333,39 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
             section_url = PS4_URL
             token = ps_bot_token
             chat_id = ps_bot_chat_id
+            flair = "4e5b6756-d373-11eb-9563-0ee70d6a723d"
         elif console == "PlayStation 5":
             console = "PS5"
             section_url = PS5_URL
             token = ps_bot_token
             chat_id = ps_bot_chat_id
+            flair = "71f32bc2-d373-11eb-a352-0ef5d618d05d"
         elif console == "Xbox One":
             section_url = XBOX_ONE
             token = xbox_bot_token
             chat_id = xbox_bot_chat_id
+            flair = "6678027c-d373-11eb-9d99-0e2e2eefa571"
         elif console == "Xbox Series X":
             section_url = XBOX_SERIES
             token = xbox_bot_token
             chat_id = xbox_bot_chat_id
+            flair = "7cb3db06-d373-11eb-a655-0eb11db1fdb5"
         elif console == "Nintendo Switch":
             section_url = SWITCH
             token = switch_bot_token
             chat_id = switch_bot_chat_id
+            flair = "95d720ca-d373-11eb-85bc-0e3981761d6d"
 
         bot = telegram.Bot(token)
 
         if new_game:
             message = f"<b>New Game Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
-            reddit.subreddit("WarehouseConsoleDeals").submit(f"{title} is ${price}", url=url)
         elif back_in_stock:
             message = f"<b>Back in Stock Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is back in stock for ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
-            reddit.subreddit("WarehouseConsoleDeals").submit(f"{title} is ${price}", url=url)
         else:
             message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
+        reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
         print(f"Sent message.  We tracked {title} for {console} at {price}")
     else:
         print(f"stopped {title} being sent as a message to {console}")
