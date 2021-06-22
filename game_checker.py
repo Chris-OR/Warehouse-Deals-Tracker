@@ -366,6 +366,7 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
             message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
         post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
+        post.reply("spoiler")
         print(post)
         print(f"Sent message.  We tracked {title} for {console} at {price}")
     else:
