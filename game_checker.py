@@ -282,16 +282,20 @@ def initialize_webpages(url, console):
                 try:
                     post = ActivePosts.query.filter_by(title=game.title).first()
                     post.post_id.reply("spoiler")
+                    print(f"added spoiler tag to {game.title}'s post")
                     db.session.delete(post)
                     db.session.commit()
                 except:
-                    pass
+                    print(f"we could not find {game.title} in the database")
 
         if new_game | price_change | back_in_stock and game.in_stock:
             send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
     else:
         print("uh oh")
 
+    active_posts = ActivePosts.query.all()
+    for post in active_posts:
+        print(f"{post.title} is currently an active post")
     print("moving on to next console...")
 
 
@@ -382,10 +386,11 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
             try:
                 post = ActivePosts.query.filter_by(title=title).first()
                 post.delete()
+                print(f"deleting {title} from active post database.  It will be replaced with a price change")
                 db.session.delete(post)
                 db.session.commit()
             except:
-                pass
+                print(f"could not find {title} in the database.  It is supposed to be replaced with a new post following price change")
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
         post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
         new_post = ActivePosts(
