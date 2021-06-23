@@ -279,10 +279,13 @@ def initialize_webpages(url, console):
                 print(f"{game.title} is now unavailable")
                 game.available = False
                 db.session.commit()
-                post = ActivePosts.query.filter_by(title=game.title).first()
-                post.post_id.reply("spoiler")
-                db.session.delete(post)
-                db.session.commit()
+                try:
+                    post = ActivePosts.query.filter_by(title=game.title).first()
+                    post.post_id.reply("spoiler")
+                    db.session.delete(post)
+                    db.session.commit()
+                except:
+                    pass
 
         if new_game | price_change | back_in_stock and game.in_stock:
             send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
@@ -376,10 +379,13 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
             message = f"<b>Back in Stock Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is back in stock for ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
         else:
             message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
-            post = ActivePosts.query.filter_by(title=title).first()
-            post.delete()
-            db.session.delete(post)
-            db.session.commit()
+            try:
+                post = ActivePosts.query.filter_by(title=title).first()
+                post.delete()
+                db.session.delete(post)
+                db.session.commit()
+            except:
+                pass
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
         post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
         new_post = ActivePosts(
