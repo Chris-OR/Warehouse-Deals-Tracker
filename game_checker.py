@@ -385,6 +385,7 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
             message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
             try:
                 post = ActivePosts.query.filter_by(title=title).first()
+                post = post
                 post.delete()
                 print(f"deleting {title} from active post database.  It will be replaced with a price change")
                 db.session.delete(post)
@@ -394,7 +395,7 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
         post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
         new_post = ActivePosts(
-            post_id=post,
+            post_id=post.id,
             title=title,
         )
         db.session.add(new_post)
