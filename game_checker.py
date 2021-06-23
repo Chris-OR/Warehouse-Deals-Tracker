@@ -293,9 +293,9 @@ def initialize_webpages(url, console):
     else:
         print("uh oh")
 
-    active_posts = ActivePosts.query.all()
-    for post in active_posts:
-        print(f"{post.title} is currently an active post")
+    # active_posts = ActivePosts.query.all()
+    # for post in active_posts:
+    #     print(f"{post.title} is currently an active post")
     print("moving on to next console...")
 
 
@@ -397,6 +397,7 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
             post_id=post,
             title=title,
         )
+        db.session.add(new_post)
         db.session.commit()
         print(f"Sent message.  We tracked {title} for {console} at {price}")
     else:
