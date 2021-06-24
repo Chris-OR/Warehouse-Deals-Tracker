@@ -287,7 +287,7 @@ def initialize_webpages(url, console):
                     db.session.delete(post)
                     db.session.commit()
                 except:
-                    print(f"we could not find {game.title} in the database")
+                    print(f"we could not find {game.title} in the database, or reddit may be down so we could not set post status to spoiled")
 
         if new_game | price_change | back_in_stock and game.in_stock:
             send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
@@ -298,7 +298,7 @@ def initialize_webpages(url, console):
     # for post in active_posts:
     #     print(f"{post.title} ({post.post_id}) is currently an active post")
 
-    print("moving on to next console...")
+    print("\nmoving on to next console...\n")
 
 
 def clear_stock(console):
@@ -395,13 +395,16 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
             except:
                 print(f"could not find {title} in the database.  It is supposed to be replaced with a new post following price change")
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
-        post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
-        new_post = ActivePosts(
-            post_id=post.id,
-            title=title,
-        )
-        db.session.add(new_post)
-        db.session.commit()
+        try:
+            post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
+            new_post = ActivePosts(
+                post_id=post.id,
+                title=title,
+            )
+            db.session.add(new_post)
+            db.session.commit()
+        except:
+            print("Tried to send a message to reddit but it didn't work.  Check reddit's status if this happens again")
         print(f"Sent message.  We tracked {title} for {console} at {price}")
     else:
         print(f"stopped {title} being sent as a message to {console}")
