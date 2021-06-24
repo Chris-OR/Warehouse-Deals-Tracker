@@ -281,7 +281,7 @@ def initialize_webpages(url, console):
                 db.session.commit()
                 try:
                     post = ActivePosts.query.filter_by(title=game.title).first()
-                    submission = reddit.submission(post.id)
+                    submission = reddit.submission(post.post_id)
                     submission.reply("spoiler")
                     print(f"added spoiler tag to {game.title}'s post")
                     db.session.delete(post)
@@ -296,7 +296,7 @@ def initialize_webpages(url, console):
 
     active_posts = ActivePosts.query.all()
     for post in active_posts:
-        print(f"{post.title} ({post.id}) is currently an active post")
+        print(f"{post.title} ({post.post_id}) is currently an active post")
 
     print("moving on to next console...")
 
@@ -387,7 +387,7 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
             message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
             try:
                 post = ActivePosts.query.filter_by(title=title).first()
-                submission = reddit.submission(post.id)
+                submission = reddit.submission(post.post_id)
                 submission.delete()
                 print(f"deleting {title} from active post database.  It will be replaced with a price change")
                 db.session.delete(post)
@@ -397,7 +397,7 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
         post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
         new_post = ActivePosts(
-            post_id=post.id,
+            post_id=post.post_id,
             title=title,
         )
         db.session.add(new_post)
