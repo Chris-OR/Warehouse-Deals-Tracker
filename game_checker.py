@@ -397,7 +397,7 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
         post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
         new_post = ActivePosts(
-            post_id=post.post_id,
+            post_id=post.id,
             title=title,
         )
         db.session.add(new_post)
