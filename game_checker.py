@@ -90,7 +90,7 @@ class Games(db.Model):
 class ActivePosts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.String(), nullable=False)
-    title = db.Column(db.String(250), unique=True, nullable=False)
+    title = db.Column(db.String(250), nullable=False)
 
 
 # db.create_all()
