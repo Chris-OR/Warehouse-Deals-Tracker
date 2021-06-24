@@ -281,7 +281,8 @@ def initialize_webpages(url, console):
                 db.session.commit()
                 try:
                     post = ActivePosts.query.filter_by(title=game.title).first()
-                    post.post_id.reply("spoiler")
+                    submission = reddit.submission(post.id)
+                    submission.reply("spoiler")
                     print(f"added spoiler tag to {game.title}'s post")
                     db.session.delete(post)
                     db.session.commit()
@@ -386,8 +387,8 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
             message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is in stock and has just been tracked at ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
             try:
                 post = ActivePosts.query.filter_by(title=title).first()
-                post = post
-                post.delete()
+                submission = reddit.submission(post.id)
+                submission.delete()
                 print(f"deleting {title} from active post database.  It will be replaced with a price change")
                 db.session.delete(post)
                 db.session.commit()
