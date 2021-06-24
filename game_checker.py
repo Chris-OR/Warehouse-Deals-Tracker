@@ -296,7 +296,7 @@ def initialize_webpages(url, console):
 
     active_posts = ActivePosts.query.all()
     for post in active_posts:
-        print(f"{post.title} is currently an active post")
+        print(f"{post.title} ({post.id}) is currently an active post")
 
     print("moving on to next console...")
 
