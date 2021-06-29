@@ -2,229 +2,229 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://warehouse-deals.herokuapp.com/</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://warehouse-deals.herokuapp.com/xbox-series-x</loc>
-    <lastmod>2021-06-18</lastmod>
+    <loc>https://warehouse-deals.herokuapp.com/ps5</loc>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/ps4</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://warehouse-deals.herokuapp.com/ps5</loc>
-    <lastmod>2021-06-18</lastmod>
+    <loc>https://warehouse-deals.herokuapp.com/xbox-series-x</loc>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/switch</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/contact</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/help</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-one</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-series-x/priciest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/ps5/newest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/switch/most-common</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/switch/rarest</loc>
-    <lastmod>2021-06-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://warehouse-deals.herokuapp.com/switch/newest</loc>
-    <lastmod>2021-06-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://warehouse-deals.herokuapp.com/switch/oldest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/switch/priciest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://warehouse-deals.herokuapp.com/ps5/rarest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <loc>https://warehouse-deals.herokuapp.com/switch/newest</loc>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://warehouse-deals.herokuapp.com/ps5/oldest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <loc>https://warehouse-deals.herokuapp.com/switch/oldest</loc>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-one/priciest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://warehouse-deals.herokuapp.com/ps5/rarest</loc>
+    <lastmod>2021-06-29</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://warehouse-deals.herokuapp.com/ps5/oldest</loc>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-one/rarest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-series-x/most-common</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/ps4/most-common</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/ps4/rarest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-series-x/oldest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/ps5/priciest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-one/most-common</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-series-x/newest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/ps4/oldest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/ps4/newest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/ps4/priciest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/ps4/cheapest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-series-x/cheapest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-one/cheapest</loc>
-    <lastmod>2021-06-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://warehouse-deals.herokuapp.com/switch/cheapest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-one/oldest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://warehouse-deals.herokuapp.com/switch/cheapest</loc>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/ps5/cheapest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-one/newest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/xbox-series-x/rarest</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://warehouse-deals.herokuapp.com/ps5/most-common</loc>
-    <lastmod>2021-06-18</lastmod>
+    <lastmod>2021-06-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
