@@ -261,7 +261,7 @@ def initialize_webpages(url, console):
                 db.session.commit()
 
                 if new_game | price_change | back_in_stock:
-                    send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
+                    send_telegram_message(game.title, game.price, game.url, console, game.low, new_game, price_change, back_in_stock)
 
         updated_available_games = Games.query.filter_by(available=True).all()
         in_stock = Games.query.filter_by(in_stock=True).all()
@@ -272,7 +272,7 @@ def initialize_webpages(url, console):
                 print(list_of_price_changes)
                 print(game.title)
                 if game.title not in list_of_price_changes:
-                    send_telegram_message(game.title, game.price, game.url, console, new_game=False, price_change=False, back_in_stock=True)
+                    send_telegram_message(game.title, game.price, game.url, console, game.low, new_game=False, price_change=False, back_in_stock=True)
         # set availability to false if it is out of stock
         for game in all_games:
             if game not in in_stock and game in updated_available_games:
@@ -290,7 +290,7 @@ def initialize_webpages(url, console):
                     print(f"we could not find {game.title} in the database, or reddit may be down so we could not set post status to spoiled")
 
         if new_game | price_change | back_in_stock and game.in_stock:
-            send_telegram_message(game.title, game.price, game.url, console, new_game, price_change, back_in_stock)
+            send_telegram_message(game.title, game.price, game.url, console, game.low, new_game, price_change, back_in_stock)
     else:
         print("uh oh")
 
@@ -335,7 +335,7 @@ def check_price():
     pass
 
 
-def send_telegram_message(title, price, url, console, new_game, price_change, back_in_stock):
+def send_telegram_message(title, price, url, console, low, new_game, price_change, back_in_stock):
     console_list = Games.query.filter_by(system=console).all()
     title_list = [game.title for game in console_list]
     if title in title_list:
@@ -401,6 +401,10 @@ def send_telegram_message(title, price, url, console, new_game, price_change, ba
                 post_id=post.id,
                 title=title,
             )
+
+            submission = reddit.submission(post.post_id)
+            submission.reply(f"Our lowest tracked price for this item is ${low}")
+
             db.session.add(new_post)
             db.session.commit()
         except:
