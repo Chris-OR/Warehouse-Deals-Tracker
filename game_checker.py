@@ -402,11 +402,11 @@ def send_telegram_message(title, price, url, console, low, new_game, price_chang
                 title=title,
             )
 
-            submission = reddit.submission(post.post_id)
-            submission.reply(f"Our lowest tracked price for this item is ${low}")
-
             db.session.add(new_post)
             db.session.commit()
+
+            submission = reddit.submission(new_post.post_id)
+            submission.reply(f"Our lowest tracked price for this item is ${low}")
         except:
             print("Tried to send a message to reddit but it didn't work.  Check reddit's status if this happens again")
         print(f"Sent message.  We tracked {title} for {console} at {price}")
