@@ -432,6 +432,7 @@ def send_telegram_message(title, price, url, console, low, new_game, price_chang
             except:
                 print(f"could not find {title} in the database.  It is supposed to be replaced with a new post following price change")
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
+        print(console, title, price, flair, console, url)
         try:
             post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
             new_post = ActivePosts(
@@ -444,8 +445,9 @@ def send_telegram_message(title, price, url, console, low, new_game, price_chang
 
             submission = reddit.submission(new_post.post_id)
             submission.reply(f"Our previously lowest tracked price for this item is ${low}.  Click [here]({section_url}) to see all of the active {console} listings.")
-        except:
+        except Exception as e:
             print("Tried to send a message to reddit but it didn't work.  Check reddit's status if this happens again")
+            print(e)
         print(f"Sent message.  We tracked {title} for {console} at {price}")
     else:
         print(f"stopped {title} being sent as a message to {console}")
