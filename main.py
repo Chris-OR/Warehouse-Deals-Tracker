@@ -125,7 +125,7 @@ def add_game():
         price = request.form.get("price")
         system = request.form.get("system")
         print(system)
-        url = request.form.get("url")
+        url = request.form.get("url") + "&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
         image_url = request.form.get("image_url")
         gc.manually_add_game(title, price, system, url, image_url)
         return redirect("/")
