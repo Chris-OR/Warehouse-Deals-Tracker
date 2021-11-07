@@ -335,6 +335,43 @@ def check_price():
     pass
 
 
+def manually_add_game(title, price, system, url, image_url):
+    is_new = False
+    price_change = False
+    back_in_stock = False
+    date = dt.datetime.now()
+    date = date.strftime("%b %d %Y")
+    game = Games.query.filter_by(title=title).first()
+    if not game:
+        is_new = True
+        new_game = Games(title=title,
+                         price=price,
+                         system=system,
+                         url=url,
+                         img_url=image_url,
+                         in_stock=True,
+                         date=f"{date}: {price},",
+                         rarity=0,
+                         available=True,
+                         low=price,
+                         high=price,
+                         average=price,
+                         )
+        db.session.add(new_game)
+        db.session.commit()
+        print(f"added {title} to the database")
+    game = Games.query.filter_by(title=title).first()
+    game.available = True
+    game.in_stock = True
+    game.rarity += 1
+    game.url = url
+    game.price = price
+    game.date += f"{date}: {game.price},"
+    db.session.commit()
+    back_in_stock = True
+    send_telegram_message(title, price, url, system, game.low, is_new, price_change, back_in_stock)
+
+
 def send_telegram_message(title, price, url, console, low, new_game, price_change, back_in_stock):
     console_list = Games.query.filter_by(system=console).all()
     title_list = [game.title for game in console_list]

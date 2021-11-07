@@ -7,7 +7,7 @@ import email_validator
 import requests
 import time
 import smtplib
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, redirect
 from flask_sitemap import Sitemap
 from sqlalchemy import desc
 from flask_bootstrap import Bootstrap
@@ -17,7 +17,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, DecimalField, RadioField
 from wtforms.validators import DataRequired, Email
 from flask_ckeditor import CKEditorField, CKEditor
 from wtforms.fields.html5 import EmailField
@@ -65,6 +65,15 @@ class ContactForm(FlaskForm):
     submit = SubmitField("Send Message")
 
 
+class AddGame(FlaskForm):
+    title = StringField("title", validators=[DataRequired()])
+    price = DecimalField("price", validators=[DataRequired()])
+    system = RadioField("system", choices=[("PlayStation 4", "PlayStation 4"), ("PlayStation 5", "PlayStation 5"), ("Nintendo Switch", "Nintendo Switch"), ("Xbox One", "Xbox One"), ("Xbox Series X", "Xbox Series X")])
+    url = StringField("url", validators=[DataRequired()])
+    image_url = StringField("image_url", validators=[DataRequired()])
+    submit = SubmitField("Add Game")
+
+
 def checker_thread():
     while True:
         gc.initialize_webpages(PS4_URL, "PlayStation 4")
@@ -107,6 +116,21 @@ def home():
     all_games_rarest = gc.Games.query.filter_by(in_stock=True).order_by("rarity")
     # return render_template("index.html", all_games=all_games_rarest, ps4_games=ps4_games, ps5_games=ps5_games, xbox_one_games=xbox_one_games, xbox_series_games=xbox_series_games, switch_games=switch_games, length=len(all_games))
     return render_template("index.html", all_games=all_games_rarest, length=len(all_games))
+
+@app.route("/add-game", methods=["GET", "POST"])
+def add_game():
+    form = AddGame()
+    if form.validate_on_submit():
+        title = request.form.get("title")
+        price = request.form.get("price")
+        system = request.form.get("system")
+        print(system)
+        url = request.form.get("url")
+        image_url = request.form.get("image_url")
+        gc.manually_add_game(title, price, system, url, image_url)
+        return redirect("/")
+    else:
+        return render_template('add-game.html', form=form)
 
 
 @app.route('/help')
