@@ -162,7 +162,7 @@ def initialize_webpages(url, console):
             back_in_stock = False
             date = dt.datetime.now()
             date = date.strftime("%b %d %Y")
-            print(game_titles[i])
+            print(f"{game_titles[i]} is ${game_price[i]}")
             game = Games.query.filter_by(title=game_titles[i]).first()
             if check_regex(game_titles[i], game):
                 # there is a new game not yet added to the database
@@ -437,7 +437,7 @@ def send_telegram_message(title, price, url, console, low, new_game, price_chang
             except:
                 print(f"could not find {title} in the database.  It is supposed to be replaced with a new post following price change")
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
-        print(console, title, price, flair, console, url)
+        # print(console, title, price, flair, console, url)
         try:
             post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
             new_post = ActivePosts(
