@@ -121,7 +121,8 @@ def initialize_webpages(url, console):
             response = requests.get(url, headers=headers, proxies=proxy)
             response.raise_for_status()
             searching = False
-        except:
+        except exception as e:
+            print(e)
             print("something went wrong")
 
     # webpage = r
