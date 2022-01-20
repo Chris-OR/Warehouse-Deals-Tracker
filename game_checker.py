@@ -122,7 +122,7 @@ def initialize_webpages(url, console):
             response.raise_for_status()
             searching = False
         except Exception as e:
-            print(e)
+            # print(e)
             print("something went wrong")
 
     # webpage = r
