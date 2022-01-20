@@ -313,7 +313,7 @@ def clear_stock(console):
 
 
 def check_regex(title, game):
-    game_regex = re.compile(r'bluetooth|playstation 3|InvisibleShield')
+    game_regex = re.compile(r'bluetooth|playstation 3|InvisibleShield|Just Dance 2021 - PlayStation 5 - PlayStation 5 Edition')
     mo = game_regex.search(title.lower())
     if mo:
         print(f"{title} has been regexxed.  We will skip its rotation")
