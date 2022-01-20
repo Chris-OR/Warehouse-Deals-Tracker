@@ -121,7 +121,7 @@ def initialize_webpages(url, console):
             response = requests.get(url, headers=headers, proxies=proxy)
             response.raise_for_status()
             searching = False
-        except exception as e:
+        except Exception as e:
             print(e)
             print("something went wrong")
 
@@ -293,6 +293,7 @@ def initialize_webpages(url, console):
         if new_game | price_change | back_in_stock and game.in_stock:
             send_telegram_message(game.title, game.price, game.url, console, game.low, new_game, price_change, back_in_stock)
     else:
+        print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
         print("uh oh")
 
     # active_posts = ActivePosts.query.all()
