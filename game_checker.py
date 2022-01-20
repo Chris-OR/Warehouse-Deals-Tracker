@@ -133,7 +133,7 @@ def initialize_webpages(url, console):
     game_titles = webpage_soup.find_all(name="span", class_="a-size-base-plus a-color-base a-text-normal")
     game_titles = [game.getText() for game in game_titles]
 
-    game_price = webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base")
+    game_price = webpage_soup.select(selector=".a-spacing-base .a-section .a-row .a-color-base")
     game_price = [game.getText() for game in game_price]
     game_price = [game.replace("$", "") for game in game_price]
 

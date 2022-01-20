@@ -26,4 +26,4 @@ proxy-requests==0.5.2
 python-telegram-bot==13.5
 email_validator==1.1.2
 flask-sitemap==0.3.0
-praw==7.4.0
+praw==7.5.0
