@@ -294,6 +294,7 @@ def initialize_webpages(url, console):
             send_telegram_message(game.title, game.price, game.url, console, game.low, new_game, price_change, back_in_stock)
     else:
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
+        print(webpage_soup)
         print("uh oh")
 
     # active_posts = ActivePosts.query.all()
