@@ -152,6 +152,11 @@ def initialize_webpages(url, console):
         print("caught a captcha - we will move on")
         captcha = True
 
+    if len(game_titles) != len(game_price):
+        game_price = webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base")
+        game_price = [game.getText() for game in game_price if "$" in game.getText()]
+        game_price = [game.replace("$", "") for game in game_price]
+
     if len(game_titles) == len(game_price) and not captcha:
         clear_stock(console)
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
