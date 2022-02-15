@@ -268,7 +268,7 @@ def initialize_webpages(url, console):
                 db.session.commit()
 
                 if new_game | price_change | back_in_stock:
-                    send_telegram_message(game.title, game.price, game.url, console, game.low, new_game, price_change, back_in_stock)
+                    send_telegram_message(game.title, game.price, game.url, console, game.low, game.average, new_game, price_change, back_in_stock)
 
         updated_available_games = Games.query.filter_by(available=True).all()
         in_stock = Games.query.filter_by(in_stock=True).all()
@@ -383,7 +383,7 @@ def manually_add_game(title, price, system, url, image_url):
     send_telegram_message(title, price, url, system, game.low, is_new, price_change, back_in_stock)
 
 
-def send_telegram_message(title, price, url, console, low, new_game, price_change, back_in_stock):
+def send_telegram_message(title, price, url, console, low, average, new_game, price_change, back_in_stock):
     console_list = Games.query.filter_by(system=console).all()
     title_list = [game.title for game in console_list]
     if title in title_list:
@@ -455,7 +455,7 @@ def send_telegram_message(title, price, url, console, low, new_game, price_chang
             db.session.commit()
 
             submission = reddit.submission(new_post.post_id)
-            submission.reply(f"Our previously lowest tracked price for this item is ${low}.  Click [here]({section_url}) to see all of the active {console} listings.")
+            submission.reply(f"Our previously lowest tracked price for this item is ${low} and the average price is ${average}.  Click [here]({section_url}) to see all of the active {console} listings.")
         except Exception as e:
             print("Tried to send a message to reddit but it didn't work.  Check reddit's status if this happens again")
             print(e)
