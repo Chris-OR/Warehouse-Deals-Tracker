@@ -279,7 +279,7 @@ def initialize_webpages(url, console):
                 print(list_of_price_changes)
                 print(game.title)
                 if game.title not in list_of_price_changes:
-                    send_telegram_message(game.title, game.price, game.url, console, game.low, new_game=False, price_change=False, back_in_stock=True)
+                    send_telegram_message(game.title, game.price, game.url, console, game.low, game.average, new_game=False, price_change=False, back_in_stock=True)
         # set availability to false if it is out of stock
         for game in all_games:
             if game not in in_stock and game in updated_available_games:
@@ -297,7 +297,7 @@ def initialize_webpages(url, console):
                     print(f"we could not find {game.title} in the database, or reddit may be down so we could not set post status to spoiled")
 
         if new_game | price_change | back_in_stock and game.in_stock:
-            send_telegram_message(game.title, game.price, game.url, console, game.low, new_game, price_change, back_in_stock)
+            send_telegram_message(game.title, game.price, game.url, console, game.low, game.average, new_game, price_change, back_in_stock)
     else:
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
         for game in game_price:
@@ -380,7 +380,7 @@ def manually_add_game(title, price, system, url, image_url):
     game.date += f"{date}: {game.price},"
     db.session.commit()
     back_in_stock = True
-    send_telegram_message(title, price, url, system, game.low, is_new, price_change, back_in_stock)
+    send_telegram_message(title, price, url, system, game.low, game.average, is_new, price_change, back_in_stock)
 
 
 def send_telegram_message(title, price, url, console, low, average, new_game, price_change, back_in_stock):
