@@ -246,6 +246,7 @@ def initialize_webpages(url, console):
                     # send_telegram_message(game_titles[i], checked_price, game_link[i], console, price_change=False)
                     new_game = True
                 # check for price changes
+                checked_price = game_price[i]
                 try:
                     if float(game.price) != float(game_price[i]):
                         print(f"checking for new price on {game_titles[i]}")
@@ -260,9 +261,8 @@ def initialize_webpages(url, console):
                             print(f"changed {game.title}'s price to {checked_price}")
                         except AttributeError:
                             print(f"tried to check {game.title}'s price but was rejected")
-                            checked_price = game_price[i]
                 except AttributeError:
-                    checked_price = game_price[i]
+                    pass
 
                 game = Games.query.filter_by(title=game_titles[i]).first()
                 game.available = True
