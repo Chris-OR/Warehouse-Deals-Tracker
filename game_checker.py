@@ -247,11 +247,10 @@ def initialize_webpages(url, console):
                     # send_telegram_message(game_titles[i], checked_price, game_link[i], console, price_change=False)
                     new_game = True
                 # check for price changes
-                """ uncomment me in a few days
                 try:
                     if game.price != float(game_price[i]):
                         print(f"checking for new price on {game_titles[i]}")
-                        response = requests.get(game_link[i], headers=headers)
+                        response = requests.get(game_link[i], headers=headers, proxies=urllib.request.getproxies())
                         response.raise_for_status()
                         webpage = response.text
                         webpage_soup = BeautifulSoup(webpage, "html.parser")
@@ -266,7 +265,6 @@ def initialize_webpages(url, console):
                             print(f"tried to check {game.title}'s price but was rejected")
                 except AttributeError:
                     pass
-                uncomment me in a few days """
 
                 game = Games.query.filter_by(title=game_titles[i]).first()
                 game.available = True
