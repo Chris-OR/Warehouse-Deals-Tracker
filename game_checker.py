@@ -108,7 +108,7 @@ def initialize_webpages(url, console):
     back_in_stock = False
 
     while searching:
-        if proxy_list.length != 0:
+        if len(proxy_list) != 0:
             try:
                 for proxy in proxy_list:
                     response = requests.get(url, headers=headers, proxies=proxy)
