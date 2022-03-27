@@ -248,30 +248,28 @@ def initialize_webpages(url, console):
                 # check for price changes
                 try:
                     if float(game.price) != float(game_price[i]):
-                        print(game.price, game_price[i])
                         print(f"checking for new price on {game_titles[i]}")
-                        # response = requests.get(game_link[i], headers=headers, proxies=urllib.request.getproxies())
-                        # response.raise_for_status()
-                        # webpage = response.text
-                        # webpage_soup = BeautifulSoup(webpage, "html.parser")
-                        # try:
-                        #     checked_price = webpage_soup.find(name="span",
-                        #                                       class_="a-size-base a-color-price offer-price a-text-normal").getText().replace(
-                        #         "$", "")
-                        #     game.price = checked_price
-                        #     print(f"changed {game.title}'s price to {game.price}")
-                        #     db.session.commit()
-                        # except AttributeError:
-                        #     print(f"tried to check {game.title}'s price but was rejected")
+                        response = requests.get(game_link[i], headers=headers, proxies=urllib.request.getproxies())
+                        response.raise_for_status()
+                        webpage = response.text
+                        webpage_soup = BeautifulSoup(webpage, "html.parser")
+                        try:
+                            checked_price = webpage_soup.find(name="span",
+                                                              class_="a-size-base a-color-price offer-price a-text-normal").getText().replace(
+                                "$", "")
+                            print(f"changed {game.title}'s price to {checked_price}")
+                        except AttributeError:
+                            print(f"tried to check {game.title}'s price but was rejected")
+                            checked_price = game_price[i]
                 except AttributeError:
-                    pass
+                    checked_price = game_price[i]
 
                 game = Games.query.filter_by(title=game_titles[i]).first()
                 game.available = True
                 game.in_stock = True
                 game.rarity += 1
                 game.url = game_link[i]
-                game.price = game_price[i]  # delete this line if you can get around the captcha on the price check
+                game.price = checked_price
                 tracked_dates = game.date.split(",")
                 tracked_dates = [dates.split(":") for dates in tracked_dates]
                 tracked_prices = game.date.split(",")
