@@ -17,6 +17,8 @@ SWITCH = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%
 XBOX_ONE = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A7089610011%2Cn%3A6920196011&dc&qid=1621288993&rnid=8929975011&ref=sr_nr_n_2&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
 XBOX_SERIES = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A20974877011%2Cn%3A20974893011&s=price-desc-rank&dc&qid=1621898797&rnid=8929975011&ref=sr_nr_n_3&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
 
+proxy_list = []
+
 # headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0", "Accept-Encoding":"gzip, deflate", "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "DNT":"1","Connection":"close", "Upgrade-Insecure-Requests":"1"}
 
 client_id = os.environ.get("client_id")
@@ -99,28 +101,39 @@ class ActivePosts(db.Model):
 def initialize_webpages(url, console):
     print(f"trying to load {console} games...")
     searching = True
+    establishing_connection = False
     list_of_price_changes = []
     new_game = False
     price_change = False
     back_in_stock = False
 
     while searching:
-        r = ProxyRequests("https://www.google.com/")
-        r.set_headers(headers)
-        r.get_with_headers()
-        # print(r.get_status_code())
-        proxy = r.get_proxy_used()
-        # print(proxy)
+        try:
+            r = ProxyRequests("https://www.google.com/")
+            r.set_headers(headers)
+            r.get_with_headers()
+            # print(r.get_status_code())
+            proxy = r.get_proxy_used()
+            # print(proxy)
 
-        proxy = {
-            "http": f"http://{proxy}",
-            "https": f"https://{proxy}",
-        }
+            proxy = {
+                "http": f"http://{proxy}",
+                "https": f"https://{proxy}",
+            }
+
+        except:
+            print("proxy connection could not be established")
 
         try:
-            response = requests.get(url, headers=headers, proxies=proxy)
-            response.raise_for_status()
-            searching = False
+            while establishing_connection:
+                for proxy in proxy_list:
+                    response = requests.get(url, headers=headers, proxies=proxy)
+                    response.raise_for_status()
+                    searching = False
+                    establishing_connection = False
+                    if proxy not in proxy_list:
+                        proxy_list.append(proxy)
+
         except Exception as e:
             # print(e)
             print("something went wrong")
