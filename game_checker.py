@@ -247,7 +247,7 @@ def initialize_webpages(url, console):
                     new_game = True
                 # check for price changes
                 try:
-                    if game.price != float(game_price[i]):
+                    if float(game.price) != float(game_price[i]):
                         print(game.price, game_price[i])
                         print(f"checking for new price on {game_titles[i]}")
                         # response = requests.get(game_link[i], headers=headers, proxies=urllib.request.getproxies())
