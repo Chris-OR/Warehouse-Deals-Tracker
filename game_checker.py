@@ -101,45 +101,61 @@ class ActivePosts(db.Model):
 def initialize_webpages(url, console):
     print(f"trying to load {console} games...")
     searching = True
-    establishing_connection = False
+    establishing_connection = True
     list_of_price_changes = []
     new_game = False
     price_change = False
     back_in_stock = False
 
     while searching:
-        try:
-            r = ProxyRequests("https://www.google.com/")
-            r.set_headers(headers)
-            r.get_with_headers()
-            # print(r.get_status_code())
-            proxy = r.get_proxy_used()
-            # print(proxy)
-
-            proxy = {
-                "http": f"http://{proxy}",
-                "https": f"https://{proxy}",
-            }
-
-        except:
-            print("proxy connection could not be established")
-
-        try:
-            while establishing_connection:
+        if proxy_list.length != 0:
+            try:
                 for proxy in proxy_list:
                     response = requests.get(url, headers=headers, proxies=proxy)
                     response.raise_for_status()
                     searching = False
                     establishing_connection = False
-                    if proxy not in proxy_list:
-                        proxy_list.append(proxy)
 
-        except Exception as e:
-            # print(e)
-            print("something went wrong")
+            except Exception as e:
+                # print(e)
+                print("something went wrong")
+        else:
+            print("proxy list is empty, searching for a new one...")
+
+        if establishing_connection:
+            try:
+                print("getting proxy")
+                r = ProxyRequests("https://www.google.com/")
+                r.set_headers(headers)
+                r.get_with_headers()
+                # print(r.get_status_code())
+                proxy = r.get_proxy_used()
+                # print(proxy)
+
+                proxy = {
+                    "http": f"http://{proxy}",
+                    "https": f"https://{proxy}",
+                }
+
+            except:
+                print("proxy connection could not be established")
+
+            try:
+                while establishing_connection:
+                    for proxy in proxy_list:
+                        response = requests.get(url, headers=headers, proxies=proxy)
+                        response.raise_for_status()
+                        searching = False
+                        establishing_connection = False
+                        if proxy not in proxy_list:
+                            proxy_list.append(proxy)
+
+            except Exception as e:
+                # print(e)
+                print("something went wrong")
 
     # webpage = r
-
+    print("outside of searching")
     webpage = response.text
     webpage_soup = BeautifulSoup(webpage, "html.parser")
     # print(webpage_soup)
