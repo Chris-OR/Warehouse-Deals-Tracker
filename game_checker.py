@@ -163,7 +163,6 @@ def initialize_webpages(url, console):
         #         print("something went wrong")
 
     # webpage = r
-    print("outside of searching")
     webpage = response.text
     webpage_soup = BeautifulSoup(webpage, "html.parser")
     # print(webpage_soup)
@@ -249,20 +248,21 @@ def initialize_webpages(url, console):
                 # check for price changes
                 try:
                     if game.price != float(game_price[i]):
+                        print(game.price, game_price[i])
                         print(f"checking for new price on {game_titles[i]}")
-                        response = requests.get(game_link[i], headers=headers, proxies=urllib.request.getproxies())
-                        response.raise_for_status()
-                        webpage = response.text
-                        webpage_soup = BeautifulSoup(webpage, "html.parser")
-                        try:
-                            checked_price = webpage_soup.find(name="span",
-                                                              class_="a-size-base a-color-price offer-price a-text-normal").getText().replace(
-                                "$", "")
-                            game.price = checked_price
-                            print(f"changed {game.title}'s price to {game.price}")
-                            db.session.commit()
-                        except AttributeError:
-                            print(f"tried to check {game.title}'s price but was rejected")
+                        # response = requests.get(game_link[i], headers=headers, proxies=urllib.request.getproxies())
+                        # response.raise_for_status()
+                        # webpage = response.text
+                        # webpage_soup = BeautifulSoup(webpage, "html.parser")
+                        # try:
+                        #     checked_price = webpage_soup.find(name="span",
+                        #                                       class_="a-size-base a-color-price offer-price a-text-normal").getText().replace(
+                        #         "$", "")
+                        #     game.price = checked_price
+                        #     print(f"changed {game.title}'s price to {game.price}")
+                        #     db.session.commit()
+                        # except AttributeError:
+                        #     print(f"tried to check {game.title}'s price but was rejected")
                 except AttributeError:
                     pass
 
