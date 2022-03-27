@@ -2,6 +2,7 @@ import requests
 import telegram
 import os
 import re
+import urllib
 from flask import Flask
 
 from proxy_requests import ProxyRequests
@@ -108,51 +109,58 @@ def initialize_webpages(url, console):
     back_in_stock = False
 
     while searching:
-        if len(proxy_list) != 0:
-            try:
-                for proxy in proxy_list:
-                    response = requests.get(url, headers=headers, proxies=proxy)
-                    response.raise_for_status()
-                    searching = False
-                    establishing_connection = False
+        try:
+            response = requests.get(url, headers=headers, proxies=urllib.request.getproxies())
+            response.raise_for_status()
+            searching = False
+        except Exception as e:
+            print(e)
 
-            except Exception as e:
-                # print(e)
-                print("something went wrong")
-        else:
-            print("proxy list is empty, searching for a new one...")
-
-        if establishing_connection:
-            try:
-                print("getting proxy")
-                r = ProxyRequests("https://www.google.com/")
-                r.set_headers(headers)
-                r.get_with_headers()
-                # print(r.get_status_code())
-                proxy = r.get_proxy_used()
-                # print(proxy)
-
-                proxy = {
-                    "http": f"http://{proxy}",
-                    "https": f"https://{proxy}",
-                }
-
-            except:
-                print("proxy connection could not be established")
-
-            try:
-                while establishing_connection:
-                    for proxy in proxy_list:
-                        response = requests.get(url, headers=headers, proxies=proxy)
-                        response.raise_for_status()
-                        searching = False
-                        establishing_connection = False
-                        if proxy not in proxy_list:
-                            proxy_list.append(proxy)
-
-            except Exception as e:
-                # print(e)
-                print("something went wrong")
+        # if len(proxy_list) != 0:
+        #     try:
+        #         for proxy in proxy_list:
+        #             response = requests.get(url, headers=headers, proxies=proxy)
+        #             response.raise_for_status()
+        #             searching = False
+        #             establishing_connection = False
+        #
+        #     except Exception as e:
+        #         # print(e)
+        #         print("something went wrong")
+        # else:
+        #     print("proxy list is empty, searching for a new one...")
+        #
+        # if establishing_connection:
+        #     try:
+        #         print("getting proxy")
+        #         r = ProxyRequests("https://www.google.com/")
+        #         r.set_headers(headers)
+        #         r.get_with_headers()
+        #         # print(r.get_status_code())
+        #         proxy = r.get_proxy_used()
+        #         # print(proxy)
+        #
+        #         proxy = {
+        #             "http": f"http://{proxy}",
+        #             "https": f"https://{proxy}",
+        #         }
+        #
+        #     except:
+        #         print("proxy connection could not be established")
+        #
+        #     try:
+        #         print("outside of getting proxy")
+        #         while establishing_connection:
+        #             response = requests.get(url, headers=headers, proxies=proxy)
+        #             response.raise_for_status()
+        #             searching = False
+        #             establishing_connection = False
+        #             if proxy not in proxy_list:
+        #                 proxy_list.append(proxy)
+        #
+        #     except Exception as e:
+        #         # print(e)
+        #         print("something went wrong")
 
     # webpage = r
     print("outside of searching")
