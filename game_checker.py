@@ -1,5 +1,6 @@
 import requests
 import telegram
+import random
 import os
 import re
 import urllib
@@ -116,7 +117,7 @@ def initialize_webpages(url, console):
             searching = False
         except Exception as e:
             print(e)
-            time.sleep(10)
+            time.sleep(random.randint(1, 20))
 
         # if len(proxy_list) != 0:
         #     try:
