@@ -190,8 +190,7 @@ def initialize_webpages(url, console):
 
     if captcha_catcher is not None:
         # print(webpage_soup)
-        captcha_link = webpage_soup.find_all(name="img")
-        captcha_link = [captcha_link.get("src") for captcha in captcha_link]
+        captcha_link = webpage_soup.find(name="img").get("src")
         print(captcha_link)
         print("caught a captcha - we will move on")
         captcha = True
