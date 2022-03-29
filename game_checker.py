@@ -3,6 +3,7 @@ import telegram
 import os
 import re
 import urllib
+import time
 from flask import Flask
 
 from proxy_requests import ProxyRequests
@@ -115,6 +116,7 @@ def initialize_webpages(url, console):
             searching = False
         except Exception as e:
             print(e)
+            time.sleep(10)
 
         # if len(proxy_list) != 0:
         #     try:
