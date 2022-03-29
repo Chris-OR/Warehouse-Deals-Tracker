@@ -194,6 +194,7 @@ def initialize_webpages(url, console):
         captcha_link = webpage_soup.find(name="img").get("src")
         captcha = AmazonCaptcha.fromlink(captcha_link)
         solution = captcha.solve()
+        print(captcha_link)
         print(solution)
         print("caught a captcha - we will move on")
         captcha = True
