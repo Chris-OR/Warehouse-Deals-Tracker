@@ -117,7 +117,7 @@ def initialize_webpages(url, console):
             searching = False
         except Exception as e:
             print(e)
-            time.sleep(random.randint(1, 20))
+            time.sleep(random.randint(3, 20))
 
         # if len(proxy_list) != 0:
         #     try:
@@ -189,7 +189,10 @@ def initialize_webpages(url, console):
     captcha = False
 
     if captcha_catcher is not None:
-        print(webpage_soup)
+        # print(webpage_soup)
+        captcha_link = webpage_soup.find_all(name="img")
+        captcha_link = [captcha_link.get("src") for captcha in captcha_link]
+        print(captcha_link)
         print("caught a captcha - we will move on")
         captcha = True
 
