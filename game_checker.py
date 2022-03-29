@@ -6,6 +6,7 @@ import re
 import urllib
 import time
 from flask import Flask
+from amazoncaptcha import AmazonCaptcha
 
 from proxy_requests import ProxyRequests
 
@@ -191,7 +192,9 @@ def initialize_webpages(url, console):
     if captcha_catcher is not None:
         # print(webpage_soup)
         captcha_link = webpage_soup.find(name="img").get("src")
-        print(captcha_link)
+        captcha = AmazonCaptcha.fromlink(captcha_link)
+        solution = captcha.solve()
+        print(solution)
         print("caught a captcha - we will move on")
         captcha = True
 
