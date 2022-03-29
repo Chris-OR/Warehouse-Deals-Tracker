@@ -176,6 +176,7 @@ def initialize_webpages(url, console):
 
     game_link = webpage_soup.find_all(name="a", class_="a-link-normal s-no-outline")
     game_link = ["https://amazon.ca" + link.get("href") for link in game_link]
+    link_no_tag = game_link
     game_link = [link + "&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641" for link in game_link]
 
     game_image = webpage_soup.find_all(name="img", class_="s-image")
@@ -250,7 +251,7 @@ def initialize_webpages(url, console):
                 try:
                     if float(game.price) != float(game_price[i]):
                         print(f"checking for new price on {game_titles[i]}")
-                        response = requests.get(game_link[i], headers=headers, proxies=urllib.request.getproxies())
+                        response = requests.get(link_no_tag[i], headers=headers, proxies=urllib.request.getproxies())
                         response.raise_for_status()
                         webpage = response.text
                         webpage_soup = BeautifulSoup(webpage, "html.parser")
