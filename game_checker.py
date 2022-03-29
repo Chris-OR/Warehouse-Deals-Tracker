@@ -189,6 +189,7 @@ def initialize_webpages(url, console):
     captcha = False
 
     if captcha_catcher is not None:
+        print(webpage_soup)
         print("caught a captcha - we will move on")
         captcha = True
 
