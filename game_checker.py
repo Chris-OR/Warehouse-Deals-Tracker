@@ -262,8 +262,9 @@ def initialize_webpages(url, console):
                             print(f"changed {game.title}'s price to {checked_price}")
                         except AttributeError:
                             print(f"tried to check {game.title}'s price but was rejected")
-                except AttributeError:
-                    pass
+                except:
+                    print(f"tried to check the price of {game.title} but URL was denied access")
+                    checked_price = game.price
 
                 game = Games.query.filter_by(title=game_titles[i]).first()
                 game.available = True
