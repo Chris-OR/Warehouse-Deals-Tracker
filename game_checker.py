@@ -272,7 +272,8 @@ def initialize_webpages(url, console):
                         except AttributeError:
                             print(f"tried to check {game.title}'s price but was rejected")
                 except:
-                    print(f"tried to check the price of {game.title} but URL was denied access")
+                    if game.title:
+                        print(f"tried to check the price of {game.title} but URL was denied access")
                     checked_price = game.price
 
                 game = Games.query.filter_by(title=game_titles[i]).first()
