@@ -273,7 +273,8 @@ def initialize_webpages(url, console):
                             print(f"tried to check {game_titles[i]}'s price but was rejected")
                 except:
                     print(f"tried to check the price of {game_titles[i]} but URL was denied access")
-                    checked_price = game.price
+                    if game.price is not None:
+                        checked_price = game.price
 
                 game = Games.query.filter_by(title=game_titles[i]).first()
                 game.available = True
