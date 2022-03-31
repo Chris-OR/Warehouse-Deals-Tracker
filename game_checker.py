@@ -268,12 +268,11 @@ def initialize_webpages(url, console):
                             checked_price = webpage_soup.find(name="span",
                                                               class_="a-size-base a-color-price offer-price a-text-normal").getText().replace(
                                 "$", "")
-                            print(f"changed {game.title}'s price to {checked_price}")
+                            print(f"changed {game_titles[i]}'s price to {checked_price}")
                         except AttributeError:
-                            print(f"tried to check {game.title}'s price but was rejected")
+                            print(f"tried to check {game_titles[i]}'s price but was rejected")
                 except:
-                    if game.title:
-                        print(f"tried to check the price of {game.title} but URL was denied access")
+                    print(f"tried to check the price of {game_titles[i]} but URL was denied access")
                     checked_price = game.price
 
                 game = Games.query.filter_by(title=game_titles[i]).first()
