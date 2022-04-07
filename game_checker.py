@@ -60,6 +60,7 @@ db = SQLAlchemy(app)
 
 warehouse_deals_url = "https://warehouse-deals.herokuapp.com/"
 
+
 # template for adding new entries into database
 # class Games(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
@@ -189,7 +190,8 @@ def initialize_webpages(url, console):
     game_titles = webpage_soup.find_all(name="span", class_="a-size-base-plus a-color-base a-text-normal")
     game_titles = [game.getText() for game in game_titles]
 
-    game_price = webpage_soup.select(selector=".s-card-container .a-section.a-spacing-base .a-section.a-spacing-small.s-padding-left-small.s-padding-right-small .a-section.a-spacing-none.a-spacing-top-mini .a-row.a-size-base.a-color-secondary .a-color-base")
+    game_price = webpage_soup.select(
+        selector=".s-card-container .a-section.a-spacing-base .a-section.a-spacing-small.s-padding-left-small.s-padding-right-small .a-section.a-spacing-none.a-spacing-top-mini .a-row.a-size-base.a-color-secondary .a-color-base")
     # game_price = webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base")
     game_price = [game.getText() for game in game_price if "$" in game.getText()]
     game_price = [game.replace("$", "") for game in game_price]
@@ -197,7 +199,9 @@ def initialize_webpages(url, console):
     game_link = webpage_soup.find_all(name="a", class_="a-link-normal s-no-outline")
     game_link = ["https://amazon.ca" + link.get("href") for link in game_link]
     link_no_tag = game_link
-    game_link = [link + "&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641" for link in game_link]
+    game_link = [
+        link + "&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
+        for link in game_link]
 
     game_image = webpage_soup.find_all(name="img", class_="s-image")
     game_image = [link.get("src") for link in game_image]
@@ -318,7 +322,8 @@ def initialize_webpages(url, console):
                 if not tracked:
                     if game.in_stock:
                         if game.price != last_price:
-                            print(f"we found a new price for {game.title}.  The old price was ${last_price}.  The new price is ${game.price}")
+                            print(
+                                f"we found a new price for {game.title}.  The old price was ${last_price}.  The new price is ${game.price}")
                             # send_telegram_message(game.title, game.price, game.url, console, price_change=True)
                             price_change = True
                             list_of_price_changes.append(game.title)
@@ -329,7 +334,8 @@ def initialize_webpages(url, console):
                 db.session.commit()
 
                 if new_game | price_change | back_in_stock:
-                    send_telegram_message(game.title, game.price, game.url, console, game.low, game.average, new_game, price_change, back_in_stock, "Software")
+                    send_telegram_message(game.title, game.price, game.url, console, game.low, game.average, new_game,
+                                          price_change, back_in_stock, "Software")
 
         updated_available_games = Games.query.filter_by(available=True).all()
         in_stock = Games.query.filter_by(in_stock=True).all()
@@ -340,7 +346,8 @@ def initialize_webpages(url, console):
                 print(list_of_price_changes)
                 print(game.title)
                 if game.title not in list_of_price_changes:
-                    send_telegram_message(game.title, game.price, game.url, console, game.low, game.average, new_game=False, price_change=False, back_in_stock=True, ware="Software")
+                    send_telegram_message(game.title, game.price, game.url, console, game.low, game.average,
+                                          new_game=False, price_change=False, back_in_stock=True, ware="Software")
         # set availability to false if it is out of stock
         for game in all_games:
             if game not in in_stock and game in updated_available_games:
@@ -355,10 +362,12 @@ def initialize_webpages(url, console):
                     db.session.delete(post)
                     db.session.commit()
                 except:
-                    print(f"we could not find {game.title} in the database, or reddit may be down so we could not set post status to spoiled")
+                    print(
+                        f"we could not find {game.title} in the database, or reddit may be down so we could not set post status to spoiled")
 
         if new_game | price_change | back_in_stock and game.in_stock:
-            send_telegram_message(game.title, game.price, game.url, console, game.low, game.average, new_game, price_change, back_in_stock, "Software")
+            send_telegram_message(game.title, game.price, game.url, console, game.low, game.average, new_game,
+                                  price_change, back_in_stock, "Software")
     else:
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
         for game in game_price:
@@ -380,7 +389,8 @@ def clear_stock(console):
 
 
 def check_regex(title, game):
-    game_regex = re.compile(r'bluetooth|playstation 3|InvisibleShield|Just Dance 2021 - PlayStation 5 - PlayStation 5 Edition')
+    game_regex = re.compile(
+        r'bluetooth|playstation 3|InvisibleShield|Just Dance 2021 - PlayStation 5 - PlayStation 5 Edition')
     mo = game_regex.search(title.lower())
     if mo:
         print(f"{title} has been regexxed.  We will skip its rotation")
@@ -492,7 +502,8 @@ def initialize_hardware(url):
                     try:
                         if float(game.price) != float(game_price[i]):
                             print(f"checking for new price on {game_titles[i]}")
-                            response = requests.get(link_no_tag[i], headers=headers, proxies=urllib.request.getproxies())
+                            response = requests.get(link_no_tag[i], headers=headers,
+                                                    proxies=urllib.request.getproxies())
                             response.raise_for_status()
                             webpage = response.text
                             webpage_soup = BeautifulSoup(webpage, "html.parser")
@@ -545,7 +556,8 @@ def initialize_hardware(url):
                     db.session.commit()
 
                 if new_game | price_change | back_in_stock:
-                    send_telegram_message(game.title, game.price, game.url, game.system, game.low, game.average, new_game,
+                    send_telegram_message(game.title, game.price, game.url, game.system, game.low, game.average,
+                                          new_game,
                                           price_change, back_in_stock, "Hardware")
 
         updated_available_games = Hardware.query.filter_by(available=True).all()
@@ -599,25 +611,41 @@ def manually_add_game(title, price, system, url, image_url, ware):
     back_in_stock = False
     date = dt.datetime.now()
     date = date.strftime("%b %d %Y")
+    print(ware)
     if ware == "Software":
         game = Games.query.filter_by(title=title).first()
     elif ware == "Hardware":
         game = Hardware.query.filter_by(title=title).first()
     if not game:
         is_new = True
-        new_game = Games(title=title,
-                         price=price,
-                         system=system,
-                         url=url,
-                         img_url=image_url,
-                         in_stock=True,
-                         date=f"{date}: {price},",
-                         rarity=0,
-                         available=True,
-                         low=price,
-                         high=price,
-                         average=price,
-                         )
+        if ware == "Software":
+            new_game = Games(title=title,
+                             price=price,
+                             system=system,
+                             url=url,
+                             img_url=image_url,
+                             in_stock=True,
+                             date=f"{date}: {price},",
+                             rarity=0,
+                             available=True,
+                             low=price,
+                             high=price,
+                             average=price,
+                             )
+        elif ware == "Hardware":
+            new_game = Hardware(title=title,
+                                price=price,
+                                system=system,
+                                url=url,
+                                img_url=image_url,
+                                in_stock=True,
+                                date=f"{date}: {price},",
+                                rarity=0,
+                                available=True,
+                                low=price,
+                                high=price,
+                                average=price,
+                                )
         db.session.add(new_game)
         db.session.commit()
         print(f"added {title} to the database")
@@ -697,11 +725,13 @@ def send_telegram_message(title, price, url, console, low, average, new_game, pr
                 db.session.delete(post)
                 db.session.commit()
             except:
-                print(f"could not find {title} in the database.  It is supposed to be replaced with a new post following price change")
+                print(
+                    f"could not find {title} in the database.  It is supposed to be replaced with a new post following price change")
         bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
         # print(console, title, price, flair, console, url)
         try:
-            post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}", flair_id=flair, flair_text=f"{console}", url=url)
+            post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}",
+                                                                    flair_id=flair, flair_text=f"{console}", url=url)
             new_post = ActivePosts(
                 post_id=post.id,
                 title=title,
@@ -711,11 +741,11 @@ def send_telegram_message(title, price, url, console, low, average, new_game, pr
             db.session.commit()
 
             submission = reddit.submission(new_post.post_id)
-            submission.reply(f"Our previously lowest tracked price for this item is ${low} and the average price is ${average}.  Click [here]({section_url}) to see all of the active {console} listings.")
+            submission.reply(
+                f"Our previously lowest tracked price for this item is ${low} and the average price is ${average}.  Click [here]({section_url}) to see all of the active {console} listings.")
         except Exception as e:
             print("Tried to send a message to reddit but it didn't work.  Check reddit's status if this happens again")
             print(e)
         print(f"Sent message.  We tracked {title} for {console} at {price}")
     else:
         print(f"stopped {title} being sent as a message to {console}")
-
