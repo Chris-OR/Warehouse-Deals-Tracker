@@ -661,7 +661,7 @@ def manually_add_game(title, price, system, url, image_url, ware):
     game.date += f"{date}: {game.price},"
     db.session.commit()
     back_in_stock = True
-    send_telegram_message(title, price, url, system, game.low, game.average, is_new, price_change, back_in_stock)
+    send_telegram_message(title, price, url, system, game.low, game.average, is_new, price_change, back_in_stock, ware)
 
 
 def send_telegram_message(title, price, url, console, low, average, new_game, price_change, back_in_stock, ware):
