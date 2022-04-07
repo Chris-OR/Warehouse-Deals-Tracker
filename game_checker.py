@@ -476,12 +476,12 @@ def initialize_hardware(url):
         game_price = [game.replace("$", "") for game in game_price]
 
     if len(game_titles) == len(game_price) and not captcha:
-        game_list = Hardware.query.all()
+        game_list = db.session.query(Hardware).all()
         for game in game_list:
             game.in_stock = False
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
         available_games = Hardware.query.filter_by(available=True).all()
-        all_games = db.session.query(Games).all()
+        all_games = db.session.query(Hardware).all()
         for i in range(len(game_titles)):
             new_game = False
             price_change = False
