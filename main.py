@@ -69,6 +69,7 @@ class AddGame(FlaskForm):
     title = StringField("title", validators=[DataRequired()])
     price = DecimalField("price", validators=[DataRequired()])
     system = RadioField("system", choices=[("PlayStation 4", "PlayStation 4"), ("PlayStation 5", "PlayStation 5"), ("Nintendo Switch", "Nintendo Switch"), ("Xbox One", "Xbox One"), ("Xbox Series X", "Xbox Series X")])
+    ware = RadioField("hardware/software", choices=[("Hardware", "Hardware"), ("Software", "Software")])
     url = StringField("url", validators=[DataRequired()])
     image_url = StringField("image_url", validators=[DataRequired()])
     submit = SubmitField("Add Game")
@@ -84,6 +85,8 @@ def checker_thread():
         time.sleep(151)
         gc.initialize_webpages(ps5_no_referral, "PlayStation 5")
         price_data()
+        time.sleep(151)
+        gc.initialize_hardware("https://www.amazon.ca/s?i=videogames&bbn=8929975011&dc&qid=1649365196&ref=sr_nr_i_16")
         time.sleep(151)
         gc.initialize_webpages(xbox_one_no_referral, "Xbox One")
         price_data()
@@ -123,11 +126,12 @@ def add_game():
     if form.validate_on_submit():
         title = request.form.get("title")
         price = request.form.get("price")
+        ware = request.form.get("ware")
         system = request.form.get("system")
         print(system)
         url = request.form.get("url") + "&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
         image_url = request.form.get("image_url")
-        gc.manually_add_game(title, price, system, url, image_url)
+        gc.manually_add_game(title, price, system, url, image_url, ware)
         return redirect("/")
     else:
         return render_template('add-game.html', form=form)
