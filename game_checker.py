@@ -109,7 +109,7 @@ class Hardware(db.Model):
     average = db.Column(db.Numeric(10, 2), nullable=False)
 
 
-db.create_all()
+# db.create_all()
 
 
 class ActivePosts(db.Model):
@@ -482,8 +482,8 @@ def initialize_hardware(url):
             if check_regex(game_titles[i], game):
                 # hardware deals only looks for deals on hardware that we added ourselves
                 if not game:
-                    print(f"{game_titles[i]} is not in the database and thus was skipped")
-
+                    # print(f"{game_titles[i]} is not in the database and thus was skipped")
+                    pass
                 # check for price changes
                 else:
                     print(f"{game_titles[i]} is ${game_price[i]}")

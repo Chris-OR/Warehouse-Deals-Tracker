@@ -87,6 +87,7 @@ def checker_thread():
         price_data()
         time.sleep(151)
         gc.initialize_hardware("https://www.amazon.ca/s?i=videogames&bbn=8929975011&dc&qid=1649365196&ref=sr_nr_i_16")
+        price_data()
         time.sleep(151)
         gc.initialize_webpages(xbox_one_no_referral, "Xbox One")
         price_data()
@@ -287,6 +288,14 @@ def sorter(sort_method, system):
 
 def price_data():
     games = gc.db.session.query(gc.Games).all()
+    for game in games:
+        prices = get_price_list(game)
+        dates = get_date_list(game)
+
+        game.average = round(sum(prices) / len(prices), 2)
+        game.high = max(prices)
+        game.low = min(prices)
+    games = gc.db.session.query(gc.Hardware).all()
     for game in games:
         prices = get_price_list(game)
         dates = get_date_list(game)
