@@ -224,7 +224,7 @@ def initialize_webpages(url, console):
         game_price = [game.getText() for game in game_price if "$" in game.getText()]
         game_price = [game.replace("$", "") for game in game_price]
 
-    if len(game_titles) == len(game_price) and not captcha:
+    if len(game_titles) == len(game_price) and not captcha and len(game_titles) != 0:
         clear_stock(console, ware)
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
         available_games = Games.query.filter_by(available=True).all()
@@ -374,7 +374,7 @@ def initialize_webpages(url, console):
         for game in game_price:
             print(game)
         print(webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base"))
-        print("uh oh")
+        print("Everything was mistakenly out of stock or the prices and titles did not line up")
 
     # active_posts = ActivePosts.query.all()
     # for post in active_posts:
@@ -481,7 +481,7 @@ def initialize_hardware(url, console):
         game_price = [game.getText() for game in game_price if "$" in game.getText()]
         game_price = [game.replace("$", "") for game in game_price]
 
-    if len(game_titles) == len(game_price) and not captcha:
+    if len(game_titles) == len(game_price) and not captcha and len(game_titles) != 0:
         clear_stock(console, ware)
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
         available_games = Hardware.query.filter_by(available=True).all()
@@ -601,7 +601,7 @@ def initialize_hardware(url, console):
         for game in game_price:
             print(game)
         print(webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base"))
-        print("uh oh")
+        print("Everything was mistakenly out of stock or the prices and titles did not line up")
 
     # active_posts = ActivePosts.query.all()
     # for post in active_posts:
