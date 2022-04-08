@@ -489,7 +489,7 @@ def initialize_hardware(url):
             date = dt.datetime.now()
             date = date.strftime("%b %d %Y")
             game = Hardware.query.filter_by(title=game_titles[i]).first()
-            print(f"{game_titles[i]} is ${game_price[i]}")
+            # print(f"{game_titles[i]} is ${game_price[i]}")
             if check_regex(game_titles[i], game):
                 # hardware deals only looks for deals on hardware that we added ourselves
                 if not game:
