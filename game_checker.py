@@ -127,6 +127,7 @@ def initialize_webpages(url, console):
     new_game = False
     price_change = False
     back_in_stock = False
+    ware = "Software"
 
     while searching:
         try:
@@ -224,7 +225,7 @@ def initialize_webpages(url, console):
         game_price = [game.replace("$", "") for game in game_price]
 
     if len(game_titles) == len(game_price) and not captcha:
-        clear_stock(console)
+        clear_stock(console, ware)
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
         available_games = Games.query.filter_by(available=True).all()
         all_games = db.session.query(Games).all()
@@ -382,8 +383,12 @@ def initialize_webpages(url, console):
     print("\nmoving on to next console...\n")
 
 
-def clear_stock(console):
-    game_list = Games.query.filter_by(system=console).all()
+def clear_stock(console, ware):
+    if ware == "Software":
+        game_list = Games.query.filter_by(system=console).all()
+    elif ware == "Hardware":
+        game_list = Hardware.query.filter_by(system=console).all()
+
     for game in game_list:
         game.in_stock = False
 
@@ -393,7 +398,7 @@ def check_regex(title, game):
         r'bluetooth|playstation 3|InvisibleShield|Just Dance 2021 - PlayStation 5 - PlayStation 5 Edition')
     mo = game_regex.search(title.lower())
     if mo:
-        print(f"{title} has been regexxed.  We will skip its rotation")
+        # print(f"{title} has been regexxed.  We will skip its rotation")
         if game:
             print(f"We have found a match in the database.  We will now remove {title} from the database")
             db.session.delete(game)
@@ -417,7 +422,7 @@ def check_price():
     pass
 
 
-def initialize_hardware(url):
+def initialize_hardware(url, console):
     print(f"trying to load hardware deals...")
     searching = True
     establishing_connection = True
@@ -425,6 +430,7 @@ def initialize_hardware(url):
     new_game = False
     price_change = False
     back_in_stock = False
+    ware = "Hardware"
 
     while searching:
         try:
@@ -476,9 +482,7 @@ def initialize_hardware(url):
         game_price = [game.replace("$", "") for game in game_price]
 
     if len(game_titles) == len(game_price) and not captcha:
-        game_list = db.session.query(Hardware).all()
-        for game in game_list:
-            game.in_stock = False
+        clear_stock(console, ware)
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
         available_games = Hardware.query.filter_by(available=True).all()
         all_games = db.session.query(Hardware).all()
