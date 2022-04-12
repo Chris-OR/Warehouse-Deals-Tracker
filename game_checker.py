@@ -423,7 +423,7 @@ def check_price():
 
 
 def initialize_hardware(url, console):
-    print(f"trying to load hardware deals...")
+    print(f"trying to load {console} hardware deals...")
     searching = True
     establishing_connection = True
     list_of_price_changes = []
