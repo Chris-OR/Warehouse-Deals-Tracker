@@ -77,7 +77,6 @@ class AddGame(FlaskForm):
 
 def checker_thread():
     captcha = False
-
     while not captcha:
         if not captcha:
             captcha = gc.initialize_webpages(ps4_no_referral, "PlayStation 4")

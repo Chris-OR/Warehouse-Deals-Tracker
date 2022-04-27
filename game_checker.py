@@ -390,6 +390,7 @@ def clear_stock(console, ware):
         game_list = Games.query.filter_by(system=console).all()
     elif ware == "Hardware":
         game_list = Hardware.query.filter_by(system=console).all()
+
     for game in game_list:
         game.in_stock = False
 
