@@ -218,6 +218,8 @@ def initialize_webpages(url, console):
         print(solution)
         print("caught a captcha - we will move on")
         captcha = True
+        captcha_alert()
+        return captcha
 
     if len(game_titles) != len(game_price):
         game_price = webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base")
@@ -475,6 +477,8 @@ def initialize_hardware(url, console):
         print(solution)
         print("caught a captcha - we will move on")
         captcha = True
+        captcha_alert()
+        return captcha
 
     if len(game_titles) != len(game_price):
         game_price = webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base")
@@ -754,3 +758,9 @@ def send_telegram_message(title, price, url, console, low, average, new_game, pr
         print(f"Sent message.  We tracked {title} for {console} at {price}")
     else:
         print(f"stopped {title} being sent as a message to {console}")
+
+
+def captcha_alert():
+    bot = telegram.Bot(os.environ.get("CAPTCHA_TOKEN"))
+    message = "⚠ SCANNER HIT A CAPTCHA - RESET IT NOW ⚠"
+    bot.sendMessage("1779921442", message, parse_mode=telegram.ParseMode.HTML)
