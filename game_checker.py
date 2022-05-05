@@ -15,8 +15,8 @@ from sqlalchemy.ext.mutable import MutableList
 from bs4 import BeautifulSoup
 import datetime as dt
 import praw
-# import telebot
-from telebot.async_telebot import AsyncTeleBot
+import telebot
+# from telebot.async_telebot import AsyncTeleBot
 import asyncio
 
 PS4_URL = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A7089437011%2Cn%3A6458584011&dc&qid=1613426168&rnid=8929975011&ref=sr_nr_n_2&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
@@ -80,9 +80,13 @@ warehouse_deals_url = "https://warehouse-deals.herokuapp.com/"
 #     high = db.Column(db.DECIMAL(0, 2), nullable=False)
 #     average = db.Column(db.DECIMAL(0, 2), nullable=False)
 
-ps_bot = AsyncTeleBot(os.environ.get("PS_TOKEN"))
-x_bot = AsyncTeleBot(os.environ.get("XBOX_TOKEN"))
-switch_bot = AsyncTeleBot(os.environ.get("SWITCH_TOKEN"))
+# ps_bot = AsyncTeleBot(os.environ.get("PS_TOKEN"))
+# x_bot = AsyncTeleBot(os.environ.get("XBOX_TOKEN"))
+# switch_bot = AsyncTeleBot(os.environ.get("SWITCH_TOKEN"))
+
+ps_bot = telebot.TeleBot(os.environ.get("PS_TOKEN"))
+x_bot = telebot.TeleBot(os.environ.get("XBOX_TOKEN"))
+switch_bot = telebot.TeleBot(os.environ.get("SWITCH_TOKEN"))
 
 
 class Games(db.Model):
@@ -795,21 +799,36 @@ def captcha_alert():
 
 
 def initialize_ps_bot():
-    asyncio.run(ps_bot.polling())
-
+    # asyncio.run(ps_bot.polling())
+    ps_bot.polling()
 
 def initialize_switch_bot():
-    asyncio.run(switch_bot.polling())
+    # asyncio.run(switch_bot.polling())
+    switch_bot.polling()
 
 
 def initialize_xbox_bot():
-    asyncio.run(x_bot.polling())
-
+    # asyncio.run(x_bot.polling())
+    x_bot.polling()
 
 # PS BOT COMMANDS
+# async def start_message(msg):
+#     await ps_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
+#     user = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
+#     if not user:
+#         print("new user subscribed to receive PS Bot notifications")
+#         new_user = PSTelegramUsers(
+#             chatID=msg.chat.id,
+#         )
+#         db.session.add(new_user)
+#         db.session.commit()
+#         print(f"added chatID: {msg.chat.id} to the PS Telegram Users database")
+#     else:
+#         print("User is already subscribed to receive notifications")
+
 @ps_bot.message_handler(commands=["start"])
-async def start_message(msg):
-    await ps_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
+def start_message(msg):
+    ps_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
     user = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if not user:
         print("new user subscribed to receive PS Bot notifications")
@@ -822,10 +841,9 @@ async def start_message(msg):
     else:
         print("User is already subscribed to receive notifications")
 
-
 @ps_bot.message_handler(commands=["stop"])
-async def stop_message(msg):
-    await ps_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
+def stop_message(msg):
+    ps_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
     user = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if user:
         db.session.delete(user)
@@ -837,8 +855,8 @@ async def stop_message(msg):
 
 # SWITCH BOT COMMANDS
 @switch_bot.message_handler(commands=["start"])
-async def start_message(msg):
-    await switch_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
+def start_message(msg):
+    switch_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
     user = SwitchTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if not user:
         print("new user subscribed to receive Switch Bot notifications")
@@ -853,8 +871,8 @@ async def start_message(msg):
 
 
 @switch_bot.message_handler(commands=["stop"])
-async def stop_message(msg):
-    await switch_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
+def stop_message(msg):
+    switch_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
     user = SwitchTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if user:
         db.session.delete(user)
@@ -866,8 +884,8 @@ async def stop_message(msg):
 
 # X BOT COMMANDS
 @x_bot.message_handler(commands=["start"])
-async def start_message(msg):
-    await x_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
+def start_message(msg):
+    x_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
     user = XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if not user:
         print("new user subscribed to receive ps bot notifications")
@@ -882,8 +900,8 @@ async def start_message(msg):
 
 
 @x_bot.message_handler(commands=["stop"])
-async def stop_message(msg):
-    await x_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
+def stop_message(msg):
+    x_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
     user = XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if user:
         db.session.delete(user)
