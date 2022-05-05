@@ -11,6 +11,7 @@ from amazoncaptcha import AmazonCaptcha
 from proxy_requests import ProxyRequests
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.ext.mutable import MutableList
 from bs4 import BeautifulSoup
 import datetime as dt
 import praw
@@ -123,7 +124,7 @@ class ActivePosts(db.Model):
 
 class PSTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
-    unsubscribed_games = db.Column(db.MutableList.as_mutable(db.PickleType), default=[])
+    unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
 class XboxTelegramUsers(db.Model):
