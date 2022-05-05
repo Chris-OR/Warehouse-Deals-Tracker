@@ -30,4 +30,4 @@ praw==7.5.0
 amazoncaptcha==0.5.6
 telegram~=0.0.1
 PyTelegramBotAPI~=4.5.0
-telebot~=0.0.4
+aiohttp~=3.8.1
