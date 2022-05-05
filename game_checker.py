@@ -145,11 +145,7 @@ class SwitchTelegramUsers(db.Model):
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
-PSTelegramUsers.__table__.drop(db.engine)
-XboxTelegramUsers.__table__.drop(db.engine)
-SwitchTelegramUsers.__table__.drop(db.engine)
-
-# db.create_all()
+db.create_all()
 # db.session.commit()
 
 
