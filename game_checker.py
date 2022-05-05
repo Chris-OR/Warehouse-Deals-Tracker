@@ -129,20 +129,24 @@ class ActivePosts(db.Model):
 
 class PSTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
+    subscribed = db.Column(db.Boolean(nullible=False))
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
 class XboxTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
+    subscribed = db.Column(db.Boolean(nullible=False))
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
 class SwitchTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
+    subscribed = db.Column(db.Boolean(nullible=False))
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
-# db.create_all()
+db.create_all()
+db.session.commit()
 
 
 def initialize_webpages(url, console):
@@ -720,32 +724,32 @@ def send_telegram_message(title, price, url, console, low, average, new_game, pr
             console = "PS4"
             section_url = PS4_URL
             token = ps_bot_token
-            users = PSTelegramUsers.query.all()
+            users = PSTelegramUsers.query.filter_by(subscribed=True).all()
             # chat_id = ps_bot_chat_id
             flair = "4e5b6756-d373-11eb-9563-0ee70d6a723d"
         elif console == "PlayStation 5":
             console = "PS5"
             section_url = PS5_URL
             token = ps_bot_token
-            users = PSTelegramUsers.query.all()
+            users = PSTelegramUsers.query.filter_by(subscribed=True).all()
             # chat_id = ps_bot_chat_id
             flair = "71f32bc2-d373-11eb-a352-0ef5d618d05d"
         elif console == "Xbox One":
             section_url = XBOX_ONE
             token = xbox_bot_token
-            users = XboxTelegramUsers.query.all()
+            users = XboxTelegramUsers.query.filter_by(subscribed=True).all()
             # chat_id = xbox_bot_chat_id
             flair = "6678027c-d373-11eb-9d99-0e2e2eefa571"
         elif console == "Xbox Series X":
             section_url = XBOX_SERIES
             token = xbox_bot_token
-            users = XboxTelegramUsers.query.all()
+            users = XboxTelegramUsers.query.filter_by(subscribed=True).all()
             # chat_id = xbox_bot_chat_id
             flair = "7cb3db06-d373-11eb-a655-0eb11db1fdb5"
         elif console == "Nintendo Switch":
             section_url = SWITCH
             token = switch_bot_token
-            users = SwitchTelegramUsers.query.all()
+            users = SwitchTelegramUsers.query.filter_by(subscribed=True).all()
             # chat_id = switch_bot_chat_id
             flair = "95d720ca-d373-11eb-85bc-0e3981761d6d"
 
@@ -802,6 +806,7 @@ def initialize_ps_bot():
     # asyncio.run(ps_bot.polling())
     ps_bot.polling()
 
+
 def initialize_switch_bot():
     # asyncio.run(switch_bot.polling())
     switch_bot.polling()
@@ -826,6 +831,7 @@ def initialize_xbox_bot():
 #     else:
 #         print("User is already subscribed to receive notifications")
 
+
 @ps_bot.message_handler(commands=["start"])
 def start_message(msg):
     ps_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
@@ -834,6 +840,7 @@ def start_message(msg):
         print("new user subscribed to receive PS Bot notifications")
         new_user = PSTelegramUsers(
             chatID=msg.chat.id,
+            subscribed=True
         )
         db.session.add(new_user)
         db.session.commit()
@@ -841,12 +848,13 @@ def start_message(msg):
     else:
         print("User is already subscribed to receive notifications")
 
+
 @ps_bot.message_handler(commands=["stop"])
 def stop_message(msg):
     ps_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
     user = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if user:
-        db.session.delete(user)
+        user.subscribed = False
         db.session.commit()
         print(f"{msg.chat.id} has opted out of notifications from PS Bot")
     else:
@@ -862,12 +870,13 @@ def start_message(msg):
         print("new user subscribed to receive Switch Bot notifications")
         new_user = SwitchTelegramUsers(
             chatID=msg.chat.id,
+            subscribed=True
         )
         db.session.add(new_user)
         db.session.commit()
-        print(f"added chatID: {msg.chat.id} to the PS Telegram Users database")
+        print(f"added chatID: {msg.chat.id} to the Switch Telegram Users database")
     else:
-        print("user is already subscribed to receive notifications")
+        print("User is already subscribed to receive notifications")
 
 
 @switch_bot.message_handler(commands=["stop"])
@@ -875,9 +884,9 @@ def stop_message(msg):
     switch_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
     user = SwitchTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if user:
-        db.session.delete(user)
+        user.subscribed = False
         db.session.commit()
-        print(f"{msg.chat.id} has opted out of notifications from PS Bot")
+        print(f"{msg.chat.id} has opted out of notifications from Switch Bot")
     else:
         print("A non subscriber attempted to unsubscribe")
 
@@ -888,15 +897,16 @@ def start_message(msg):
     x_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
     user = XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if not user:
-        print("new user subscribed to receive ps bot notifications")
+        print("A new user subscribed to receive X Bot notifications")
         new_user = XboxTelegramUsers(
             chatID=msg.chat.id,
+            subscribed=True
         )
         db.session.add(new_user)
         db.session.commit()
-        print(f"added chatID: {msg.chat.id} to the  Telegram Users database")
+        print(f"added chatID: {msg.chat.id} to the XBox Telegram Users database")
     else:
-        print("user is already subscribed to receive notifications")
+        print("User is already subscribed to receive notifications")
 
 
 @x_bot.message_handler(commands=["stop"])
@@ -904,9 +914,9 @@ def stop_message(msg):
     x_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
     user = XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if user:
-        db.session.delete(user)
+        user.subscribed = False
         db.session.commit()
-        print(f"{msg.chat.id} has opted out of notifications from PS Bot")
+        print(f"{msg.chat.id} has opted out of notifications from X Bot")
     else:
         print("A non subscriber attempted to unsubscribe")
 
