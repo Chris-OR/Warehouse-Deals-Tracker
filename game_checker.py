@@ -867,6 +867,25 @@ def help_message(msg):
     ps_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time." )
 
 
+@ps_bot.message_handler(commands=["remove"])
+def remove_notification(msg):
+    sent = ps_bot.send_message(msg.chat.id, "Please type the exact title of the game you wish to stop receiving notifications for.  Make sure the title is the exact same title as the Amazon listing.")
+    ps_bot.register_next_step_handler(sent, hello)
+
+
+def hello(message):
+    print(message)
+    game = Games.query.filter_by(title=message).first()
+    if not game:
+        game = Hardware.query.filter_by(title=message).first()
+
+    if not game:
+        ps_bot.send_message(message.chat.id, "Sorry, but we are unable to find that title in our database. Please make sure the title is EXACTLY the same as the Amazon listing.")
+
+    if game:
+        ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
+
+
 # SWITCH BOT COMMANDS
 @switch_bot.message_handler(commands=["start"])
 def start_message(msg):
