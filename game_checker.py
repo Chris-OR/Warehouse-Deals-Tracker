@@ -805,4 +805,4 @@ async def start_message(msg):
 
 
 # ps_bot.polling()
-asyncio.run(ps_bot.polling())
+# asyncio.run(ps_bot.polling())
