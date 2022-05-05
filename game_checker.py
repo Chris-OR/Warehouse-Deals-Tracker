@@ -874,10 +874,10 @@ def remove_notification(msg):
 
 
 def hello(message):
-    print(message)
-    game = Games.query.filter_by(title=message).first()
+    print(message.text)
+    game = Games.query.filter_by(title=message.text).first()
     if not game:
-        game = Hardware.query.filter_by(title=message).first()
+        game = Hardware.query.filter_by(title=message.text).first()
 
     if not game:
         ps_bot.send_message(message.chat.id, "Sorry, but we are unable to find that title in our database. Please make sure the title is EXACTLY the same as the Amazon listing.")
