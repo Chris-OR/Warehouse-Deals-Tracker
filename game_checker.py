@@ -80,8 +80,8 @@ warehouse_deals_url = "https://warehouse-deals.herokuapp.com/"
 #     average = db.Column(db.DECIMAL(0, 2), nullable=False)
 
 ps_bot = telebot.TeleBot(os.environ.get("PS_TOKEN"))
-x_bot = telebot.TeleBot(os.environ.get("XBOX_TOKEN"))
-switch_bot = telebot.TeleBot(os.environ.get("SWITCH_TOKEN"))
+# x_bot = telebot.TeleBot(os.environ.get("XBOX_TOKEN"))
+# switch_bot = telebot.TeleBot(os.environ.get("SWITCH_TOKEN"))
 
 
 class Games(db.Model):
@@ -137,7 +137,7 @@ class SwitchTelegramUsers(db.Model):
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
-db.create_all()
+# db.create_all()
 
 
 def initialize_webpages(url, console):
@@ -801,4 +801,4 @@ def start_message(msg):
         print(f"added chatID: {msg.chat.id} to the PS Telegram Users database")
 
 
-# ps_bot.polling(none_stop=True)
+ps_bot.polling()
