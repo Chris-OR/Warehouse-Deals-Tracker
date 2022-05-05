@@ -145,8 +145,12 @@ class SwitchTelegramUsers(db.Model):
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
-db.create_all()
-db.session.commit()
+PSTelegramUsers.__table__.drop()
+XboxTelegramUsers.__table__.drop()
+SwitchTelegramUsers.__table__.drop()
+
+# db.create_all()
+# db.session.commit()
 
 
 def initialize_webpages(url, console):
