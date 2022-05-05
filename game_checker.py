@@ -14,6 +14,7 @@ from flask_sqlalchemy import SQLAlchemy
 from bs4 import BeautifulSoup
 import datetime as dt
 import praw
+import telebot
 
 PS4_URL = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A7089437011%2Cn%3A6458584011&dc&qid=1613426168&rnid=8929975011&ref=sr_nr_n_2&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
 PS5_URL = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A20974860011%2Cn%3A20974876011&dc&qid=1614274309&rnid=8929975011&ref=sr_nr_n_2&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
@@ -77,6 +78,10 @@ warehouse_deals_url = "https://warehouse-deals.herokuapp.com/"
 #     high = db.Column(db.DECIMAL(0, 2), nullable=False)
 #     average = db.Column(db.DECIMAL(0, 2), nullable=False)
 
+ps_bot = telebot.TeleBot(os.environ.get("PS_TOKEN"))
+x_bot = telebot.Telebot(os.environ.get("XBOX_TOKEN"))
+switch_bot = telebot.Telebot(os.environ.get("SWITCH_TOKEN"))
+
 
 class Games(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -110,13 +115,28 @@ class Hardware(db.Model):
     average = db.Column(db.Numeric(10, 2), nullable=False)
 
 
-# db.create_all()
-
-
 class ActivePosts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.String(), nullable=False)
     title = db.Column(db.String(250), nullable=False)
+
+
+class PSTelegramUsers(db.Model):
+    chatID = db.Column(db.Integer, primary_key=True)
+    unsubscribed_games = db.Column(db.MutableList.as_mutable(db.PickleType), default=[])
+
+
+class XboxTelegramUsers(db.Model):
+    chatID = db.Column(db.Integer, primary_key=True)
+    unsubscribed_games = db.Column(db.MutableList.as_mutable(db.PickleType), default=[])
+
+
+class SwitchTelegramUsers(db.Model):
+    chatID = db.Column(db.Integer, primary_key=True)
+    unsubscribed_games = db.Column(db.MutableList.as_mutable(db.PickleType), default=[])
+
+
+db.create_all()
 
 
 def initialize_webpages(url, console):
@@ -764,3 +784,17 @@ def captcha_alert():
     bot = telegram.Bot(os.environ.get("CAPTCHA_TOKEN"))
     message = "⚠ SCANNER HIT A CAPTCHA - RESET IT NOW ⚠"
     bot.sendMessage("1779921442", message, parse_mode=telegram.ParseMode.HTML)
+
+
+@ps_bot.message_handler(commands=["start"])
+def start_message(msg):
+    ps_bot.send_message(msg.chat.id, "welcome!")
+    user = Games.query.filter_by(chatID=msg.chat.id).first()
+    if not user:
+        print("new user subscribed to receive ps bot notifications")
+        new_user = PSTelegramUsers(
+            chatID=msg.chat.id,
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        print(f"added chatID: {msg.chat.id} to the PS Telegram Users database")
