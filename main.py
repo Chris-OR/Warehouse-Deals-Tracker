@@ -348,6 +348,8 @@ def get_date_list(game):
 
 threading.Thread(target=checker_thread, daemon=True).start()
 threading.Thread(target=gc.initialize_ps_bot, daemon=True).start()
+threading.Thread(target=gc.initialize_xbox_bot, daemon=True).start()
+threading.Thread(target=gc.initialize_switch_bot, daemon=True).start()
 
 if __name__ == "__main__":
     app.run(debug=False)

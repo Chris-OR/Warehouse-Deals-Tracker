@@ -64,7 +64,6 @@ db = SQLAlchemy(app)
 
 warehouse_deals_url = "https://warehouse-deals.herokuapp.com/"
 
-
 # template for adding new entries into database
 # class Games(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
@@ -81,10 +80,9 @@ warehouse_deals_url = "https://warehouse-deals.herokuapp.com/"
 #     high = db.Column(db.DECIMAL(0, 2), nullable=False)
 #     average = db.Column(db.DECIMAL(0, 2), nullable=False)
 
-# ps_bot = telebot.AsyncTeleBot(os.environ.get("PS_TOKEN"))
 ps_bot = AsyncTeleBot(os.environ.get("PS_TOKEN"))
-# x_bot = telebot.TeleBot(os.environ.get("XBOX_TOKEN"))
-# switch_bot = telebot.TeleBot(os.environ.get("SWITCH_TOKEN"))
+x_bot = AsyncTeleBot(os.environ.get("XBOX_TOKEN"))
+switch_bot = AsyncTeleBot(os.environ.get("SWITCH_TOKEN"))
 
 
 class Games(db.Model):
@@ -706,50 +704,55 @@ def send_telegram_message(title, price, url, console, low, average, new_game, pr
     if title in title_list:
         print("sending message...")
         ps_bot_token = os.environ.get("PS_TOKEN")
-        ps_bot_chat_id = os.environ.get("CHAT_ID")
+        # ps_bot_chat_id = os.environ.get("CHAT_ID")
 
         xbox_bot_token = os.environ.get("XBOX_TOKEN")
-        xbox_bot_chat_id = os.environ.get("CHAT_ID")
+        # xbox_bot_chat_id = os.environ.get("CHAT_ID")
 
         switch_bot_token = os.environ.get("SWITCH_TOKEN")
-        switch_bot_chat_id = os.environ.get("CHAT_ID")
+        # switch_bot_chat_id = os.environ.get("CHAT_ID")
 
         if console == "PlayStation 4":
             console = "PS4"
             section_url = PS4_URL
             token = ps_bot_token
-            chat_id = ps_bot_chat_id
+            users = PSTelegramUsers.query.all()
+            # chat_id = ps_bot_chat_id
             flair = "4e5b6756-d373-11eb-9563-0ee70d6a723d"
         elif console == "PlayStation 5":
             console = "PS5"
             section_url = PS5_URL
             token = ps_bot_token
-            chat_id = ps_bot_chat_id
+            users = PSTelegramUsers.query.all()
+            # chat_id = ps_bot_chat_id
             flair = "71f32bc2-d373-11eb-a352-0ef5d618d05d"
         elif console == "Xbox One":
             section_url = XBOX_ONE
             token = xbox_bot_token
-            chat_id = xbox_bot_chat_id
+            users = XboxTelegramUsers.query.all()
+            # chat_id = xbox_bot_chat_id
             flair = "6678027c-d373-11eb-9d99-0e2e2eefa571"
         elif console == "Xbox Series X":
             section_url = XBOX_SERIES
             token = xbox_bot_token
-            chat_id = xbox_bot_chat_id
+            users = XboxTelegramUsers.query.all()
+            # chat_id = xbox_bot_chat_id
             flair = "7cb3db06-d373-11eb-a655-0eb11db1fdb5"
         elif console == "Nintendo Switch":
             section_url = SWITCH
             token = switch_bot_token
-            chat_id = switch_bot_chat_id
+            users = SwitchTelegramUsers.query.all()
+            # chat_id = switch_bot_chat_id
             flair = "95d720ca-d373-11eb-85bc-0e3981761d6d"
 
         bot = telegram.Bot(token)
 
         if new_game:
-            message = f"<b>New Game Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
+            message = f"<b>New Game Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals"
         elif back_in_stock:
-            message = f"<b>Back in Stock Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is  ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
+            message = f"<b>[{console}]</b> <a href='{url}'>{title}</a> is  ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals"
         else:
-            message = f"<b>Price Change Alert ⚠\nFor {console}:</b><a href='{url}'>\n{title}</a> is ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals\n\nCheck out our <a href='{warehouse_deals_url}'>website!</a>"
+            message = f"<b>[{console}] </b><a href='{url}'>{title}</a> is ${price}\n\nOr, click <a href='{section_url}'>here</a> for all {console} deals"
             try:
                 post = ActivePosts.query.filter_by(title=title).first()
                 submission = reddit.submission(post.post_id)
@@ -760,7 +763,8 @@ def send_telegram_message(title, price, url, console, low, average, new_game, pr
             except:
                 print(
                     f"could not find {title} in the database.  It is supposed to be replaced with a new post following price change")
-        bot.sendMessage(chat_id, message, parse_mode=telegram.ParseMode.HTML)
+        for user in users:
+            bot.sendMessage(user.chatID, message, parse_mode=telegram.ParseMode.HTML)
         # print(console, title, price, flair, console, url)
         try:
             post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}",
@@ -794,13 +798,51 @@ def initialize_ps_bot():
     asyncio.run(ps_bot.polling())
 
 
+def initialize_switch_bot():
+    asyncio.run(switch_bot.polling())
+
+
+def initialize_xbox_bot():
+    asyncio.run(x_bot.polling())
+
+
+# PS BOT COMMANDS
 @ps_bot.message_handler(commands=["start"])
 async def start_message(msg):
-    await ps_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type "/stop" to stop getting all notifications. You may type "/help" to see a list of available commands for this bot.')
+    await ps_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
     user = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if not user:
-        print("new user subscribed to receive ps bot notifications")
+        print("new user subscribed to receive PS Bot notifications")
         new_user = PSTelegramUsers(
+            chatID=msg.chat.id,
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        print(f"added chatID: {msg.chat.id} to the PS Telegram Users database")
+    else:
+        print("User is already subscribed to receive notifications")
+
+
+@ps_bot.message_handler(commands=["stop"])
+async def stop_message(msg):
+    await ps_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
+    user = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        print(f"{msg.chat.id} has opted out of notifications from PS Bot")
+    else:
+        print("A non subscriber attempted to unsubscribe")
+
+
+# SWITCH BOT COMMANDS
+@switch_bot.message_handler(commands=["start"])
+async def start_message(msg):
+    await switch_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
+    user = SwitchTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
+    if not user:
+        print("new user subscribed to receive Switch Bot notifications")
+        new_user = SwitchTelegramUsers(
             chatID=msg.chat.id,
         )
         db.session.add(new_user)
@@ -810,10 +852,39 @@ async def start_message(msg):
         print("user is already subscribed to receive notifications")
 
 
-@ps_bot.message_handler(commands=["stop"])
+@switch_bot.message_handler(commands=["stop"])
 async def stop_message(msg):
-    await ps_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.")
-    user = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
+    await switch_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
+    user = SwitchTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        print(f"{msg.chat.id} has opted out of notifications from PS Bot")
+    else:
+        print("A non subscriber attempted to unsubscribe")
+
+
+# X BOT COMMANDS
+@x_bot.message_handler(commands=["start"])
+async def start_message(msg):
+    await x_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type /stop to stop getting all notifications. You may type /help to see a list of available commands for this bot.')
+    user = XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
+    if not user:
+        print("new user subscribed to receive ps bot notifications")
+        new_user = XboxTelegramUsers(
+            chatID=msg.chat.id,
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        print(f"added chatID: {msg.chat.id} to the  Telegram Users database")
+    else:
+        print("user is already subscribed to receive notifications")
+
+
+@x_bot.message_handler(commands=["stop"])
+async def stop_message(msg):
+    await x_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.  You can type /start to start getting notifications once again.")
+    user = XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if user:
         db.session.delete(user)
         db.session.commit()
