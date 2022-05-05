@@ -862,6 +862,11 @@ def stop_message(msg):
         print("A non subscriber attempted to unsubscribe")
 
 
+@ps_bot.message_handler(commands=["help"])
+def help_message(msg):
+    ps_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time." )
+
+
 # SWITCH BOT COMMANDS
 @switch_bot.message_handler(commands=["start"])
 def start_message(msg):
@@ -893,6 +898,11 @@ def stop_message(msg):
         print("A non subscriber attempted to unsubscribe")
 
 
+@switch_bot.message_handler(commands=["help"])
+def help_message(msg):
+    switch_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time." )
+
+
 # X BOT COMMANDS
 @x_bot.message_handler(commands=["start"])
 def start_message(msg):
@@ -922,6 +932,12 @@ def stop_message(msg):
         print(f"{msg.chat.id} has opted out of notifications from X Bot")
     else:
         print("A non subscriber attempted to unsubscribe")
+
+
+@x_bot.message_handler(commands=["help"])
+def help_message(msg):
+    x_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time." )
+
 
 # ps_bot.polling()
 # asyncio.run(ps_bot.polling())
