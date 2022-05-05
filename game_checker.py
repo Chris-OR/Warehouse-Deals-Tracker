@@ -129,12 +129,12 @@ class PSTelegramUsers(db.Model):
 
 class XboxTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
-    unsubscribed_games = db.Column(db.MutableList.as_mutable(db.PickleType), default=[])
+    unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
 class SwitchTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
-    unsubscribed_games = db.Column(db.MutableList.as_mutable(db.PickleType), default=[])
+    unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
 db.create_all()
