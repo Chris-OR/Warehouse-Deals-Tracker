@@ -796,7 +796,7 @@ def initialize_ps_bot():
 
 @ps_bot.message_handler(commands=["start"])
 async def start_message(msg):
-    await ps_bot.send_message(msg.chat.id, "welcome!")
+    await ps_bot.send_message(msg.chat.id, 'Welcome! You have just opted to receive notifications for new deals. You may type "/stop" to stop getting all notifications. You may type "/help" to see a list of available commands for this bot.')
     user = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if not user:
         print("new user subscribed to receive ps bot notifications")
@@ -808,6 +808,16 @@ async def start_message(msg):
         print(f"added chatID: {msg.chat.id} to the PS Telegram Users database")
     else:
         print("user is already subscribed to receive notifications")
+
+
+@ps_bot.message_handler(commands=["stop"])
+async def stop_message(msg):
+    await ps_bot.send_message((msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us."))
+    user = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
+    db.session.delete(user)
+    db.session.commit()
+    print(f"{msg.chat.id} has opted out of notifications from PS Bot")
+
 
 # ps_bot.polling()
 # asyncio.run(ps_bot.polling())
