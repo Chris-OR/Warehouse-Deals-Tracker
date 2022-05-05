@@ -879,11 +879,11 @@ def hello(message):
     if not game:
         game = Hardware.query.filter_by(title=message_formatted).first()
     if not game:
-        game = db.session.query(Games).filter(Games.title.contains(message_formatted)).first()
+        game = db.session.query(Games).filter(Games.title.ilike(message_formatted)).first()
         if game:
             ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
         if not game:
-            game = db.session.query(Hardware).filter(Hardware.title.contains(message_formatted)).first()
+            game = db.session.query(Hardware).filter(Hardware.title.ilike(message_formatted)).first()
             if game:
                 ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
             else:
