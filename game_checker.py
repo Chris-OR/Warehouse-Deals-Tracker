@@ -812,12 +812,14 @@ async def start_message(msg):
 
 @ps_bot.message_handler(commands=["stop"])
 async def stop_message(msg):
-    await ps_bot.send_message((msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us."))
+    await ps_bot.send_message(msg.chat.id, "We're sorry to see you go!  You will receive no more notifications from us.")
     user = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
-    db.session.delete(user)
-    db.session.commit()
-    print(f"{msg.chat.id} has opted out of notifications from PS Bot")
-
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        print(f"{msg.chat.id} has opted out of notifications from PS Bot")
+    else:
+        print("A non subscriber attempted to unsubscribe")
 
 # ps_bot.polling()
 # asyncio.run(ps_bot.polling())
