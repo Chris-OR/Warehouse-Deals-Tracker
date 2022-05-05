@@ -790,6 +790,10 @@ def captcha_alert():
     bot.sendMessage("1779921442", message, parse_mode=telegram.ParseMode.HTML)
 
 
+def initialize_ps_bot():
+    asyncio.run(ps_bot.polling())
+
+
 @ps_bot.message_handler(commands=["start"])
 async def start_message(msg):
     await ps_bot.send_message(msg.chat.id, "welcome!")
@@ -802,6 +806,7 @@ async def start_message(msg):
         db.session.add(new_user)
         db.session.commit()
         print(f"added chatID: {msg.chat.id} to the PS Telegram Users database")
+
 
 
 # ps_bot.polling()
