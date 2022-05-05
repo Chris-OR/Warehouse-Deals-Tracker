@@ -797,7 +797,7 @@ def initialize_ps_bot():
 @ps_bot.message_handler(commands=["start"])
 async def start_message(msg):
     await ps_bot.send_message(msg.chat.id, "welcome!")
-    user = Games.query.filter_by(chatID=msg.chat.id).first()
+    user = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first()
     if not user:
         print("new user subscribed to receive ps bot notifications")
         new_user = PSTelegramUsers(
@@ -806,7 +806,8 @@ async def start_message(msg):
         db.session.add(new_user)
         db.session.commit()
         print(f"added chatID: {msg.chat.id} to the PS Telegram Users database")
-
+    else:
+        print("user is already subscribed to receive notifications")
 
 
 # ps_bot.polling()
