@@ -129,19 +129,19 @@ class ActivePosts(db.Model):
 
 class PSTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
-    subscribed = db.Column(db.Boolean(nullible=False))
+    subscribed = db.Column(db.Boolean, nullable=False)
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
 class XboxTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
-    subscribed = db.Column(db.Boolean(nullible=False))
+    subscribed = db.Column(db.Boolean, nullable=False)
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
 class SwitchTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
-    subscribed = db.Column(db.Boolean(nullible=False))
+    subscribed = db.Column(db.Boolean, nullable=False)
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
@@ -846,7 +846,8 @@ def start_message(msg):
         db.session.commit()
         print(f"added chatID: {msg.chat.id} to the PS Telegram Users database")
     else:
-        print("User is already subscribed to receive notifications")
+        user.subscribed = True
+        print("An unsubscribed user has opted to receive notifications again")
 
 
 @ps_bot.message_handler(commands=["stop"])
@@ -876,7 +877,8 @@ def start_message(msg):
         db.session.commit()
         print(f"added chatID: {msg.chat.id} to the Switch Telegram Users database")
     else:
-        print("User is already subscribed to receive notifications")
+        user.subscribed = True
+        print("An unsubscribed user has opted to receive notifications again")
 
 
 @switch_bot.message_handler(commands=["stop"])
@@ -906,7 +908,8 @@ def start_message(msg):
         db.session.commit()
         print(f"added chatID: {msg.chat.id} to the XBox Telegram Users database")
     else:
-        print("User is already subscribed to receive notifications")
+        user.subscribed = True
+        print("An unsubscribed user has opted to receive notifications again")
 
 
 @x_bot.message_handler(commands=["stop"])
