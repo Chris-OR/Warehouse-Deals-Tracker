@@ -801,4 +801,4 @@ def start_message(msg):
         print(f"added chatID: {msg.chat.id} to the PS Telegram Users database")
 
 
-ps_bot.polling()
+# ps_bot.polling()
