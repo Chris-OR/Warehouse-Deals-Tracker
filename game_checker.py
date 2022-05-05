@@ -880,10 +880,14 @@ def hello(message):
         game = Hardware.query.filter_by(title=message_formatted).first()
     if not game:
         game = db.session.query(Games).filter(Games.title.contains(message_formatted)).first()
-        ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
-    if not game:
-        ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please make sure the title is exactly the same as the Amazon listing.")
-
+        if game:
+            ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
+        if not game:
+            game = db.session.query(Hardware).filter(Hardware.title.contains(message_formatted)).first()
+            if game:
+                ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
+            else:
+                ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please make sure the title is exactly the same as the Amazon listing.")
     if game:
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
 
