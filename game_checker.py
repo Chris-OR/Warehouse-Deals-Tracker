@@ -79,8 +79,8 @@ warehouse_deals_url = "https://warehouse-deals.herokuapp.com/"
 #     average = db.Column(db.DECIMAL(0, 2), nullable=False)
 
 ps_bot = telebot.TeleBot(os.environ.get("PS_TOKEN"))
-# x_bot = telebot.Telebot(os.environ.get("XBOX_TOKEN"))
-# switch_bot = telebot.Telebot(os.environ.get("SWITCH_TOKEN"))
+x_bot = telebot.TeleBot(os.environ.get("XBOX_TOKEN"))
+switch_bot = telebot.TeleBot(os.environ.get("SWITCH_TOKEN"))
 
 
 class Games(db.Model):
