@@ -874,15 +874,15 @@ def remove_notification(msg):
 
 
 def hello(message):
-    print(message.text)
-    message_formatted = message.text.replace("’", "'")
-    print(message_formatted)
+    message_formatted = message.text.replace("’", "'").strip()
     game = Games.query.filter_by(title=message_formatted).first()
     if not game:
         game = Hardware.query.filter_by(title=message_formatted).first()
-
     if not game:
-        ps_bot.send_message(message.chat.id, "Sorry, but we are unable to find that title in our database. Please make sure the title is EXACTLY the same as the Amazon listing.")
+        game = Games.query.filter_by(Games.title.contains(message_formatted)).first()
+        ps_bot.send_message(f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
+    if not game:
+        ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please make sure the title is exactly the same as the Amazon listing.")
 
     if game:
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
