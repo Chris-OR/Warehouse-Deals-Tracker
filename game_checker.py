@@ -926,14 +926,14 @@ def ps_add_game(msg):
 
 
 def ps_add(message, muted_games):
-    msg = f"You entered {message.text}, which corresponds to {int(muted_games[message.text])}.\n\nType 'yes' if this is the title you want to start receiving notifications for again."
+    msg = f"You entered {message.text}, which corresponds to {muted_games[int(message.text)]}.\n\nType 'yes' if this is the title you want to start receiving notifications for again."
     sent = ps_bot.send_message(message.chat.id, msg)
     ps_bot.register_next_step_handler(sent, ps_confirm_add, muted_games, message.text)
 
 
 def ps_confirm_add(message, muted_games, i):
     if message.text.strip().lower() == "yes":
-        del muted_games[i-1]
+        del muted_games[int(i)-1]
         ps_bot.send_message(message.chat.id, "Thank you.  You will start receiving notifications for that title again.")
         PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games = muted_games
         db.session.commit()
