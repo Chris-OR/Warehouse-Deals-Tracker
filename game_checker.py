@@ -847,6 +847,7 @@ def start_message(msg):
         print(f"added chatID: {msg.chat.id} to the PS Telegram Users database")
     else:
         user.subscribed = True
+        db.session.commit()
         print("An unsubscribed user has opted to receive notifications again")
 
 
@@ -867,13 +868,13 @@ def help_message(msg):
     ps_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time." )
 
 
-@ps_bot.message_handler(commands=["remove"])
+@ps_bot.message_handler(commands=["mute"])
 def remove_notification(msg):
     sent = ps_bot.send_message(msg.chat.id, "Please type the exact title of the game you wish to stop receiving notifications for.  Make sure the title is the exact same title as the Amazon listing.")
-    ps_bot.register_next_step_handler(sent, hello)
+    ps_bot.register_next_step_handler(sent, ps_mute)
 
 
-def hello(message):
+def ps_mute(message):
     message_formatted = message.text.replace("’", "'").strip()
     game = Games.query.filter_by(title=message_formatted).first()
     if not game:
@@ -890,6 +891,12 @@ def hello(message):
                 ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please make sure the title is exactly the same as the Amazon listing.")
     if game:
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
+        PSTelegramUsers.filter_by(chatID=message.chat.id).first().unsubscribed_games += game.title
+
+
+@ps_bot.message_handler(commands=["list"])
+def ps_list(msg):
+    ps_bot.send_message(msg.chat.id, PSTelegramUsers.filter_by(chatID=msg.chat.id).first().unsubscribed_games)
 
 
 # SWITCH BOT COMMANDS
@@ -908,6 +915,7 @@ def start_message(msg):
         print(f"added chatID: {msg.chat.id} to the Switch Telegram Users database")
     else:
         user.subscribed = True
+        db.session.commit()
         print("An unsubscribed user has opted to receive notifications again")
 
 
@@ -944,6 +952,7 @@ def start_message(msg):
         print(f"added chatID: {msg.chat.id} to the XBox Telegram Users database")
     else:
         user.subscribed = True
+        db.session.commit()
         print("An unsubscribed user has opted to receive notifications again")
 
 
