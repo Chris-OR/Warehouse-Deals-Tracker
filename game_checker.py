@@ -891,7 +891,7 @@ def ps_mute(message):
                 sent = ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for?\n\n{game.title}\n\nPlease respond with 'yes' if it is.")
                 ps_bot.register_next_step_handler(sent, ps_confirm_mute, game.title)
             else:
-                ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please make sure the title is exactly the same as the Amazon listing.")
+                ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please make sure the title is exactly the same as the Amazon listing.  You can type /mute to try again.")
     elif game:
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
         PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += game.title
@@ -903,6 +903,8 @@ def ps_confirm_mute(message, title):
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
         PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [title]
         db.session.commit()
+    else:
+        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to stop notifications for this title.  You will continue receiving notifications for this item.  If there was a mistake, please try again by typing /mute")
 
 
 @ps_bot.message_handler(commands=["list"])
@@ -927,9 +929,12 @@ def ps_add_game(msg):
 
 def ps_add(message, muted_games):
     try:
-        msg = f"You entered {message.text}, which corresponds to {muted_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to start receiving notifications for again."
-        sent = ps_bot.send_message(message.chat.id, msg)
-        ps_bot.register_next_step_handler(sent, ps_confirm_add, muted_games, message.text)
+        if int(message.text) > 0:
+            msg = f"You entered {message.text}, which corresponds to {muted_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to start receiving notifications for again."
+            sent = ps_bot.send_message(message.chat.id, msg)
+            ps_bot.register_next_step_handler(sent, ps_confirm_add, muted_games, message.text)
+        else:
+            ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(muted_games)}.  You can type /add to try again.")
     except:
         ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(muted_games)}.  You can type /add to try again.")
 
@@ -940,6 +945,9 @@ def ps_confirm_add(message, muted_games, i):
         ps_bot.send_message(message.chat.id, "Thank you.  You will start receiving notifications for that title again.")
         PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games = muted_games
         db.session.commit()
+    else:
+        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to start notifications again for this title.  You will continue receiving no notifications for this item.  If there was a mistake, please try again by typing /mute")
+
 
 
 # SWITCH BOT COMMANDS
