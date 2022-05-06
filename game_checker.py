@@ -427,7 +427,7 @@ def clear_stock(console, ware):
 
 def check_regex(title, game):
     game_regex = re.compile(
-        r'bluetooth|playstation 3|InvisibleShield|Just Dance 2021 - PlayStation 5 - PlayStation 5 Edition')
+        r'bluetooth|playstation 3|InvisibleShield|Just Dance 2021 - PlayStation 5 - PlayStation 5 Edition|PDP Gaming LVL40|Goplay Grip Provides')
     mo = game_regex.search(title.lower())
     if mo:
         # print(f"{title} has been regexxed.  We will skip its rotation")
@@ -895,6 +895,7 @@ def ps_mute(message):
     elif game:
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
         PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += game.title
+        db.session.commit()
 
 
 def ps_confirm_mute(message, title):
@@ -902,8 +903,9 @@ def ps_confirm_mute(message, title):
         print(title)
         PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
-        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += title
+        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [title]
         print(PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games)
+        db.session.commit()
 
 
 @ps_bot.message_handler(commands=["list"])
