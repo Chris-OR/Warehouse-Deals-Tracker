@@ -917,7 +917,7 @@ def ps_list(msg):
 @ps_bot.message_handler(commands=["add"])
 def ps_add_game(msg):
     message = "Below is a list of titles you have opted out of notifications for:\n\n"
-    muted_games = PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games
+    muted_games = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games
     for i in len(muted_games):
         message += f"{i+1}. {muted_games[i]}\n"
     message += "\nPlease type the number corresponding to the game you would like to start receiving notifications for again."
