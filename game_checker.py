@@ -913,41 +913,45 @@ def ps_list(msg):
     message = ""
     for game in games:
         message += f"• {game}\n"
+    if len(games) == 0:
+        message = "You are not currently muting notifications for any titles.  You can type /mute to mute notifications for specific titles."
     ps_bot.send_message(msg.chat.id, message.strip())
 
 
-@ps_bot.message_handler(commands=["add"])
-def ps_add_game(msg):
+@ps_bot.message_handler(commands=["unmute"])
+def ps_unmute_game(msg):
     message = "Below is a list of titles you have opted out of notifications for:\n\n"
     muted_games = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games
-    for i in range(0, len(muted_games)):
-        message += f"{i+1}. {muted_games[i]}\n"
-    message += "\nPlease type the number corresponding to the game you would like to start receiving notifications for again."
-    sent = ps_bot.send_message(msg.chat.id, message)
-    ps_bot.register_next_step_handler(sent, ps_add, muted_games)
+    if len(muted_games) == 0:
+        ps_bot.send_message(msg.chat.id, "You are not currently muting notifications for any titles and thus have nothing to unmute.  You can type /mute to mute notifications for specific titles.")
+    else:
+        for i in range(0, len(muted_games)):
+            message += f"{i+1}. {muted_games[i]}\n"
+        message += "\nPlease type the number corresponding to the game you would like to start receiving notifications for again."
+        sent = ps_bot.send_message(msg.chat.id, message)
+        ps_bot.register_next_step_handler(sent, ps_unmute, muted_games)
 
 
-def ps_add(message, muted_games):
+def ps_unmute(message, muted_games):
     try:
         if int(message.text) > 0:
             msg = f"You entered {message.text}, which corresponds to {muted_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to start receiving notifications for again."
             sent = ps_bot.send_message(message.chat.id, msg)
-            ps_bot.register_next_step_handler(sent, ps_confirm_add, muted_games, message.text)
+            ps_bot.register_next_step_handler(sent, ps_confirm_unmute, muted_games, message.text)
         else:
-            ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(muted_games)}.  You can type /add to try again.")
+            ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(muted_games)}.  You can type /unmute to try again.")
     except:
-        ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(muted_games)}.  You can type /add to try again.")
+        ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(muted_games)}.  You can type /unmute to try again.")
 
 
-def ps_confirm_add(message, muted_games, i):
+def ps_confirm_unmute(message, muted_games, i):
     if message.text.strip().lower() == "yes":
         del muted_games[int(i)-1]
         ps_bot.send_message(message.chat.id, "Thank you.  You will start receiving notifications for that title again.")
         PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games = muted_games
         db.session.commit()
     else:
-        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to start notifications again for this title.  You will continue receiving no notifications for this item.  If there was a mistake, please try again by typing /mute")
-
+        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to start notifications again for this title.  You will continue receiving no notifications for this item.  If there was a mistake, please try again by typing /unmute")
 
 
 # SWITCH BOT COMMANDS
