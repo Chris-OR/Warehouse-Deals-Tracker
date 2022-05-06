@@ -894,7 +894,7 @@ def ps_mute(message):
                 ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please make sure the title is exactly the same as the Amazon listing.  You can type /mute to try again.")
     elif game:
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
-        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += game.title
+        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [game.title]
         db.session.commit()
 
 
