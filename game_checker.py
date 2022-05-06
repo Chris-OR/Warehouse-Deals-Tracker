@@ -882,13 +882,13 @@ def ps_mute(message):
     if not game:
         game = db.session.query(Games).filter(Games.title.contains(message_formatted)).first()
         if game:
-            sent = ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
+            sent = ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for?\n\n{game.title}\n\nPlease respond with 'yes' if it is.")
             ps_bot.register_next_step_handler(sent, ps_confirm_mute, game.title)
 
         if not game:
             game = db.session.query(Hardware).filter(Hardware.title.contains(message_formatted)).first()
             if game:
-                sent = ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
+                sent = ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for?\n\n{game.title}\n\nPlease respond with 'yes' if it is.")
                 ps_bot.register_next_step_handler(sent, ps_confirm_mute, game.title)
             else:
                 ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please make sure the title is exactly the same as the Amazon listing.")
@@ -899,8 +899,11 @@ def ps_mute(message):
 
 def ps_confirm_mute(message, title):
     if message.text.strip().lower() == "yes":
+        print(title)
+        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
         PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += title
+        print(PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games)
 
 
 @ps_bot.message_handler(commands=["list"])
