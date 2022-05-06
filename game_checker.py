@@ -926,7 +926,7 @@ def ps_add_game(msg):
 
 
 def ps_add(message, muted_games):
-    msg = f"You entered {message.text}, which corresponds to {muted_games[int(message.text)]}.\n\nType 'yes' if this is the title you want to start receiving notifications for again."
+    msg = f"You entered {message.text}, which corresponds to {muted_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to start receiving notifications for again."
     sent = ps_bot.send_message(message.chat.id, msg)
     ps_bot.register_next_step_handler(sent, ps_confirm_add, muted_games, message.text)
 
