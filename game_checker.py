@@ -869,7 +869,7 @@ def help_message(msg):
 
 
 @ps_bot.message_handler(commands=["mute"])
-def remove_notification(msg):
+def mute_notification(msg):
     sent = ps_bot.send_message(msg.chat.id, "Please type the exact title of the game you wish to stop receiving notifications for.  Make sure the title is the exact same title as the Amazon listing.")
     ps_bot.register_next_step_handler(sent, ps_mute)
 
@@ -882,21 +882,30 @@ def ps_mute(message):
     if not game:
         game = db.session.query(Games).filter(Games.title.contains(message_formatted)).first()
         if game:
-            ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
+            sent = ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
+            ps_bot.register_next_step_handler(sent, ps_confirm_mute, game.title)
+
         if not game:
             game = db.session.query(Hardware).filter(Hardware.title.contains(message_formatted)).first()
             if game:
-                ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
+                sent = ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for? {game.title}\n\nPlease respond with 'yes' if it is.")
+                ps_bot.register_next_step_handler(sent, ps_confirm_mute, game.title)
             else:
                 ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please make sure the title is exactly the same as the Amazon listing.")
-    if game:
+    elif game:
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
-        PSTelegramUsers.filter_by(chatID=message.chat.id).first().unsubscribed_games += game.title
+        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += game.title
+
+
+def ps_confirm_mute(message, title):
+    if message.text.strip().lower() == "yes":
+        ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
+        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += title
 
 
 @ps_bot.message_handler(commands=["list"])
 def ps_list(msg):
-    ps_bot.send_message(msg.chat.id, PSTelegramUsers.filter_by(chatID=msg.chat.id).first().unsubscribed_games)
+    ps_bot.send_message(msg.chat.id, PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games)
 
 
 # SWITCH BOT COMMANDS
