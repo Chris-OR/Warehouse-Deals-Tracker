@@ -910,7 +910,7 @@ def ps_confirm_mute(message, title):
 
 @ps_bot.message_handler(commands=["list"])
 def ps_list(msg):
-    ps_bot.send_message(msg.chat.id, PSTelegramUsers.query.filter_by(chatID=msg.chat.id).all().unsubscribed_games)
+    ps_bot.send_message(msg.chat.id, PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games)
 
 
 # SWITCH BOT COMMANDS
