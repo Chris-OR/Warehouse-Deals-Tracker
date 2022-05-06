@@ -926,9 +926,12 @@ def ps_add_game(msg):
 
 
 def ps_add(message, muted_games):
-    msg = f"You entered {message.text}, which corresponds to {muted_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to start receiving notifications for again."
-    sent = ps_bot.send_message(message.chat.id, msg)
-    ps_bot.register_next_step_handler(sent, ps_confirm_add, muted_games, message.text)
+    try:
+        msg = f"You entered {message.text}, which corresponds to {muted_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to start receiving notifications for again."
+        sent = ps_bot.send_message(message.chat.id, msg)
+        ps_bot.register_next_step_handler(sent, ps_confirm_add, muted_games, message.text)
+    except:
+        ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(muted_games)}.  You can type /add to try again.")
 
 
 def ps_confirm_add(message, muted_games, i):
