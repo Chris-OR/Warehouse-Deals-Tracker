@@ -900,11 +900,8 @@ def ps_mute(message):
 
 def ps_confirm_mute(message, title):
     if message.text.strip().lower() == "yes":
-        print(title)
-        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
         PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [title]
-        print(PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games)
         db.session.commit()
 
 
@@ -913,8 +910,33 @@ def ps_list(msg):
     games = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games
     message = ""
     for game in games:
-        message += f"•{game}\n"
+        message += f"• {game}\n"
     ps_bot.send_message(msg.chat.id, message.strip())
+
+
+@ps_bot.message_handler(commands=["add"])
+def ps_add_game(msg):
+    message = "Below is a list of titles you have opted out of notifications for:\n\n"
+    muted_games = PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games
+    for i in len(muted_games):
+        message += f"{i+1}. {muted_games[i]}\n"
+    message += "\nPlease type the number corresponding to the game you would like to start receiving notifications for again."
+    sent = ps_bot.send_message(msg.chat.id, message)
+    ps_bot.register_next_step_handler(sent, ps_add, muted_games)
+
+
+def ps_add(message, muted_games):
+    msg = f"You entered {message.text}, which corresponds to {muted_games[message.text]}.\n\nType 'yes' if this is the title you want to start receiving notifications for again."
+    sent = ps_bot.send_message(message.chat.id, msg)
+    ps_bot.register_next_step_handler(sent, ps_confirm_add, muted_games, message.text)
+
+
+def ps_confirm_add(message, muted_games, i):
+    if message.text.strip().lower() == "yes":
+        del muted_games[i-1]
+        ps_bot.send_message(message.chat.id, "Thank you.  You will start receiving notifications for that title again.")
+        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games = muted_games
+        db.session.commit()
 
 
 # SWITCH BOT COMMANDS
