@@ -939,7 +939,7 @@ def ps_confirm_mute(message, games, i):
         else:
             print("A user tried to mute a game that was already muted")
     else:
-        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to stop notifications again for this title.  You will continue receiving notifications for this item.  If there was a mistake, please try again by typing /mute")
+        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to stop notifications for this title.  You will continue receiving notifications for this item.  If there was a mistake, please try again by typing /mute")
 
 
 @ps_bot.message_handler(commands=["list"])
@@ -987,6 +987,22 @@ def ps_confirm_unmute(message, muted_games, i):
         db.session.commit()
     else:
         ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to start notifications again for this title.  You will continue receiving no notifications for this item.  If there was a mistake, please try again by typing /unmute")
+
+
+@ps_bot.message_handler(commands=["unmuteAll"])
+def ps_unmute_all(msg):
+    sent = ps_bot.send_message(msg.chat.id, "You are about to unmute all of your muted notifications.\n\nTo confirm this action, please reply with 'yes'")
+    ps_bot.register_next_step_handler(sent, ps_confirm_unmute_all)
+
+
+def ps_confirm_unmute_all(message):
+    if message.text.strip().lower() == "yes":
+        ps_bot.send_message(message.chat.id, "Thank you.  Your list of muted games has been cleared.")
+        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games = []
+        db.session.commit()
+    else:
+        ps_bot.send_message(message.chat.id,
+                            "We did not receive a 'yes' as confirmation.  Your list of muted games will remain as is.  If there was a mistake, you can type /unmuteAll to try again.")
 
 
 # SWITCH BOT COMMANDS
