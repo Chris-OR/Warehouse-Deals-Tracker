@@ -885,16 +885,16 @@ def ps_mute(message):
             msg = "We were not able to find an exact match. But, your query returned this:\n\n"
             for i in range(0, len(games)):
                 msg += f"{i+1}. {games[i].title}\n"
-            msg += "Please enter the number corresponding to the game you would like to mute"
+            msg += "\nPlease enter the number corresponding to the game you would like to mute"
             sent = ps_bot.send_message(message.chat.id, msg)
             ps_bot.register_next_step_handler(sent, ps_mute_game, games)
-        if not game:
-            game = db.session.query(Hardware).filter(Hardware.title.contains(message_formatted) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).all()
-            if game:
+        if not games:
+            games = db.session.query(Hardware).filter(Hardware.title.contains(message_formatted) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).all()
+            if games:
                 msg = "We were not able to find an exact match. But, your query returned this:\n\n"
                 for i in range(0, len(games)):
                     msg += f"{i + 1}. {games[i].title}\n"
-                msg += "Please enter the number corresponding to the game you would like to mute"
+                msg += "\nPlease enter the number corresponding to the game you would like to mute"
                 sent = ps_bot.send_message(message.chat.id, msg)
                 ps_bot.register_next_step_handler(sent, ps_mute_game, games)
             else:
