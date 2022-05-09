@@ -882,20 +882,20 @@ def ps_mute(message):
     if not game:
         games = db.session.query(Games).filter(Games.title.contains(message_formatted) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).all()
         if games:
-            message = "We were not able to find an exact match. But, your query returned this:\n\n"
+            msg = "We were not able to find an exact match. But, your query returned this:\n\n"
             for i in range(0, len(games)):
-                message += f"{i+1}. {games[i].title}\n"
-            message += "Please enter the number corresponding to the game you would like to mute"
-            sent = ps_bot.send_message(message.chat.id, message)
+                msg += f"{i+1}. {games[i].title}\n"
+            msg += "Please enter the number corresponding to the game you would like to mute"
+            sent = ps_bot.send_message(message.chat.id, msg)
             ps_bot.register_next_step_handler(sent, ps_mute_game, games)
         if not game:
             game = db.session.query(Hardware).filter(Hardware.title.contains(message_formatted) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).all()
             if game:
-                message = "We were not able to find an exact match. But, your query returned this:\n\n"
+                msg = "We were not able to find an exact match. But, your query returned this:\n\n"
                 for i in range(0, len(games)):
-                    message += f"{i + 1}. {games[i].title}\n"
-                message += "Please enter the number corresponding to the game you would like to mute"
-                sent = ps_bot.send_message(message.chat.id, message)
+                    msg += f"{i + 1}. {games[i].title}\n"
+                msg += "Please enter the number corresponding to the game you would like to mute"
+                sent = ps_bot.send_message(message.chat.id, msg)
                 ps_bot.register_next_step_handler(sent, ps_mute_game, games)
             else:
                 ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please make sure the title is exactly the same as the Amazon listing.  You can type /mute to try again.")
