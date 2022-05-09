@@ -915,9 +915,9 @@ def ps_mute_game(message, games):
             sent = ps_bot.send_message(message.chat.id, msg)
             ps_bot.register_next_step_handler(sent, ps_confirm_mute, games, message.text)
         else:
-            ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(muted_games)}.  You can type /unmute to try again.")
+            ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(games)}.  You can type /mute to try again.")
     except:
-        ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(muted_games)}.  You can type /unmute to try again.")
+        ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(games)}.  You can type /mute to try again.")
 
     # if message.text.strip().lower() == "yes":
     #     ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
@@ -933,10 +933,13 @@ def ps_mute_game(message, games):
 def ps_confirm_mute(message, games, i):
     if message.text.strip().lower() == "yes":
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title again.")
-        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [games[int(i)].title]
-        db.session.commit()
+        if games(int(i)).title not in PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games:
+            PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [games[int(i)].title]
+            db.session.commit()
+        else:
+            print("A user tried to mute a game that was already muted")
     else:
-        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to start notifications again for this title.  You will continue receiving no notifications for this item.  If there was a mistake, please try again by typing /unmute")
+        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to start notifications again for this title.  You will continue receiving no notifications for this item.  If there was a mistake, please try again by typing /mute")
 
 
 @ps_bot.message_handler(commands=["list"])
