@@ -933,8 +933,8 @@ def ps_mute_game(message, games):
 def ps_confirm_mute(message, games, i):
     if message.text.strip().lower() == "yes":
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
-        if games[int(i)].title not in PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games:
-            PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [games[int(i)].title]
+        if games[int(i)-1].title not in PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games:
+            PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [games[int(i)-1].title]
             db.session.commit()
         else:
             print("A user tried to mute a game that was already muted")
