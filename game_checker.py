@@ -11,6 +11,7 @@ from amazoncaptcha import AmazonCaptcha
 from proxy_requests import ProxyRequests
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from sqlalchemy.ext.mutable import MutableList
 from bs4 import BeautifulSoup
 import datetime as dt
@@ -805,6 +806,7 @@ def captcha_alert():
 def initialize_ps_bot():
     # asyncio.run(ps_bot.polling())
     ps_bot.polling()
+    ps_bot.set_my_commands(commands)
 
 
 def initialize_switch_bot():
@@ -876,11 +878,11 @@ def mute_notification(msg):
 
 def ps_mute(message):
     message_formatted = message.text.replace("’", "'").strip()
-    game = Games.query.filter((Games.title == message_formatted) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).first()
+    game = Games.query.filter((func.lower(Games.title) == func.lower(message_formatted)) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).first()
     if not game:
-        game = Hardware.query.filter((Hardware.title == message_formatted) & ((Hardware.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).first()
+        game = Hardware.query.filter((func.lower(Hardware.title) == func.lower(message_formatted)) & ((Hardware.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).first()
     if not game:
-        games = db.session.query(Games).filter(Games.title.contains(message_formatted) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).all()
+        games = db.session.query(Games).filter(func.lower(Games.title).contains(func.lower(message_formatted)) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).all()
         if games:
             msg = "We were not able to find an exact match. But, your query returned this:\n\n"
             for i in range(0, len(games)):
@@ -889,7 +891,7 @@ def ps_mute(message):
             sent = ps_bot.send_message(message.chat.id, msg)
             ps_bot.register_next_step_handler(sent, ps_mute_game, games)
         if not games:
-            games = db.session.query(Hardware).filter(Hardware.title.contains(message_formatted) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).all()
+            games = db.session.query(Hardware).filter(func.lower(Hardware.title).contains(func.lower(message_formatted)) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).all()
             if games:
                 msg = "We were not able to find an exact match. But, your query returned this:\n\n"
                 for i in range(0, len(games)):
@@ -1111,7 +1113,6 @@ commands = [
 ]
 
 
-ps_bot.set_my_commands(commands)
 
 
 # ps_bot.polling()
