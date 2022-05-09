@@ -805,7 +805,6 @@ def captcha_alert():
 
 def initialize_ps_bot():
     # asyncio.run(ps_bot.polling())
-    ps_bot.polling()
     ps_bot.set_my_commands([
         telebot.types.BotCommand("/start", "Allow interactions from this bot"),
         telebot.types.BotCommand("/stop", "Stop receiving all notifications from this bot"),
@@ -815,6 +814,7 @@ def initialize_ps_bot():
         telebot.types.BotCommand("/unmuteAll", "Unmute all notifications that you have previously muted"),
         telebot.types.BotCommand("/list", "View all titles that you have muted notifications for"),
     ])
+    ps_bot.polling()
 
     # ps_bot.set_my_commands(commands)
 
