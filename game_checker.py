@@ -911,7 +911,7 @@ def ps_mute(message):
 def ps_mute_game(message, games):
     try:
         if int(message.text) > 0:
-            msg = f"You entered {message.text}, which corresponds to {games[int(message.text)-1].title}.\n\nType 'yes' if this is the title you want to start receiving notifications for again."
+            msg = f"You entered {message.text}, which corresponds to {games[int(message.text)-1].title}.\n\nType 'yes' if this is the title you want to stop receiving notifications for."
             sent = ps_bot.send_message(message.chat.id, msg)
             ps_bot.register_next_step_handler(sent, ps_confirm_mute, games, message.text)
         else:
@@ -932,14 +932,14 @@ def ps_mute_game(message, games):
 
 def ps_confirm_mute(message, games, i):
     if message.text.strip().lower() == "yes":
-        ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title again.")
-        if games(int(i)).title not in PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games:
+        ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
+        if games[int(i)].title not in PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games:
             PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [games[int(i)].title]
             db.session.commit()
         else:
             print("A user tried to mute a game that was already muted")
     else:
-        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to start notifications again for this title.  You will continue receiving no notifications for this item.  If there was a mistake, please try again by typing /mute")
+        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to stop notifications again for this title.  You will continue receiving notifications for this item.  If there was a mistake, please try again by typing /mute")
 
 
 @ps_bot.message_handler(commands=["list"])
