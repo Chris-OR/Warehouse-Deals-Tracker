@@ -146,7 +146,7 @@ class SwitchTelegramUsers(db.Model):
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
-db.create_all()
+# db.create_all()
 # db.session.commit()
 
 
@@ -806,7 +806,17 @@ def captcha_alert():
 def initialize_ps_bot():
     # asyncio.run(ps_bot.polling())
     ps_bot.polling()
-    ps_bot.set_my_commands(commands)
+    ps_bot.set_my_commands([
+        telebot.types.BotCommand("/start", "Allow interactions from this bot"),
+        telebot.types.BotCommand("/stop", "Stop receiving all notifications from this bot"),
+        telebot.types.BotCommand("/help", "Display help"),
+        telebot.types.BotCommand("/mute", "Mute notifications for a specific title"),
+        telebot.types.BotCommand("/unmute", "Unmute notifications for a specific title"),
+        telebot.types.BotCommand("/unmuteAll", "Unmute all notifications that you have previously muted"),
+        telebot.types.BotCommand("/list", "View all titles that you have muted notifications for"),
+    ])
+
+    # ps_bot.set_my_commands(commands)
 
 
 def initialize_switch_bot():
@@ -1079,40 +1089,6 @@ def stop_message(msg):
 @x_bot.message_handler(commands=["help"])
 def help_message(msg):
     x_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time." )
-
-
-commands = [
-    {
-      "command": "start",
-      "description": "Allow interactions from this bot"
-    },
-    {
-        "command": "stop",
-        "description": "Stop receiving all notifications from this bot"
-    },
-    {
-      "command": "help",
-      "description": "Display help"
-    },
-    {
-      "command": "mute",
-      "description": "Mute notifications for a specific title"
-    },
-    {
-      "command": "unmute",
-      "description": "Unmute notifications for a specific title"
-    },
-    {
-      "command": "unmuteAll",
-      "description": "Unmute all notifications that you have previously muted"
-    },
-    {
-      "command": "list",
-      "description": "View all titles that you have muted notifications for"
-    },
-]
-
-
 
 
 # ps_bot.polling()
