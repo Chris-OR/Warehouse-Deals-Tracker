@@ -876,9 +876,9 @@ def mute_notification(msg):
 
 def ps_mute(message):
     message_formatted = message.text.replace("’", "'").strip()
-    game = Games.query.filter_by(title=message_formatted).first()
+    game = Games.query.filter((Games.title == message_formatted) & (Games.console == "PlayStation 5") | (Games.console == "PlayStation 4")).first()
     if not game:
-        game = Hardware.query.filter_by(title=message_formatted).first()
+        game = Hardware.query.filter((Hardware.title == message_formatted) & (Hardware.console == "PlayStation 5") | (Games.console == "PlayStation 4")).first()
     if not game:
         game = db.session.query(Games).filter(Games.title.contains(message_formatted)).first()
         if game:
@@ -894,15 +894,19 @@ def ps_mute(message):
                 ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please make sure the title is exactly the same as the Amazon listing.  You can type /mute to try again.")
     elif game:
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
-        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [game.title]
-        db.session.commit()
+        if game.title not in PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games:
+            PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [game.title]
+            db.session.commit()
 
 
 def ps_confirm_mute(message, title):
     if message.text.strip().lower() == "yes":
         ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
-        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [title]
-        db.session.commit()
+        if title not in PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games:
+            PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [title]
+            db.session.commit()
+        else:
+            print("A user tried to mute a game that was already muted")
     else:
         ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to stop notifications for this title.  You will continue receiving notifications for this item.  If there was a mistake, please try again by typing /mute")
 
