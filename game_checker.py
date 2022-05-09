@@ -991,7 +991,7 @@ def ps_confirm_unmute(message, muted_games, i):
 
 @ps_bot.message_handler(commands=["unmuteAll"])
 def ps_unmute_all(msg):
-    sent = ps_bot.send_message(msg.chat.id, "You are about to unmute all of your muted notifications.\n\nTo confirm this action, please reply with 'yes'")
+    sent = ps_bot.send_message(msg.chat.id, "You are about to unmute all of your muted titles.\n\nTo confirm this action, please reply with 'yes'")
     ps_bot.register_next_step_handler(sent, ps_confirm_unmute_all)
 
 
@@ -1077,6 +1077,41 @@ def stop_message(msg):
 @x_bot.message_handler(commands=["help"])
 def help_message(msg):
     x_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time." )
+
+
+commands = [
+    {
+      "command": "start",
+      "description": "Allow interactions from this bot"
+    },
+    {
+        "command": "stop",
+        "description": "Stop receiving all notifications from this bot"
+    },
+    {
+      "command": "help",
+      "description": "Display help"
+    },
+    {
+      "command": "mute",
+      "description": "Mute notifications for a specific title"
+    },
+    {
+      "command": "unmute",
+      "description": "Unmute notifications for a specific title"
+    },
+    {
+      "command": "unmuteAll",
+      "description": "Unmute all notifications that you have previously muted"
+    },
+    {
+      "command": "list",
+      "description": "View all titles that you have muted notifications for"
+    },
+]
+
+
+ps_bot.set_my_commands(commands)
 
 
 # ps_bot.polling()
