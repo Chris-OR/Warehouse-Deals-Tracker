@@ -805,15 +805,15 @@ def captcha_alert():
 
 def initialize_ps_bot():
     # asyncio.run(ps_bot.polling())
-    # ps_bot.set_my_commands([
-    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications from this bot"),
-    #     telebot.types.BotCommand(command="/help", description="Display help"),
-    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-    #     telebot.types.BotCommand(command="/unmuteAll", description="Unmute all notifications that you have previously muted"),
-    #     telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
-    # ])
+    ps_bot.set_my_commands([
+        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications from this bot"),
+        telebot.types.BotCommand(command="/help", description="Display help"),
+        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications that you have previously muted"),
+        telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
+    ])
     ps_bot.polling()
 
     # ps_bot.set_my_commands(commands)
@@ -1001,7 +1001,7 @@ def ps_confirm_unmute(message, muted_games, i):
         ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to start notifications again for this title.  You will continue receiving no notifications for this item.  If there was a mistake, please try again by typing /unmute")
 
 
-@ps_bot.message_handler(commands=["unmuteAll"])
+@ps_bot.message_handler(commands=["unmuteall"])
 def ps_unmute_all(msg):
     sent = ps_bot.send_message(msg.chat.id, "You are about to unmute all of your muted titles.\n\nTo confirm this action, please reply with 'yes'")
     ps_bot.register_next_step_handler(sent, ps_confirm_unmute_all)
@@ -1014,7 +1014,7 @@ def ps_confirm_unmute_all(message):
         db.session.commit()
     else:
         ps_bot.send_message(message.chat.id,
-                            "We did not receive a 'yes' as confirmation.  Your list of muted games will remain as is.  If there was a mistake, you can type /unmuteAll to try again.")
+                            "We did not receive a 'yes' as confirmation.  Your list of muted games will remain as is.  If there was a mistake, you can type /unmuteall to try again.")
 
 
 # SWITCH BOT COMMANDS
