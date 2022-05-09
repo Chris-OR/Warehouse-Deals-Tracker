@@ -880,13 +880,13 @@ def ps_mute(message):
     if not game:
         game = Hardware.query.filter((Hardware.title == message_formatted) & ((Hardware.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).first()
     if not game:
-        game = db.session.query(Games).filter(Games.title.contains(message_formatted)).first()
+        game = db.session.query(Games).filter(Games.title.contains(message_formatted) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).first()
         if game:
             sent = ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for?\n\n{game.title}\n\nPlease respond with 'yes' if it is.")
             ps_bot.register_next_step_handler(sent, ps_confirm_mute, game.title)
 
         if not game:
-            game = db.session.query(Hardware).filter(Hardware.title.contains(message_formatted)).first()
+            game = db.session.query(Hardware).filter(Hardware.title.contains(message_formatted) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).first()
             if game:
                 sent = ps_bot.send_message(message.chat.id, f"We were not able to find an exact match. But, is this the title you are looking for?\n\n{game.title}\n\nPlease respond with 'yes' if it is.")
                 ps_bot.register_next_step_handler(sent, ps_confirm_mute, game.title)
@@ -897,6 +897,8 @@ def ps_mute(message):
         if game.title not in PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games:
             PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().unsubscribed_games += [game.title]
             db.session.commit()
+        else:
+            print("A user tried to mute a game that was already muted")
 
 
 def ps_confirm_mute(message, title):
