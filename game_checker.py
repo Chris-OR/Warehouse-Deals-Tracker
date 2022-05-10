@@ -930,7 +930,10 @@ def ps_mute_game(message, games):
     try:
         if int(message.text) > 0:
             msg = f"You entered {message.text}, which corresponds to {games[int(message.text)-1].title}.\n\nType 'yes' if this is the title you want to stop receiving notifications for."
-            sent = ps_bot.send_message(message.chat.id, msg)
+            kb = [[(telegram.KeyboardButton('Yes'))],
+                  [telegram.KeyboardButton('Cancel')]]
+            kb_markup = telegram.replykeyboardmarkup(kb)
+            sent = ps_bot.send_message(message.chat.id, msg, reply_markup=kb_markup)
             ps_bot.register_next_step_handler(sent, ps_confirm_mute, games, message.text)
         else:
             ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(games)}.  You can type /mute to try again.")
