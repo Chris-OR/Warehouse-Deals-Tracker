@@ -78,14 +78,14 @@ class AddGame(FlaskForm):
 def checker_thread():
     captcha = False
     while not captcha:
-        # if not captcha:
-        #     captcha = gc.initialize_webpages(ps4_no_referral, "PlayStation 4")
-        #     price_data()
-        #     time.sleep(151)
-        # if not captcha:
-        #     captcha = gc.initialize_hardware("https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cp_89%3APlaystation&s=popularity-rank&dc&qid=1649385940&ref=sr_ex_n_1", "PlayStation 5")
-        #     price_data()
-        #     time.sleep(31)
+        if not captcha:
+            captcha = gc.initialize_webpages(ps4_no_referral, "PlayStation 4")
+            price_data()
+            time.sleep(151)
+        if not captcha:
+            captcha = gc.initialize_hardware("https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cp_89%3APlaystation&s=popularity-rank&dc&qid=1649385940&ref=sr_ex_n_1", "PlayStation 5")
+            price_data()
+            time.sleep(31)
         if not captcha:
             captcha = gc.initialize_webpages(switch_no_referral, "Nintendo Switch")
             price_data()
