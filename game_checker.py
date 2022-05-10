@@ -428,10 +428,10 @@ def clear_stock(console, ware):
 
 def check_regex(title, game):
     game_regex = re.compile(
-        r'bluetooth|playstation 3|invisibleshield|pdp gaming|goplay grip provides|')
+        r'bluetooth|playstation 3|InvisibleShield|Just Dance 2021 - PlayStation 5 - PlayStation 5 Edition|PDP Gaming LVL40|Goplay Grip Provides')
     mo = game_regex.search(title.lower())
     if mo:
-        print(f"{title} has been regexxed.  We will skip its rotation")
+        # print(f"{title} has been regexxed.  We will skip its rotation")
         if game:
             print(f"We have found a match in the database.  We will now remove {title} from the database")
             db.session.delete(game)
@@ -806,15 +806,15 @@ def captcha_alert():
 
 def initialize_ps_bot():
     # asyncio.run(ps_bot.polling())
-    ps_bot.set_my_commands([
-        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-        telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
-        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-        telebot.types.BotCommand(command="/help", description="Display help"),
-    ])
+    # ps_bot.set_my_commands([
+    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+    #     telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
+    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+    #     telebot.types.BotCommand(command="/help", description="Display help"),
+    # ])
     ps_bot.polling()
 
     # ps_bot.set_my_commands(commands)
