@@ -822,29 +822,29 @@ def initialize_ps_bot():
 
 def initialize_switch_bot():
     # asyncio.run(switch_bot.polling())
-    switch_bot.set_my_commands([
-        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-        telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
-        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-        telebot.types.BotCommand(command="/help", description="Display help"),
-    ])
+    # switch_bot.set_my_commands([
+    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+    #     telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
+    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+    #     telebot.types.BotCommand(command="/help", description="Display help"),
+    # ])
     switch_bot.polling()
 
 
 def initialize_xbox_bot():
     # asyncio.run(x_bot.polling())
-    x_bot.set_my_commands([
-        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-        telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
-        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-        telebot.types.BotCommand(command="/help", description="Display help"),
-    ])
+    # x_bot.set_my_commands([
+    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+    #     telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
+    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+    #     telebot.types.BotCommand(command="/help", description="Display help"),
+    # ])
     x_bot.polling()
 
 
@@ -897,7 +897,7 @@ def ps_mute(message):
     if not game:
         game = Hardware.query.filter((func.lower(Hardware.title) == func.lower(message_formatted)) & ((Hardware.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).first()
     if not game:
-        games = db.session.query(Games).filter(func.lower(Games.title).contains(func.lower(message_formatted)) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).all()
+        games = db.session.query(Games).filter(func.lower(Games.title).contains(func.lower(message_formatted)) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).limit(15).all()
         if games:
             msg = "We were not able to find an exact match. But, your query returned this:\n\n"
             for i in range(0, len(games)):
@@ -906,7 +906,7 @@ def ps_mute(message):
             sent = ps_bot.send_message(message.chat.id, msg)
             ps_bot.register_next_step_handler(sent, ps_mute_game, games)
         if not games:
-            games = db.session.query(Hardware).filter(func.lower(Hardware.title).contains(func.lower(message_formatted)) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).all()
+            games = db.session.query(Hardware).filter(func.lower(Hardware.title).contains(func.lower(message_formatted)) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).limit(15).all()
             if games:
                 msg = "We were not able to find an exact match. But, your query returned this:\n\n"
                 for i in range(0, len(games)):
@@ -1072,7 +1072,7 @@ def switch_mute(message):
     if not game:
         game = Hardware.query.filter((func.lower(Hardware.title) == func.lower(message_formatted)) & (Hardware.system == "Nintendo Switch")).first()
     if not game:
-        games = db.session.query(Games).filter(func.lower(Games.title).contains(func.lower(message_formatted)) & (Games.system == "Nintendo Switch")).all()
+        games = db.session.query(Games).filter(func.lower(Games.title).contains(func.lower(message_formatted)) & (Games.system == "Nintendo Switch")).limit(15).all()
         if games:
             msg = "We were not able to find an exact match. But, your query returned this:\n\n"
             for i in range(0, len(games)):
@@ -1081,7 +1081,7 @@ def switch_mute(message):
             sent = switch_bot.send_message(message.chat.id, msg)
             switch_bot.register_next_step_handler(sent, switch_mute_game, games)
         if not games:
-            games = db.session.query(Hardware).filter(func.lower(Hardware.title).contains(func.lower(message_formatted)) & (Games.system == "Nintendo Switch")).all()
+            games = db.session.query(Hardware).filter(func.lower(Hardware.title).contains(func.lower(message_formatted)) & (Games.system == "Nintendo Switch")).limit(15).all()
             if games:
                 msg = "We were not able to find an exact match. But, your query returned this:\n\n"
                 for i in range(0, len(games)):
@@ -1272,7 +1272,7 @@ def x_mute(message):
     if not game:
         game = Hardware.query.filter((func.lower(Hardware.title) == func.lower(message_formatted)) & ((Hardware.system == "Xbox Series X") | (Games.system == "Xbox One"))).first()
     if not game:
-        games = db.session.query(Games).filter(func.lower(Games.title).contains(func.lower(message_formatted)) & ((Games.system == "Xbox Series X") | (Games.system == "Xbox One"))).all()
+        games = db.session.query(Games).filter(func.lower(Games.title).contains(func.lower(message_formatted)) & ((Games.system == "Xbox Series X") | (Games.system == "Xbox One"))).limit(15).all()
         if games:
             msg = "We were not able to find an exact match. But, your query returned this:\n\n"
             for i in range(0, len(games)):
@@ -1281,7 +1281,7 @@ def x_mute(message):
             sent = x_bot.send_message(message.chat.id, msg)
             x_bot.register_next_step_handler(sent, x_mute_game, games)
         if not games:
-            games = db.session.query(Hardware).filter(func.lower(Hardware.title).contains(func.lower(message_formatted)) & ((Games.system == "Xbox Series X") | (Games.system == "Xbox One"))).all()
+            games = db.session.query(Hardware).filter(func.lower(Hardware.title).contains(func.lower(message_formatted)) & ((Games.system == "Xbox Series X") | (Games.system == "Xbox One"))).limit(15).all()
             if games:
                 msg = "We were not able to find an exact match. But, your query returned this:\n\n"
                 for i in range(0, len(games)):
