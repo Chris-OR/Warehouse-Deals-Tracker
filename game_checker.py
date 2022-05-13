@@ -837,31 +837,37 @@ def initialize_ps_bot():
 
 def initialize_switch_bot():
     # asyncio.run(switch_bot.polling())
-    # switch_bot.set_my_commands([
-    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-    #     telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
-    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-    #     telebot.types.BotCommand(command="/help", description="Display help"),
-    # ])
+    switch_bot.set_my_commands([
+        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+        telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
+        telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
+        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+        telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
+        telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
+        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+        telebot.types.BotCommand(command="/help", description="Display help"),
+    ])
     switch_bot.polling()
 
 
 def initialize_xbox_bot():
     # asyncio.run(x_bot.polling())
-    # x_bot.set_my_commands([
-    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-    #     telebot.types.BotCommand(command="/muteone", description="Mute notifications for all Xbox One titles"),
-    #     telebot.types.BotCommand(command="/muteseries", description="Mute notifications for all Xbox Series titles"),
-    #     telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
-    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-    #     telebot.types.BotCommand(command="/help", description="Display help"),
-    # ])
+    x_bot.set_my_commands([
+        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+        telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
+        telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
+        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+        telebot.types.BotCommand(command="/muteone", description="Mute notifications for all Xbox One titles"),
+        telebot.types.BotCommand(command="/muteseries", description="Mute notifications for all Xbox Series titles"),
+        telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
+        telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
+        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+        telebot.types.BotCommand(command="/help", description="Display help"),
+    ])
     x_bot.polling()
 
 
@@ -899,7 +905,7 @@ def stop_message(msg):
 
 @ps_bot.message_handler(commands=["help"])
 def help_message(msg):
-    ps_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time.  Type /mute to mute notifications for specific titles.  Type /unmute to unmute notifications that you have muted.  Type /unmuteall to unmute all of your notifications.  Type /list to see a list of everything you have muted." )
+    ps_bot.send_message(msg.chat.id, "1. You may type /start to receive notifications\n2. Type /stop to stop receiving notifications. You may start and stop notifications at any time\n3. Type /mute to mute notifications for specific titles\n4. Type /unmute to unmute notifications that you have muted\n5. Type /subscribe to receive notifications for a title, even if it is muted.  If you have muted all notifications for PS4 games, and add subscribe to a specific PS4 game, you will receive notifications for that title\n6. Type /unsub to remove a game from your list of subscribed games\n7. Type /unmuteall to unmute all of your notifications\n8. Type /listmuted to see a list of everything you have muted.\n9. Type /listsubbed to see everything you have subscribed to." )
 
 
 @ps_bot.message_handler(commands=["mute"])
@@ -1195,7 +1201,7 @@ def stop_message(msg):
 
 @switch_bot.message_handler(commands=["help"])
 def help_message(msg):
-    switch_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time.  Type /mute to mute notifications for specific titles.  Type /unmute to unmute notifications that you have muted.  Type /unmuteall to unmute all of your notifications.  Type /list to see a list of everything you have muted." )
+    switch_bot.send_message(msg.chat.id, "1. You may type /start to receive notifications\n2. Type /stop to stop receiving notifications. You may start and stop notifications at any time\n3. Type /mute to mute notifications for specific titles\n4. Type /unmute to unmute notifications that you have muted\n5. Type /subscribe to receive notifications for a title, even if it is muted.  If you have muted all notifications for Switch games, and add subscribe to a specific Switch game, you will receive notifications for that title\n6. Type /unsub to remove a game from your list of subscribed games\n7. Type /unmuteall to unmute all of your notifications\n8. Type /listmuted to see a list of everything you have muted.\n9. Type /listsubbed to see everything you have subscribed to." )
 
 
 @switch_bot.message_handler(commands=["mute"])
@@ -1262,7 +1268,7 @@ def switch_confirm_mute(message, games, i):
         switch_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to stop notifications for this title.  You will continue receiving notifications for this item.  If there was a mistake, please try again by typing /mute")
 
 
-@switch_bot.message_handler(commands=["list"])
+@switch_bot.message_handler(commands=["listmuted"])
 def switch_list(msg):
     games = SwitchTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games
     message = ""
@@ -1361,6 +1367,118 @@ def switch_confirm_unmute_all(message):
 #     switch_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time." )
 #
 
+
+@switch_bot.message_handler(commands=["subscribe"])
+def subscribe_switch(msg):
+    sent = switch_bot.send_message(msg.chat.id, "Enter the title of the item that you wish to receive notifications for, regardless of if it is included in your list of muted games")
+    switch_bot.register_next_step_handler(sent, start_subscribe_switch)
+
+
+def start_subscribe_switch(message):
+    message_formatted = message.text.replace("’", "'").strip()
+    game = Games.query.filter((func.lower(Games.title) == func.lower(message_formatted)) & (Games.system == "Nintendo Switch")).first()
+    if not game:
+        game = Hardware.query.filter((func.lower(Hardware.title) == func.lower(message_formatted)) & (Hardware.system == "Nintendo Switch")).first()
+    if not game:
+        games = db.session.query(Games).filter(func.lower(Games.title).contains(func.lower(message_formatted)) & (Games.system == "Nintendo Switch")).limit(15).all()
+        if games:
+            msg = "We were not able to find an exact match. But, your query returned this:\n\n"
+            for i in range(0, len(games)):
+                msg += f"{i+1}. {games[i].title}\n"
+            msg += "\nPlease enter the number corresponding to the game you would like to subscribe to"
+            sent = switch_bot.send_message(message.chat.id, msg)
+            switch_bot.register_next_step_handler(sent, switch_subscribe_game, games)
+        if not games:
+            games = db.session.query(Hardware).filter(func.lower(Hardware.title).contains(func.lower(message_formatted)) & (Games.system == "Nintendo Switch")).limit(15).all()
+            if games:
+                msg = "We were not able to find an exact match. But, your query returned this:\n\n"
+                for i in range(0, len(games)):
+                    msg += f"{i + 1}. {games[i].title}\n"
+                msg += "\nPlease enter the number corresponding to the game you would like to subscribe to"
+                sent = switch_bot.send_message(message.chat.id, msg)
+                switch_bot.register_next_step_handler(sent, switch_subscribe_game, games)
+            else:
+                switch_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please check for typos or try broadening your search.  We should be able to help you find a match with just 1 keyword from the title.  You can type /subscribe to try again.")
+    elif game:
+        switch_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
+        if game.title not in SwitchTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games:
+            SwitchTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games += [game.title]
+            db.session.commit()
+        else:
+            print("A user tried to mute a game that was already muted")
+
+
+def switch_subscribe_game(message, games):
+    try:
+        if int(message.text) > 0:
+            msg = f"You entered {message.text}, which corresponds to {games[int(message.text)-1].title}.\n\nType 'yes' if this is the title you want to receive notifications for."
+            sent = switch_bot.send_message(message.chat.id, msg)
+            switch_bot.register_next_step_handler(sent, switch_confirm_subscribe, games, message.text)
+        else:
+            switch_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(games)}.  You can type /subscribe to try again.")
+    except:
+        switch_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(games)}.  You can type /subscribe to try again.")
+
+
+def switch_confirm_subscribe(message, games, i):
+    if message.text.strip().lower() == "yes":
+        switch_bot.send_message(message.chat.id, "Thank you.  You will receive notifications for that title.")
+        if games[int(i)-1].title not in SwitchTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games:
+            SwitchTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games += [games[int(i)-1].title]
+            db.session.commit()
+        else:
+            print("A user tried to subscribe to a game but was already subscribed")
+    else:
+        switch_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to add this title to your subscribed games.  Your list of subscribed games will remain as it was.  If there was a mistake, please try again by typing /subscribe")
+
+
+@switch_bot.message_handler(commands=["unsub"])
+def switch_unsub_game(msg):
+    message = "Below is a list of titles you have opted to receieve notifications for:\n\n"
+    subbed_games = SwitchTelegramUsers.query.filter_by(chatID=msg.chat.id).first().subscribed_games
+    if len(subbed_games) == 0:
+        switch_bot.send_message(msg.chat.id, "You are not currently subscribed to any titles and thus have nothing to unsub from.  You can type /subscribe to subscribe notifications for specific titles.  This will send you a notification even if you muted it.")
+    else:
+        for i in range(0, len(subbed_games)):
+            message += f"{i+1}. {subbed_games[i]}\n"
+        message += "\nPlease type the number corresponding to the game you would like to unsubscribe from."
+        sent = switch_bot.send_message(msg.chat.id, message)
+        switch_bot.register_next_step_handler(sent, switch_unsub, subbed_games)
+
+
+def switch_unsub(message, subbed_games):
+    try:
+        if int(message.text) > 0:
+            msg = f"You entered {message.text}, which corresponds to {subbed_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to unsub from."
+            sent = switch_bot.send_message(message.chat.id, msg)
+            switch_bot.register_next_step_handler(sent, switch_confirm_unsub, subbed_games, message.text)
+        else:
+            switch_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(subbed_games)}.  You can type /unsub to try again.")
+    except:
+        switch_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(subbed_games)}.  You can type /unsub to try again.")
+
+
+def switch_confirm_unsub(message, subbed_games, i):
+    if message.text.strip().lower() == "yes":
+        del subbed_games[int(i)-1]
+        switch_bot.send_message(message.chat.id, "Thank you.  You have unsubscribed from notifications for that title.  You will now only receive notifications for this title if it is not part of your list of muted titles")
+        SwitchTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games = subbed_games
+        db.session.commit()
+    else:
+        switch_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to unsub notifications for this title.  You will continue receiving notifications for this title.  If there was a mistake, please try again by typing /unsub")
+
+
+@switch_bot.message_handler(commands=["listsubbed"])
+def list_subbed_switch(msg):
+    games = SwitchTelegramUsers.query.filter_by(chatID=msg.chat.id).first().subscribed_games
+    message = ""
+    for game in games:
+        message += f"• {game}\n"
+    if len(games) == 0:
+        message = "You are not currently subscribed to notifications for any titles.  You can type /subscribe to subscribe notifications for specific titles."
+    switch_bot.send_message(msg.chat.id, message.strip())
+
+
 # X BOT COMMANDS
 @x_bot.message_handler(commands=["start"])
 def start_message(msg):
@@ -1395,7 +1513,7 @@ def stop_message(msg):
 
 @x_bot.message_handler(commands=["help"])
 def help_message(msg):
-    x_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time.  Type /mute to mute notifications for specific titles.  Type /unmute to unmute notifications that you have muted.  Type /unmuteall to unmute all of your notifications.  Type /list to see a list of everything you have muted." )
+    x_bot.send_message(msg.chat.id, "1. You may type /start to receive notifications\n2. Type /stop to stop receiving notifications. You may start and stop notifications at any time\n3. Type /mute to mute notifications for specific titles\n4. Type /unmute to unmute notifications that you have muted\n5. Type /subscribe to receive notifications for a title, even if it is muted.  If you have muted all notifications for Xbox One games, and add subscribe to a specific Xbox One game, you will receive notifications for that title\n6. Type /unsub to remove a game from your list of subscribed games\n7. Type /unmuteall to unmute all of your notifications\n8. Type /listmuted to see a list of everything you have muted.\n9. Type /listsubbed to see everything you have subscribed to." )
 
 
 @x_bot.message_handler(commands=["mute"])
@@ -1462,7 +1580,7 @@ def x_confirm_mute(message, games, i):
         x_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to stop notifications for this title.  You will continue receiving notifications for this item.  If there was a mistake, please try again by typing /mute")
 
 
-@x_bot.message_handler(commands=["list"])
+@x_bot.message_handler(commands=["listmuted"])
 def x_list(msg):
     games = XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games
     message = ""
@@ -1537,6 +1655,119 @@ def mute_console_xbox(msg):
         x_bot.register_next_step_handler(sent, confirm_mute_console, msg.text)
 
 
+@x_bot.message_handler(commands=["subscribe"])
+def subscribe_x(msg):
+    sent = x_bot.send_message(msg.chat.id, "Enter the title of the item that you wish to receive notifications for, regardless of if it is included in your list of muted games")
+    x_bot.register_next_step_handler(sent, start_subscribe_x)
+
+
+def start_subscribe_x(message):
+    message_formatted = message.text.replace("’", "'").strip()
+    game = Games.query.filter((func.lower(Games.title) == func.lower(message_formatted)) & ((Games.system == "Xbox One") | (Games.system == "Xbox Series X"))).first()
+    if not game:
+        game = Hardware.query.filter((func.lower(Hardware.title) == func.lower(message_formatted)) & ((Hardware.system == "Xbox One") | (Games.system == "Xbox Series X"))).first()
+    if not game:
+        games = db.session.query(Games).filter(func.lower(Games.title).contains(func.lower(message_formatted)) & ((Games.system == "Xbox One") | (Games.system == "Xbox Series X"))).limit(15).all()
+        if games:
+            msg = "We were not able to find an exact match. But, your query returned this:\n\n"
+            for i in range(0, len(games)):
+                msg += f"{i+1}. {games[i].title}\n"
+            msg += "\nPlease enter the number corresponding to the game you would like to subscribe to"
+            sent = x_bot.send_message(message.chat.id, msg)
+            x_bot.register_next_step_handler(sent, x_subscribe_game, games)
+        if not games:
+            games = db.session.query(Hardware).filter(func.lower(Hardware.title).contains(func.lower(message_formatted)) & ((Games.system == "Xbox One") | (Games.system == "Xbox Series X"))).limit(15).all()
+            if games:
+                msg = "We were not able to find an exact match. But, your query returned this:\n\n"
+                for i in range(0, len(games)):
+                    msg += f"{i + 1}. {games[i].title}\n"
+                msg += "\nPlease enter the number corresponding to the game you would like to subscribe to"
+                sent = x_bot.send_message(message.chat.id, msg)
+                x_bot.register_next_step_handler(sent, x_subscribe_game, games)
+            else:
+                x_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please check for typos or try broadening your search.  We should be able to help you find a match with just 1 keyword from the title.  You can type /subscribe to try again.")
+    elif game:
+        x_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
+        if game.title not in XboxTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games:
+            XboxTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games += [game.title]
+            db.session.commit()
+        else:
+            print("A user tried to mute a game that was already muted")
+
+
+def x_subscribe_game(message, games):
+    try:
+        if int(message.text) > 0:
+            msg = f"You entered {message.text}, which corresponds to {games[int(message.text)-1].title}.\n\nType 'yes' if this is the title you want to receive notifications for."
+            sent = x_bot.send_message(message.chat.id, msg)
+            x_bot.register_next_step_handler(sent, x_confirm_subscribe, games, message.text)
+        else:
+            x_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(games)}.  You can type /subscribe to try again.")
+    except:
+        x_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(games)}.  You can type /subscribe to try again.")
+
+
+def x_confirm_subscribe(message, games, i):
+    if message.text.strip().lower() == "yes":
+        x_bot.send_message(message.chat.id, "Thank you.  You will receive notifications for that title.")
+        if games[int(i)-1].title not in XboxTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games:
+            XboxTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games += [games[int(i)-1].title]
+            db.session.commit()
+        else:
+            print("A user tried to subscribe to a game but was already subscribed")
+    else:
+        x_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to add this title to your subscribed games.  Your list of subscribed games will remain as it was.  If there was a mistake, please try again by typing /subscribe")
+
+
+@x_bot.message_handler(commands=["unsub"])
+def x_unsub_game(msg):
+    message = "Below is a list of titles you have opted to receieve notifications for:\n\n"
+    subbed_games = XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first().subscribed_games
+    if len(subbed_games) == 0:
+        x_bot.send_message(msg.chat.id, "You are not currently subscribed to any titles and thus have nothing to unsub from.  You can type /subscribe to subscribe notifications for specific titles.  This will send you a notification even if you muted it.")
+    else:
+        for i in range(0, len(subbed_games)):
+            message += f"{i+1}. {subbed_games[i]}\n"
+        message += "\nPlease type the number corresponding to the game you would like to unsubscribe from."
+        sent = x_bot.send_message(msg.chat.id, message)
+        x_bot.register_next_step_handler(sent, x_unsub, subbed_games)
+
+
+def x_unsub(message, subbed_games):
+    try:
+        if int(message.text) > 0:
+            msg = f"You entered {message.text}, which corresponds to {subbed_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to unsub from."
+            sent = x_bot.send_message(message.chat.id, msg)
+            x_bot.register_next_step_handler(sent, x_confirm_unsub, subbed_games, message.text)
+        else:
+            x_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(subbed_games)}.  You can type /unsub to try again.")
+    except:
+        x_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(subbed_games)}.  You can type /unsub to try again.")
+
+
+def x_confirm_unsub(message, subbed_games, i):
+    if message.text.strip().lower() == "yes":
+        del subbed_games[int(i)-1]
+        x_bot.send_message(message.chat.id, "Thank you.  You have unsubscribed from notifications for that title.  You will now only receive notifications for this title if it is not part of your list of muted titles")
+        XboxTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games = subbed_games
+        db.session.commit()
+    else:
+        x_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to unsub notifications for this title.  You will continue receiving notifications for this title.  If there was a mistake, please try again by typing /unsub")
+
+
+@x_bot.message_handler(commands=["listsubbed"])
+def list_subbed_x(msg):
+    games = XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first().subscribed_games
+    message = ""
+    for game in games:
+        message += f"• {game}\n"
+    if len(games) == 0:
+        message = "You are not currently subscribed to notifications for any titles.  You can type /subscribe to subscribe notifications for specific titles."
+    x_bot.send_message(msg.chat.id, message.strip())
+
+# <!-- END OF X BOT COMMANDS --!>
+
+
 def confirm_mute_console(msg, console_to_mute):
     if msg.text.strip().lower() == "yes":
         if console_to_mute == "/muteps4":
@@ -1553,13 +1784,13 @@ def confirm_mute_console(msg, console_to_mute):
             db.session.commit()
         elif console_to_mute == "/muteseries":
             x_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for Xbox Series games.")
-            XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["Xbox One"]
+            XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["Xbox Series X"]
             db.session.commit()
     else:
         if console_to_mute == "/muteps4" or console_to_mute == "/muteps5":
             ps_bot.send_message(msg.chat.id, "We did not receive a 'yes' as confirmation.  You will continue receiving notifications for that console.")
         elif console_to_mute == "/muteone" or console_to_mute == "/muteseries":
-            ps_bot.send_message(msg.chat.id, "We did not receive a 'yes' as confirmation.  You will continue receiving notifications for that console.")
+            x_bot.send_message(msg.chat.id, "We did not receive a 'yes' as confirmation.  You will continue receiving notifications for that console.")
 
 
 # @x_bot.message_handler(commands=["start"])
