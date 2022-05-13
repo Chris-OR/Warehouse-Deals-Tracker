@@ -133,18 +133,27 @@ class PSTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
     subscribed = db.Column(db.Boolean, nullable=False)
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
+    # subscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
 class XboxTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
     subscribed = db.Column(db.Boolean, nullable=False)
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
+    # subscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
 class SwitchTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
     subscribed = db.Column(db.Boolean, nullable=False)
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
+    # subscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
+
+
+db.PSTelegramUsers.drop()
+db.SwitchTelegramUsers.drop()
+db.XboxTelegramUsers.drop()
+db.session.commit()
 
 
 # db.create_all()
@@ -1477,20 +1486,18 @@ def confirm_mute_console(msg, console_to_mute):
 
 @ps_bot.message_handler(commands=["users"])
 def show_users(msg):
-    print(os.environ.get("CHAT_ID"))
-    print(msg.chat.id)
     if str(msg.chat.id) == str(os.environ.get("CHAT_ID")):
         ps_users = PSTelegramUsers.query.all()
         switch_users = SwitchTelegramUsers.query.all()
         xbox_users = XboxTelegramUsers.query.all()
 
-        message = "PS Users:"
+        message = "PS Users: "
         for user in ps_users:
             message += f"{user.chatID}"
-        message += "\nSwitch Users:"
+        message += "\nSwitch Users: "
         for user in switch_users:
             message += f"{user.chatID}"
-        message += "\nXbox Users:"
+        message += "\nXbox Users: "
         for user in xbox_users:
             message += f"{user.chatID}"
 
