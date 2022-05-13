@@ -1477,6 +1477,8 @@ def confirm_mute_console(msg, console_to_mute):
 
 @ps_bot.message_handler(commands=["users"])
 def show_users(msg):
+    print(os.environ.get("CHAT_ID"))
+    print(msg.chat.id)
     if msg.chat.id == os.environ.get("CHAT_ID"):
         ps_users = PSTelegramUsers.query.all()
         switch_users = SwitchTelegramUsers.query.all()
@@ -1485,8 +1487,10 @@ def show_users(msg):
         message = "PS Users:"
         for user in ps_users:
             message += f"{user.chatID}"
+        message += "\nSwitch Users:"
         for user in switch_users:
             message += f"{user.chatID}"
+        message += "\nXbox Users:"
         for user in xbox_users:
             message += f"{user.chatID}"
 
