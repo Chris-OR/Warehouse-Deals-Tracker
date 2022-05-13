@@ -22,6 +22,7 @@ from wtforms.validators import DataRequired, Email
 from flask_ckeditor import CKEditorField, CKEditor
 from wtforms.fields.html5 import EmailField
 
+from tqdm import tqdm
 
 PS4_URL = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A7089437011%2Cn%3A6458584011&dc&qid=1613426168&rnid=8929975011&ref=sr_nr_n_2&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
 PS5_URL = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A20974860011%2Cn%3A20974876011&dc&qid=1614274309&rnid=8929975011&ref=sr_nr_n_2&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
@@ -75,46 +76,15 @@ class AddGame(FlaskForm):
     submit = SubmitField("Add Game")
 
 
-def progressBar(iterable, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
-    """
-    Call in a loop to create terminal progress bar
-    @params:
-        iterable    - Required  : iterable object (Iterable)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        length      - Optional  : character length of bar (Int)
-        fill        - Optional  : bar fill character (Str)
-        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
-    """
-    total = len(iterable)
-    # Progress Bar Printing Function
-    def printProgressBar (iteration):
-        percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-        filledLength = int(length * iteration // total)
-        bar = fill * filledLength + '-' * (length - filledLength)
-        print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
-    # Initial Call
-    printProgressBar(0)
-    # Update Progress Bar
-    for i, item in enumerate(iterable):
-        yield item
-        printProgressBar(i + 1)
-    # Print New Line on Complete
-    print()
-
-
 def checker_thread():
     captcha = False
     while not captcha:
         if not captcha:
             captcha = gc.initialize_webpages(ps4_no_referral, "PlayStation 4")
             price_data()
-            items = list(range(0, 1510))
-            for item in progressBar(items, prefix='Progress:', suffix='Complete', length=50):
-                # Do stuff...
-                time.sleep(0.1)
             # time.sleep(151)
+            for i in tqdm(range(151)):
+                time.sleep(1)
         if not captcha:
             captcha = gc.initialize_hardware("https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cp_89%3APlaystation&s=popularity-rank&dc&qid=1649385940&ref=sr_ex_n_1", "PlayStation 5")
             price_data()
