@@ -1114,7 +1114,7 @@ def ps_confirm_subscribe(message, games, i):
 
 
 @ps_bot.message_handler(commands=["unsub"])
-def ps_unmute_game(msg):
+def ps_unsub_game(msg):
     message = "Below is a list of titles you have opted to receieve notifications for:\n\n"
     subbed_games = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().subscribed_games
     if len(subbed_games) == 0:
@@ -1130,7 +1130,7 @@ def ps_unmute_game(msg):
 def ps_unsub(message, subbed_games):
     try:
         if int(message.text) > 0:
-            msg = f"You entered {message.text}, which corresponds to {subbed_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to start unsub from.."
+            msg = f"You entered {message.text}, which corresponds to {subbed_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to start unsub from."
             sent = ps_bot.send_message(message.chat.id, msg)
             ps_bot.register_next_step_handler(sent, ps_confirm_unsub, subbed_games, message.text)
         else:
@@ -1142,7 +1142,7 @@ def ps_unsub(message, subbed_games):
 def ps_confirm_unsub(message, subbed_games, i):
     if message.text.strip().lower() == "yes":
         del subbed_games[int(i)-1]
-        ps_bot.send_message(message.chat.id, "Thank you.  You have unscribed for notifications from that title.")
+        ps_bot.send_message(message.chat.id, "Thank you.  You have unsubscribed from notifications for that title.")
         PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games = subbed_games
         db.session.commit()
     else:
