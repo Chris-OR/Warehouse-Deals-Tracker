@@ -1434,9 +1434,9 @@ def confirm_mute_console(msg, console_to_mute):
             db.session.commit()
     else:
         if console_to_mute == "/muteps4" or console_to_mute == "/muteps5":
-            ps_bot.send_message("We did not receive a 'yes' as confirmation.  You will continue receiving notifications for that console.")
+            ps_bot.send_message(msg.chat.id, "We did not receive a 'yes' as confirmation.  You will continue receiving notifications for that console.")
         elif console_to_mute == "/muteone" or console_to_mute == "/muteseries":
-            ps_bot.send_message("We did not receive a 'yes' as confirmation.  You will continue receiving notifications for that console.")
+            ps_bot.send_message(msg.chat.id, "We did not receive a 'yes' as confirmation.  You will continue receiving notifications for that console.")
 
 
 # @x_bot.message_handler(commands=["start"])
