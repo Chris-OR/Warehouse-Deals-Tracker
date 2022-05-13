@@ -826,7 +826,7 @@ def initialize_ps_bot():
         telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
         telebot.types.BotCommand(command="/muteps4", description="Mute notifications for all PS4 titles"),
         telebot.types.BotCommand(command="/muteps5", description="Mute notifications for all PS5 titles"),
-        telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
+        telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
         telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
         telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
         telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
@@ -976,7 +976,7 @@ def ps_confirm_mute(message, games, i):
         ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to stop notifications for this title.  You will continue receiving notifications for this item.  If there was a mistake, please try again by typing /mute")
 
 
-@ps_bot.message_handler(commands=["list"])
+@ps_bot.message_handler(commands=["listmuted"])
 def ps_list(msg):
     games = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games
     message = ""
@@ -1051,7 +1051,7 @@ def mute_console_ps(msg):
 
 @ps_bot.message_handler(commands=["subscribe"])
 def subscribe_ps(msg):
-    sent = ps_bot.send_message(msg.chat.id, "Enter the title of the title that you wish to receive notifications for regardless of if it is included in your list of muted games")
+    sent = ps_bot.send_message(msg.chat.id, "Enter the title of the item that you wish to receive notifications for, regardless of if it is included in your list of muted games")
     ps_bot.register_next_step_handler(sent, start_subscribe_ps)
 
 
@@ -1110,7 +1110,7 @@ def ps_confirm_subscribe(message, games, i):
         else:
             print("A user tried to subscribe to a game but was already subscribed")
     else:
-        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to stop notifications for this title.  Your list of subscribed games will remain as it was.  If there was a mistake, please try again by typing /subscribe")
+        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to add this title to your subscribed games.  Your list of subscribed games will remain as it was.  If there was a mistake, please try again by typing /subscribe")
 
 
 @ps_bot.message_handler(commands=["unsub"])
@@ -1130,7 +1130,7 @@ def ps_unsub_game(msg):
 def ps_unsub(message, subbed_games):
     try:
         if int(message.text) > 0:
-            msg = f"You entered {message.text}, which corresponds to {subbed_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to start unsub from."
+            msg = f"You entered {message.text}, which corresponds to {subbed_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to unsub from."
             sent = ps_bot.send_message(message.chat.id, msg)
             ps_bot.register_next_step_handler(sent, ps_confirm_unsub, subbed_games, message.text)
         else:
@@ -1142,7 +1142,7 @@ def ps_unsub(message, subbed_games):
 def ps_confirm_unsub(message, subbed_games, i):
     if message.text.strip().lower() == "yes":
         del subbed_games[int(i)-1]
-        ps_bot.send_message(message.chat.id, "Thank you.  You have unsubscribed from notifications for that title.")
+        ps_bot.send_message(message.chat.id, "Thank you.  You have unsubscribed from notifications for that title.  You will now only receive notifications for this title if it is not part of your list of muted titles")
         PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games = subbed_games
         db.session.commit()
     else:
@@ -1156,7 +1156,7 @@ def list_subbed_ps(msg):
     for game in games:
         message += f"• {game}\n"
     if len(games) == 0:
-        message = "You are not currently muting notifications for any titles.  You can type /mute to mute notifications for specific titles."
+        message = "You are not currently subscribed to notifications for any titles.  You can type /subscribe to subscribe notifications for specific titles."
     ps_bot.send_message(msg.chat.id, message.strip())
 
 
