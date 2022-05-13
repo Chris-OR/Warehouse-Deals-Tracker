@@ -785,6 +785,8 @@ def send_telegram_message(title, price, url, console, low, average, new_game, pr
         for user in users:
             if title not in user.unsubscribed_games and console not in user.unsubscribed_games:
                 bot.sendMessage(user.chatID, message, parse_mode=telegram.ParseMode.HTML)
+            elif title in user.subscribed_games:
+                bot.sendMessage(user.chatID, message, parse_mode=telegram.ParseMode.HTML)
         # print(console, title, price, flair, console, url)
         try:
             post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}",
@@ -820,6 +822,7 @@ def initialize_ps_bot():
         telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
         telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
         telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
+        telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
         telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
         telebot.types.BotCommand(command="/muteps4", description="Mute notifications for all PS4 titles"),
         telebot.types.BotCommand(command="/muteps5", description="Mute notifications for all PS5 titles"),
@@ -1063,7 +1066,7 @@ def start_subscribe_ps(message):
             msg = "We were not able to find an exact match. But, your query returned this:\n\n"
             for i in range(0, len(games)):
                 msg += f"{i+1}. {games[i].title}\n"
-            msg += "\nPlease enter the number corresponding to the game you would like to mute"
+            msg += "\nPlease enter the number corresponding to the game you would like to subscribe to"
             sent = ps_bot.send_message(message.chat.id, msg)
             ps_bot.register_next_step_handler(sent, ps_subscribe_game, games)
         if not games:
@@ -1072,7 +1075,7 @@ def start_subscribe_ps(message):
                 msg = "We were not able to find an exact match. But, your query returned this:\n\n"
                 for i in range(0, len(games)):
                     msg += f"{i + 1}. {games[i].title}\n"
-                msg += "\nPlease enter the number corresponding to the game you would like to mute"
+                msg += "\nPlease enter the number corresponding to the game you would like to subscribe to"
                 sent = ps_bot.send_message(message.chat.id, msg)
                 ps_bot.register_next_step_handler(sent, ps_subscribe_game, games)
             else:
@@ -1108,6 +1111,42 @@ def ps_confirm_subscribe(message, games, i):
             print("A user tried to subscribe to a game but was already subscribed")
     else:
         ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to stop notifications for this title.  Your list of subscribed games will remain as it was.  If there was a mistake, please try again by typing /subscribe")
+
+
+@ps_bot.message_handler(commands=["unsub"])
+def ps_unmute_game(msg):
+    message = "Below is a list of titles you have opted to receieve notifications for:\n\n"
+    subbed_games = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().subscribed_games
+    if len(subbed_games) == 0:
+        ps_bot.send_message(msg.chat.id, "You are not currently subscribed to any titles and thus have nothing to unsub from.  You can type /subscribe to subscribe notifications for specific titles.  This will send you a notification even if you muted it.")
+    else:
+        for i in range(0, len(subbed_games)):
+            message += f"{i+1}. {subbed_games[i]}\n"
+        message += "\nPlease type the number corresponding to the game you would like to unsubscribe from."
+        sent = ps_bot.send_message(msg.chat.id, message)
+        ps_bot.register_next_step_handler(sent, ps_unsub, subbed_games)
+
+
+def ps_unsub(message, subbed_games):
+    try:
+        if int(message.text) > 0:
+            msg = f"You entered {message.text}, which corresponds to {subbed_games[int(message.text)-1]}.\n\nType 'yes' if this is the title you want to start unsub from.."
+            sent = ps_bot.send_message(message.chat.id, msg)
+            ps_bot.register_next_step_handler(sent, ps_confirm_unsub, subbed_games, message.text)
+        else:
+            ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(subbed_games)}.  You can type /unsub to try again.")
+    except:
+        ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(subbed_games)}.  You can type /unsub to try again.")
+
+
+def ps_confirm_unsub(message, subbed_games, i):
+    if message.text.strip().lower() == "yes":
+        del subbed_games[int(i)-1]
+        ps_bot.send_message(message.chat.id, "Thank you.  You have unscribed for notifications from that title.")
+        PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games = subbed_games
+        db.session.commit()
+    else:
+        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to unsub notifications for this title.  You will continue receiving notifications for this title.  If there was a mistake, please try again by typing /unsub")
 
 
 @ps_bot.message_handler(commands=["listsubbed"])
