@@ -110,7 +110,7 @@ def checker_thread():
         if not captcha:
             captcha = gc.initialize_webpages(ps4_no_referral, "PlayStation 4")
             price_data()
-            items = list(range(0, 151))
+            items = list(range(0, 1510))
             for item in progressBar(items, prefix='Progress:', suffix='Complete', length=50):
                 # Do stuff...
                 time.sleep(0.1)
