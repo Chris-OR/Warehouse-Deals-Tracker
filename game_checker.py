@@ -1029,10 +1029,10 @@ def ps_confirm_unmute_all(message):
 
 @ps_bot.message_handler(commands=["muteps4", "muteps5"])
 def mute_console_ps(msg):
-    if msg.text == "muteps4":
+    if msg.text == "/muteps4":
         sent = ps_bot.send_message(msg.chat.id, "You are about to mute all notifications for PS4 games.  Type 'yes' to confirm this action.")
         ps_bot.register_next_step_handler(sent, confirm_mute_console, msg.text)
-    elif msg.text == "muteps5":
+    elif msg.text == "/muteps5":
         sent = ps_bot.send_message(msg.chat.id, "You are about to mute all notifications for PS5 games.  Type 'yes' to confirm this action.")
         ps_bot.register_next_step_handler(sent, confirm_mute_console, msg.text)
 
@@ -1404,11 +1404,11 @@ def x_confirm_unmute_all(message):
 
 @x_bot.message_handler(commands=["muteone", "muteseries"])
 def mute_console_xbox(msg):
-    if msg.text == "muteone":
+    if msg.text == "/muteone":
         sent = x_bot.send_message(msg.chat.id,
                                    "You are about to mute all notifications for Xbox One games.  Type 'yes' to confirm this action.")
         x_bot.register_next_step_handler(sent, confirm_mute_console, msg.text)
-    elif msg.text == "muteseries":
+    elif msg.text == "/muteseries":
         sent = x_bot.send_message(msg.chat.id,
                                    "You are about to mute all notifications for Xbox Series games.  Type 'yes' to confirm this action.")
         x_bot.register_next_step_handler(sent, confirm_mute_console, msg.text)
@@ -1416,26 +1416,26 @@ def mute_console_xbox(msg):
 
 def confirm_mute_console(msg, console_to_mute):
     if msg.text.strip().lower() == "yes":
-        if console_to_mute == "muteps4":
+        if console_to_mute == "/muteps4":
             ps_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for PS4 games.")
             PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["PlayStation 4"]
             db.session.commit()
-        elif console_to_mute == "muteps5":
+        elif console_to_mute == "/muteps5":
             ps_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for PS5 games.")
             PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["PlayStation 5"]
             db.session.commit()
-        elif console_to_mute == "muteone":
+        elif console_to_mute == "/muteone":
             x_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for PS5 games.")
             XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["Xbox One"]
             db.session.commit()
-        elif console_to_mute == "muteseries":
+        elif console_to_mute == "/muteseries":
             x_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for PS5 games.")
             XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["Xbox One"]
             db.session.commit()
     else:
-        if console_to_mute == "muteps4" or console_to_mute == "muteps5":
+        if console_to_mute == "/muteps4" or console_to_mute == "/muteps5":
             ps_bot.send_message("We did not receive a 'yes' as confirmation.  You will continue receiving notifications for that console.")
-        elif console_to_mute == "muteone" or console_to_mute == "muteseries":
+        elif console_to_mute == "/muteone" or console_to_mute == "/muteseries":
             ps_bot.send_message("We did not receive a 'yes' as confirmation.  You will continue receiving notifications for that console.")
 
 
