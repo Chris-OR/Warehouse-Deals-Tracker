@@ -150,9 +150,9 @@ class SwitchTelegramUsers(db.Model):
     subscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
-PSTelegramUsers.drop()
-SwitchTelegramUsers.drop()
-XboxTelegramUsers.drop()
+PSTelegramUsers.__table__.drop()
+SwitchTelegramUsers.__table__.drop()
+XboxTelegramUsers.__table__.drop()
 db.session.commit()
 
 
