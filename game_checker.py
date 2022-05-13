@@ -816,20 +816,20 @@ def captcha_alert():
 
 def initialize_ps_bot():
     # asyncio.run(ps_bot.polling())
-    # ps_bot.set_my_commands([
-    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-    #     telebot.types.BotCommand(command="/muteps4", description="Mute notifications for all PS4 titles"),
-    #     telebot.types.BotCommand(command="/muteps5", description="Mute notifications for all PS5 titles"),
-    #     telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
-    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-    #     telebot.types.BotCommand(command="/help", description="Display help"),
-    # ])
+    ps_bot.set_my_commands([
+        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+        telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
+        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+        telebot.types.BotCommand(command="/muteps4", description="Mute notifications for all PS4 titles"),
+        telebot.types.BotCommand(command="/muteps5", description="Mute notifications for all PS5 titles"),
+        telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
+        telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
+        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+        telebot.types.BotCommand(command="/help", description="Display help"),
+    ])
     ps_bot.polling()
-
-    # ps_bot.set_my_commands(commands)
 
 
 def initialize_switch_bot():
@@ -1044,6 +1044,81 @@ def mute_console_ps(msg):
     elif msg.text == "/muteps5":
         sent = ps_bot.send_message(msg.chat.id, "You are about to mute all notifications for PS5 games.  Type 'yes' to confirm this action.")
         ps_bot.register_next_step_handler(sent, confirm_mute_console, msg.text)
+
+
+@ps_bot.message_handler(commands=["subscribe"])
+def subscribe_ps(msg):
+    sent = ps_bot.send_message(msg.chat.id, "Enter the title of the title that you wish to receive notifications for regardless of if it is included in your list of muted games")
+    ps_bot.register_next_step_handler(sent, start_subscribe_ps)
+
+
+def start_subscribe_ps(message):
+    message_formatted = message.text.replace("’", "'").strip()
+    game = Games.query.filter((func.lower(Games.title) == func.lower(message_formatted)) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).first()
+    if not game:
+        game = Hardware.query.filter((func.lower(Hardware.title) == func.lower(message_formatted)) & ((Hardware.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).first()
+    if not game:
+        games = db.session.query(Games).filter(func.lower(Games.title).contains(func.lower(message_formatted)) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).limit(15).all()
+        if games:
+            msg = "We were not able to find an exact match. But, your query returned this:\n\n"
+            for i in range(0, len(games)):
+                msg += f"{i+1}. {games[i].title}\n"
+            msg += "\nPlease enter the number corresponding to the game you would like to mute"
+            sent = ps_bot.send_message(message.chat.id, msg)
+            ps_bot.register_next_step_handler(sent, ps_subscribe_game, games)
+        if not games:
+            games = db.session.query(Hardware).filter(func.lower(Hardware.title).contains(func.lower(message_formatted)) & ((Games.system == "PlayStation 5") | (Games.system == "PlayStation 4"))).limit(15).all()
+            if games:
+                msg = "We were not able to find an exact match. But, your query returned this:\n\n"
+                for i in range(0, len(games)):
+                    msg += f"{i + 1}. {games[i].title}\n"
+                msg += "\nPlease enter the number corresponding to the game you would like to mute"
+                sent = ps_bot.send_message(message.chat.id, msg)
+                ps_bot.register_next_step_handler(sent, ps_subscribe_game, games)
+            else:
+                ps_bot.send_message(message.chat.id, "Sorry, but we were unable to find that title in our database. Please check for typos or try broadening your search.  We should be able to help you find a match with just 1 keyword from the title.  You can type /subscribe to try again.")
+    elif game:
+        ps_bot.send_message(message.chat.id, "Thank you.  You will stop receiving notifications for that title.")
+        if game.title not in PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games:
+            PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games += [game.title]
+            db.session.commit()
+        else:
+            print("A user tried to mute a game that was already muted")
+
+
+def ps_subscribe_game(message, games):
+    try:
+        if int(message.text) > 0:
+            msg = f"You entered {message.text}, which corresponds to {games[int(message.text)-1].title}.\n\nType 'yes' if this is the title you want to receive notifications for."
+            sent = ps_bot.send_message(message.chat.id, msg)
+            ps_bot.register_next_step_handler(sent, ps_confirm_subscribe, games, message.text)
+        else:
+            ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(games)}.  You can type /subscribe to try again.")
+    except:
+        ps_bot.send_message(message.chat.id, f"Your selection, {message.text}, does not correspond to any item in the list.  You must select a number between 1 and {len(games)}.  You can type /subscribe to try again.")
+
+
+def ps_confirm_subscribe(message, games, i):
+    if message.text.strip().lower() == "yes":
+        ps_bot.send_message(message.chat.id, "Thank you.  You will receive notifications for that title.")
+        if games[int(i)-1].title not in PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games:
+            PSTelegramUsers.query.filter_by(chatID=message.chat.id).first().subscribed_games += [games[int(i)-1].title]
+            db.session.commit()
+        else:
+            print("A user tried to subscribe to a game but was already subscribed")
+    else:
+        ps_bot.send_message(message.chat.id, "We did not receive a 'yes' as confirmation to stop notifications for this title.  Your list of subscribed games will remain as it was.  If there was a mistake, please try again by typing /subscribe")
+
+
+@ps_bot.message_handler(commands=["listsubbed"])
+def list_subbed_ps(msg):
+    games = PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().subscribed_games
+    message = ""
+    for game in games:
+        message += f"• {game}\n"
+    if len(games) == 0:
+        message = "You are not currently muting notifications for any titles.  You can type /mute to mute notifications for specific titles."
+    ps_bot.send_message(msg.chat.id, message.strip())
 
 
 # <!-- END OF PS BOT COMMANDS --!>
