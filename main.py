@@ -22,7 +22,7 @@ from wtforms.validators import DataRequired, Email
 from flask_ckeditor import CKEditorField, CKEditor
 from wtforms.fields.html5 import EmailField
 
-from tqdm import tqdm
+import click
 
 PS4_URL = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A7089437011%2Cn%3A6458584011&dc&qid=1613426168&rnid=8929975011&ref=sr_nr_n_2&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
 PS5_URL = "https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A20974860011%2Cn%3A20974876011&dc&qid=1614274309&rnid=8929975011&ref=sr_nr_n_2&_encoding=UTF8&tag=awglf-20&linkCode=ur2&linkId=67c919358e64dfac3554553a359cde0e&camp=15121&creative=330641"
@@ -83,8 +83,9 @@ def checker_thread():
             captcha = gc.initialize_webpages(ps4_no_referral, "PlayStation 4")
             price_data()
             # time.sleep(151)
-            for i in tqdm(range(151)):
-                time.sleep(1)
+            with click.progressbar(range(1500)) as bar:
+                for i in bar:
+                    pass
         if not captcha:
             captcha = gc.initialize_hardware("https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cp_89%3APlaystation&s=popularity-rank&dc&qid=1649385940&ref=sr_ex_n_1", "PlayStation 5")
             price_data()
