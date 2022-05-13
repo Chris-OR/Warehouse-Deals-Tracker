@@ -1479,7 +1479,7 @@ def confirm_mute_console(msg, console_to_mute):
 def show_users(msg):
     print(os.environ.get("CHAT_ID"))
     print(msg.chat.id)
-    if msg.chat.id == os.environ.get("CHAT_ID"):
+    if str(msg.chat.id) == str(os.environ.get("CHAT_ID")):
         ps_users = PSTelegramUsers.query.all()
         switch_users = SwitchTelegramUsers.query.all()
         xbox_users = XboxTelegramUsers.query.all()
