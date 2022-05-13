@@ -147,12 +147,12 @@ class SwitchTelegramUsers(db.Model):
     chatID = db.Column(db.Integer, primary_key=True)
     subscribed = db.Column(db.Boolean, nullable=False)
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
-    subscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
+    # subscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
 
 
-PSTelegramUsers.__table__.drop()
-SwitchTelegramUsers.__table__.drop()
-XboxTelegramUsers.__table__.drop()
+PSTelegramUsers.__table__.drop(db.engine)
+SwitchTelegramUsers.__table__.drop(db.engine)
+XboxTelegramUsers.__table__.drop(db.engine)
 db.session.commit()
 
 
@@ -1493,12 +1493,12 @@ def show_users(msg):
 
         message = "PS Users: "
         for user in ps_users:
-            message += f"{user.chatID}"
-        message += "\nSwitch Users: "
+            message += f"{user.chatID} "
+        message += "\n\nSwitch Users: "
         for user in switch_users:
-            message += f"{user.chatID}"
-        message += "\nXbox Users: "
+            message += f"{user.chatID} "
+        message += "\n\nXbox Users: "
         for user in xbox_users:
-            message += f"{user.chatID}"
+            message += f"{user.chatID} "
 
         ps_bot.send_message(msg.chat.id, message)
