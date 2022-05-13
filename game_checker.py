@@ -1425,11 +1425,11 @@ def confirm_mute_console(msg, console_to_mute):
             PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["PlayStation 5"]
             db.session.commit()
         elif console_to_mute == "/muteone":
-            x_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for PS5 games.")
+            x_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for Xbox One games.")
             XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["Xbox One"]
             db.session.commit()
         elif console_to_mute == "/muteseries":
-            x_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for PS5 games.")
+            x_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for Xbox Series games.")
             XboxTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["Xbox One"]
             db.session.commit()
     else:
