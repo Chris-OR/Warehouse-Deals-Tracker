@@ -807,17 +807,17 @@ def captcha_alert():
 
 def initialize_ps_bot():
     # asyncio.run(ps_bot.polling())
-    ps_bot.set_my_commands([
-        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-        telebot.types.BotCommand(command="/muteps4", description="Mute notifications for all PS4 titles"),
-        telebot.types.BotCommand(command="/muteps5", description="Mute notifications for all PS5 titles"),
-        telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
-        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-        telebot.types.BotCommand(command="/help", description="Display help"),
-    ])
+    # ps_bot.set_my_commands([
+    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+    #     telebot.types.BotCommand(command="/muteps4", description="Mute notifications for all PS4 titles"),
+    #     telebot.types.BotCommand(command="/muteps5", description="Mute notifications for all PS5 titles"),
+    #     telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
+    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+    #     telebot.types.BotCommand(command="/help", description="Display help"),
+    # ])
     ps_bot.polling()
 
     # ps_bot.set_my_commands(commands)
@@ -839,17 +839,17 @@ def initialize_switch_bot():
 
 def initialize_xbox_bot():
     # asyncio.run(x_bot.polling())
-    x_bot.set_my_commands([
-        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-        telebot.types.BotCommand(command="/muteone", description="Mute notifications for all Xbox One titles"),
-        telebot.types.BotCommand(command="/muteseries", description="Mute notifications for all Xbox Series titles"),
-        telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
-        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-        telebot.types.BotCommand(command="/help", description="Display help"),
-    ])
+    # x_bot.set_my_commands([
+    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+    #     telebot.types.BotCommand(command="/muteone", description="Mute notifications for all Xbox One titles"),
+    #     telebot.types.BotCommand(command="/muteseries", description="Mute notifications for all Xbox Series titles"),
+    #     telebot.types.BotCommand(command="/list", description="View all titles that you have muted notifications for"),
+    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+    #     telebot.types.BotCommand(command="/help", description="Display help"),
+    # ])
     x_bot.polling()
 
 
@@ -1474,3 +1474,20 @@ def confirm_mute_console(msg, console_to_mute):
 # def help_message(msg):
 #     x_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time." )
 #
+
+@ps_bot.message_handler(commands=["users"])
+def show_users(msg):
+    if msg.chat.id == os.environ.get("CHAT_ID"):
+        ps_users = PSTelegramUsers.query.all()
+        switch_users = SwitchTelegramUsers.query.all()
+        xbox_users = XboxTelegramUsers.query.all()
+
+        message = "PS Users:"
+        for user in ps_users:
+            message += f"{user.chatID}"
+        for user in switch_users:
+            message += f"{user.chatID}"
+        for user in xbox_users:
+            message += f"{user.chatID}"
+
+        ps_bot.send_message(msg.chat.id, message)
