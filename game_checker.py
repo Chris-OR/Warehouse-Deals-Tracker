@@ -818,56 +818,56 @@ def captcha_alert():
 
 def initialize_ps_bot():
     # asyncio.run(ps_bot.polling())
-    ps_bot.set_my_commands([
-        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-        telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
-        telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
-        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-        telebot.types.BotCommand(command="/muteps4", description="Mute notifications for all PS4 titles"),
-        telebot.types.BotCommand(command="/muteps5", description="Mute notifications for all PS5 titles"),
-        telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
-        telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
-        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-        telebot.types.BotCommand(command="/help", description="Display help"),
-    ])
+    # ps_bot.set_my_commands([
+    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
+    #     telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
+    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+    #     telebot.types.BotCommand(command="/muteps4", description="Mute notifications for all PS4 titles"),
+    #     telebot.types.BotCommand(command="/muteps5", description="Mute notifications for all PS5 titles"),
+    #     telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
+    #     telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
+    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+    #     telebot.types.BotCommand(command="/help", description="Display help"),
+    # ])
     ps_bot.polling()
 
 
 def initialize_switch_bot():
     # asyncio.run(switch_bot.polling())
-    switch_bot.set_my_commands([
-        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-        telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
-        telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
-        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-        telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
-        telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
-        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-        telebot.types.BotCommand(command="/help", description="Display help"),
-    ])
+    # switch_bot.set_my_commands([
+    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
+    #     telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
+    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+    #     telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
+    #     telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
+    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+    #     telebot.types.BotCommand(command="/help", description="Display help"),
+    # ])
     switch_bot.polling()
 
 
 def initialize_xbox_bot():
     # asyncio.run(x_bot.polling())
-    x_bot.set_my_commands([
-        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-        telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
-        telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
-        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-        telebot.types.BotCommand(command="/muteone", description="Mute notifications for all Xbox One titles"),
-        telebot.types.BotCommand(command="/muteseries", description="Mute notifications for all Xbox Series titles"),
-        telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
-        telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
-        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-        telebot.types.BotCommand(command="/help", description="Display help"),
-    ])
+    # x_bot.set_my_commands([
+    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
+    #     telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
+    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+    #     telebot.types.BotCommand(command="/muteone", description="Mute notifications for all Xbox One titles"),
+    #     telebot.types.BotCommand(command="/muteseries", description="Mute notifications for all Xbox Series titles"),
+    #     telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
+    #     telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
+    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+    #     telebot.types.BotCommand(command="/help", description="Display help"),
+    # ])
     x_bot.polling()
 
 
@@ -905,7 +905,7 @@ def stop_message(msg):
 
 @ps_bot.message_handler(commands=["help"])
 def help_message(msg):
-    ps_bot.send_message(msg.chat.id, "1. You may type /start to receive notifications\n2. Type /stop to stop receiving notifications. You may start and stop notifications at any time\n3. Type /mute to mute notifications for specific titles\n4. Type /unmute to unmute notifications that you have muted\n5. Type /subscribe to receive notifications for a title, even if it is muted.  If you have muted all notifications for PS4 games, and add subscribe to a specific PS4 game, you will receive notifications for that title\n6. Type /unsub to remove a game from your list of subscribed games\n7. Type /unmuteall to unmute all of your notifications\n8. Type /listmuted to see a list of everything you have muted.\n9. Type /listsubbed to see everything you have subscribed to." )
+    ps_bot.send_message(msg.chat.id, "1. You may type /start to receive notifications\n2. Type /stop to stop receiving notifications. You may start and stop notifications at any time\n3. Type /mute to mute notifications for specific titles\n4. Type /unmute to unmute notifications that you have muted\n5. Type /subscribe to receive notifications for a title, even if it is muted.  If you have muted all notifications for PS4 games, and subscribe to a specific PS4 game, you will receive notifications for that title\n6. Type /unsub to remove a game from your list of subscribed games\n7. Type /unmuteall to unmute all of your notifications\n8. Type /listmuted to see a list of everything you have muted.\n9. Type /listsubbed to see everything you have subscribed to." )
 
 
 @ps_bot.message_handler(commands=["mute"])
@@ -1201,7 +1201,7 @@ def stop_message(msg):
 
 @switch_bot.message_handler(commands=["help"])
 def help_message(msg):
-    switch_bot.send_message(msg.chat.id, "1. You may type /start to receive notifications\n2. Type /stop to stop receiving notifications. You may start and stop notifications at any time\n3. Type /mute to mute notifications for specific titles\n4. Type /unmute to unmute notifications that you have muted\n5. Type /subscribe to receive notifications for a title, even if it is muted.  If you have muted all notifications for Switch games, and add subscribe to a specific Switch game, you will receive notifications for that title\n6. Type /unsub to remove a game from your list of subscribed games\n7. Type /unmuteall to unmute all of your notifications\n8. Type /listmuted to see a list of everything you have muted.\n9. Type /listsubbed to see everything you have subscribed to." )
+    switch_bot.send_message(msg.chat.id, "1. You may type /start to receive notifications\n2. Type /stop to stop receiving notifications. You may start and stop notifications at any time\n3. Type /mute to mute notifications for specific titles\n4. Type /unmute to unmute notifications that you have muted\n5. Type /subscribe to receive notifications for a title, even if it is muted.  If you have muted all notifications for Switch games, and subscribe to a specific Switch game, you will receive notifications for that title\n6. Type /unsub to remove a game from your list of subscribed games\n7. Type /unmuteall to unmute all of your notifications\n8. Type /listmuted to see a list of everything you have muted.\n9. Type /listsubbed to see everything you have subscribed to." )
 
 
 @switch_bot.message_handler(commands=["mute"])
@@ -1513,7 +1513,7 @@ def stop_message(msg):
 
 @x_bot.message_handler(commands=["help"])
 def help_message(msg):
-    x_bot.send_message(msg.chat.id, "1. You may type /start to receive notifications\n2. Type /stop to stop receiving notifications. You may start and stop notifications at any time\n3. Type /mute to mute notifications for specific titles\n4. Type /unmute to unmute notifications that you have muted\n5. Type /subscribe to receive notifications for a title, even if it is muted.  If you have muted all notifications for Xbox One games, and add subscribe to a specific Xbox One game, you will receive notifications for that title\n6. Type /unsub to remove a game from your list of subscribed games\n7. Type /unmuteall to unmute all of your notifications\n8. Type /listmuted to see a list of everything you have muted.\n9. Type /listsubbed to see everything you have subscribed to." )
+    x_bot.send_message(msg.chat.id, "1. You may type /start to receive notifications\n2. Type /stop to stop receiving notifications. You may start and stop notifications at any time\n3. Type /mute to mute notifications for specific titles\n4. Type /unmute to unmute notifications that you have muted\n5. Type /subscribe to receive notifications for a title, even if it is muted.  If you have muted all notifications for Xbox One games, and subscribe to a specific Xbox One game, you will receive notifications for that title\n6. Type /unsub to remove a game from your list of subscribed games\n7. Type /unmuteall to unmute all of your notifications\n8. Type /listmuted to see a list of everything you have muted.\n9. Type /listsubbed to see everything you have subscribed to." )
 
 
 @x_bot.message_handler(commands=["mute"])
@@ -1772,11 +1772,11 @@ def confirm_mute_console(msg, console_to_mute):
     if msg.text.strip().lower() == "yes":
         if console_to_mute == "/muteps4":
             ps_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for PS4 games.")
-            PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["PlayStation 4"]
+            PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["PS4"]
             db.session.commit()
         elif console_to_mute == "/muteps5":
             ps_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for PS5 games.")
-            PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["PlayStation 5"]
+            PSTelegramUsers.query.filter_by(chatID=msg.chat.id).first().unsubscribed_games += ["PS5"]
             db.session.commit()
         elif console_to_mute == "/muteone":
             x_bot.send_message(msg.chat.id, "Thank you.  You will no longer receive notifications for Xbox One games.")
