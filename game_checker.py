@@ -278,9 +278,9 @@ def initialize_webpages(url, console):
             back_in_stock = False
             date = dt.datetime.now()
             date = date.strftime("%b %d %Y")
-            print(f"{game_titles[i]} is ${game_price[i]}")
             game = Games.query.filter_by(title=game_titles[i]).first()
             if check_regex(game_titles[i], game):
+                print(f"{game_titles[i]} is ${game_price[i]}")
                 # there is a new game not yet added to the database
                 if not game:
                     # check price of all new games to make sure it is good
@@ -440,11 +440,11 @@ def check_regex(title, game):
     game_regex = re.compile(r'bluetooth|playstation 3|fifa 15|invisibleshield|hori compact stand|pdp gaming|goplay grip provides|onyx legacy16 wired usb|rds industries, inc')
     mo = game_regex.search(title.lower())
     if mo:
-        print(f"{title} has been regexxed.  We will skip its rotation")
+        # print(f"{title} has been regexxed.  We will skip its rotation")
         # if game:
         #     print(f"We have found a match in the database.  We will now remove {title} from the database")
         #     db.session.delete(game)
-        #     db.session.commit()ire
+        #     db.session.commit()
 
         # -- delete this once database is cleaned -- #
         # game_list = Games.query.filter_by(system="PlayStation 4").all()
