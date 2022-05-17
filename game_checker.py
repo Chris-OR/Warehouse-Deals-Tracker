@@ -482,7 +482,6 @@ def initialize_hardware(url, console):
         except Exception as e:
             print(e)
             time.sleep(random.randint(3, 20))
-
     # webpage = r
     webpage = response.text
     webpage_soup = BeautifulSoup(webpage, "html.parser")
