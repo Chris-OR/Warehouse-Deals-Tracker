@@ -437,15 +437,14 @@ def clear_stock(console, ware):
 
 
 def check_regex(title, game):
-    game_regex = re.compile(
-        r'bluetooth|playstation 3|InvisibleShield|Just Dance 2021 - PlayStation 5 - PlayStation 5 Edition|PDP Gaming LVL40|Goplay Grip Provides')
+    game_regex = re.compile(r'bluetooth|playstation 3|invisibleshield|pdp gaming|goplay grip provides|onyx legacy16 wired usb|rds industries, inc')
     mo = game_regex.search(title.lower())
     if mo:
-        # print(f"{title} has been regexxed.  We will skip its rotation")
-        if game:
-            print(f"We have found a match in the database.  We will now remove {title} from the database")
-            db.session.delete(game)
-            db.session.commit()
+        print(f"{title} has been regexxed.  We will skip its rotation")
+        # if game:
+        #     print(f"We have found a match in the database.  We will now remove {title} from the database")
+        #     db.session.delete(game)
+        #     db.session.commit()ire
 
         # -- delete this once database is cleaned -- #
         # game_list = Games.query.filter_by(system="PlayStation 4").all()
@@ -813,65 +812,65 @@ def send_telegram_message(title, price, url, console, low, average, new_game, pr
 def captcha_alert():
     bot = telegram.Bot(os.environ.get("CAPTCHA_TOKEN"))
     message = "⚠ SCANNER HIT A CAPTCHA - RESET IT NOW ⚠"
-    bot.sendMessage("1779921442", message, parse_mode=telegram.ParseMode.HTML)
+    bot.sendMessage(os.environ.get("CHAT_ID"), message, parse_mode=telegram.ParseMode.HTML)
 
 
 def initialize_ps_bot():
     # asyncio.run(ps_bot.polling())
-    ps_bot.set_my_commands([
-        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-        telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
-        telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
-        telebot.types.BotCommand(command="/unsuball", description="Unsubscribe from all titles you subscribed to"),
-        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-        telebot.types.BotCommand(command="/muteps4", description="Mute notifications for all PS4 titles"),
-        telebot.types.BotCommand(command="/muteps5", description="Mute notifications for all PS5 titles"),
-        telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
-        telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
-        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-        telebot.types.BotCommand(command="/help", description="Display help"),
-    ])
+    # ps_bot.set_my_commands([
+    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
+    #     telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
+    #     telebot.types.BotCommand(command="/unsuball", description="Unsubscribe from all titles you subscribed to"),
+    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+    #     telebot.types.BotCommand(command="/muteps4", description="Mute notifications for all PS4 titles"),
+    #     telebot.types.BotCommand(command="/muteps5", description="Mute notifications for all PS5 titles"),
+    #     telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
+    #     telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
+    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+    #     telebot.types.BotCommand(command="/help", description="Display help"),
+    # ])
     ps_bot.polling()
 
 
 def initialize_switch_bot():
     # asyncio.run(switch_bot.polling())
-    switch_bot.set_my_commands([
-        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-        telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
-        telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
-        telebot.types.BotCommand(command="/unsuball", description="Unsubscribe from all titles you subscribed to"),
-        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-        telebot.types.BotCommand(command="/muteall", description="Mute all notifications"),
-        telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
-        telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
-        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-        telebot.types.BotCommand(command="/help", description="Display help"),
-    ])
+    # switch_bot.set_my_commands([
+    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
+    #     telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
+    #     telebot.types.BotCommand(command="/unsuball", description="Unsubscribe from all titles you subscribed to"),
+    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+    #     telebot.types.BotCommand(command="/muteall", description="Mute all notifications"),
+    #     telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
+    #     telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
+    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+    #     telebot.types.BotCommand(command="/help", description="Display help"),
+    # ])
     switch_bot.polling()
 
 
 def initialize_xbox_bot():
     # asyncio.run(x_bot.polling())
-    x_bot.set_my_commands([
-        telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
-        telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
-        telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
-        telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
-        telebot.types.BotCommand(command="/unsuball", description="Unsubscribe from all titles you subscribed to"),
-        telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
-        telebot.types.BotCommand(command="/muteone", description="Mute notifications for all Xbox One titles"),
-        telebot.types.BotCommand(command="/muteseries", description="Mute notifications for all Xbox Series titles"),
-        telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
-        telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
-        telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
-        telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
-        telebot.types.BotCommand(command="/help", description="Display help"),
-    ])
+    # x_bot.set_my_commands([
+    #     telebot.types.BotCommand(command="/mute", description="Mute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/unmute", description="Unmute notifications for a specific title"),
+    #     telebot.types.BotCommand(command="/subscribe", description="Receive notifications for a specific title regardless of if it was muted"),
+    #     telebot.types.BotCommand(command="/unsub", description="Unsubscribe from a title you subscribed to"),
+    #     telebot.types.BotCommand(command="/unsuball", description="Unsubscribe from all titles you subscribed to"),
+    #     telebot.types.BotCommand(command="/unmuteall", description="Unmute all notifications"),
+    #     telebot.types.BotCommand(command="/muteone", description="Mute notifications for all Xbox One titles"),
+    #     telebot.types.BotCommand(command="/muteseries", description="Mute notifications for all Xbox Series titles"),
+    #     telebot.types.BotCommand(command="/listmuted", description="View all titles that you have muted notifications for"),
+    #     telebot.types.BotCommand(command="/listsubbed", description="View all titles that you have subscribed to notifications for"),
+    #     telebot.types.BotCommand(command="/start", description="Allow interactions from this bot"),
+    #     telebot.types.BotCommand(command="/stop", description="Stop receiving all notifications"),
+    #     telebot.types.BotCommand(command="/help", description="Display help"),
+    # ])
     x_bot.polling()
 
 
