@@ -437,7 +437,7 @@ def clear_stock(console, ware):
 
 
 def check_regex(title, game):
-    game_regex = re.compile(r'bluetooth|playstation 3|invisibleshield|pdp gaming|goplay grip provides|onyx legacy16 wired usb|rds industries, inc')
+    game_regex = re.compile(r'bluetooth|playstation 3|fifa 15|invisibleshield|hori compact stand|pdp gaming|goplay grip provides|onyx legacy16 wired usb|rds industries, inc')
     mo = game_regex.search(title.lower())
     if mo:
         print(f"{title} has been regexxed.  We will skip its rotation")
