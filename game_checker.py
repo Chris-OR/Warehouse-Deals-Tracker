@@ -262,28 +262,15 @@ def initialize_webpages(url, console):
         captcha_alert()
         return captcha
 
-    print(f"Original: {game_price}")
-
     if len(game_titles) != len(game_price):
         game_price = webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base")
         game_price = [game.getText() for game in game_price if "$" in game.getText()]
         game_price = [game.replace("$", "") for game in game_price]
 
-    print(f"Spacing medium: {game_price}")
-
-    if len(game_titles) != len(game_price):
-        game_price = webpage_soup.select(selector=".a-spacing-small .a-section .a-row .a-color-base")
-        game_price = [game.getText() for game in game_price if "$" in game.getText()]
-        game_price = [game.replace("$", "") for game in game_price]
-
-    print(f"Spacing small: {game_price}")
-
     if len(game_titles) != len(game_price):
         game_price = webpage_soup.select(selector=".a-spacing-micro .a-section .a-row .a-color-base")
         game_price = [game.getText() for game in game_price if "$" in game.getText()]
         game_price = [game.replace("$", "") for game in game_price]
-
-    print(f"Spacing micro: {game_price}")
 
     if len(game_titles) == len(game_price) and not captcha and len(game_titles) != 0:
         clear_stock(console, ware)
@@ -543,10 +530,9 @@ def initialize_hardware(url, console):
         game_price = [game.replace("$", "") for game in game_price]
 
     if len(game_titles) != len(game_price):
-        game_price = webpage_soup.select(selector=".a-spacing-small .a-section .a-row .a-color-base")
+        game_price = webpage_soup.select(selector=".a-spacing-micro .a-section .a-row .a-color-base")
         game_price = [game.getText() for game in game_price if "$" in game.getText()]
         game_price = [game.replace("$", "") for game in game_price]
-        print(game_price)
 
     if len(game_titles) == len(game_price) and not captcha and len(game_titles) != 0:
         clear_stock(console, ware)
