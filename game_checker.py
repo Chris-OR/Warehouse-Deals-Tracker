@@ -419,9 +419,9 @@ def initialize_webpages(url, console):
                                   price_change, back_in_stock, "Software")
     else:
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
-        for game in game_price:
-            print(game)
-        print(webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base"))
+        # for game in game_price:
+        #     print(game)
+        # print(webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base"))
         print("Everything was mistakenly out of stock or the prices and titles did not line up")
 
     # active_posts = ActivePosts.query.all()
@@ -651,9 +651,9 @@ def initialize_hardware(url, console):
                                   price_change, back_in_stock, "Hardware")
     else:
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
-        for game in game_price:
-            print(game)
-        print(webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base"))
+        # for game in game_price:
+        #     print(game)
+        # print(webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base"))
         print("Everything was mistakenly out of stock or the prices and titles did not line up")
 
     # active_posts = ActivePosts.query.all()
