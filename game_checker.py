@@ -267,6 +267,12 @@ def initialize_webpages(url, console):
         game_price = [game.getText() for game in game_price if "$" in game.getText()]
         game_price = [game.replace("$", "") for game in game_price]
 
+    if len(game_titles) != len(game_price):
+        game_price = webpage_soup.select(selector=".a-spacing-small .a-section .a-row .a-color-base")
+        game_price = [game.getText() for game in game_price if "$" in game.getText()]
+        game_price = [game.replace("$", "") for game in game_price]
+        print(game_price)
+
     if len(game_titles) == len(game_price) and not captcha and len(game_titles) != 0:
         clear_stock(console, ware)
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
@@ -523,6 +529,12 @@ def initialize_hardware(url, console):
         game_price = webpage_soup.select(selector=".a-spacing-medium .a-section .a-row .a-color-base")
         game_price = [game.getText() for game in game_price if "$" in game.getText()]
         game_price = [game.replace("$", "") for game in game_price]
+
+    if len(game_titles) != len(game_price):
+        game_price = webpage_soup.select(selector=".a-spacing-small .a-section .a-row .a-color-base")
+        game_price = [game.getText() for game in game_price if "$" in game.getText()]
+        game_price = [game.replace("$", "") for game in game_price]
+        print(game_price)
 
     if len(game_titles) == len(game_price) and not captcha and len(game_titles) != 0:
         clear_stock(console, ware)
@@ -1953,8 +1965,8 @@ def check_user(chat_id, console, stop):
             db.session.add(new_user)
             db.session.commit()
             print(f"added chatID: {chat_id} to the PS Telegram Users database")
-        else:
-            print("Checked to see if user exists and they do")
+        # else:
+        #     print("Checked to see if user exists and they do")
     elif console == "xbox":
         user = XboxTelegramUsers.query.filter_by(chatID=chat_id).first()
         if not user and stop:
