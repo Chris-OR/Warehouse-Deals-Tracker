@@ -791,10 +791,13 @@ def send_telegram_message(title, price, url, console, low, average, new_game, pr
                 print(
                     f"could not find {title} in the database.  It is supposed to be replaced with a new post following price change")
         for user in users:
-            if title not in user.unsubscribed_games and console not in user.unsubscribed_games:
-                bot.sendMessage(user.chatID, message, parse_mode=telegram.ParseMode.HTML)
-            elif title in user.subscribed_games:
-                bot.sendMessage(user.chatID, message, parse_mode=telegram.ParseMode.HTML)
+            try:
+                if title not in user.unsubscribed_games and console not in user.unsubscribed_games:
+                    bot.sendMessage(user.chatID, message, parse_mode=telegram.ParseMode.HTML)
+                elif title in user.subscribed_games:
+                    bot.sendMessage(user.chatID, message, parse_mode=telegram.ParseMode.HTML)
+            except Exception as e:
+                print(e)
         # print(console, title, price, flair, console, url)
         try:
             post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}",
