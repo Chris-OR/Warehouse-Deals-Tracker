@@ -80,7 +80,7 @@ def checker_thread():
         if not captcha:
             captcha = gc.initialize_webpages(ps4_no_referral, "PlayStation 4")
             price_data()
-            time.sleep(151)
+            time.sleep(76)
         if not captcha:
             captcha = gc.initialize_hardware("https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cp_89%3APlaystation&s=popularity-rank&dc&qid=1649385940&ref=sr_ex_n_1", "PlayStation 5")
             price_data()
@@ -88,11 +88,11 @@ def checker_thread():
         if not captcha:
             captcha = gc.initialize_webpages(switch_no_referral, "Nintendo Switch")
             price_data()
-            time.sleep(151)
+            time.sleep(76)
         if not captcha:
             captcha = gc.initialize_webpages(ps5_no_referral, "PlayStation 5")
             price_data()
-            time.sleep(151)
+            time.sleep(76)
         if not captcha:
             captcha = gc.initialize_hardware("https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cn%3A16329248011%2Cp_72%3A11192170011&s=popularity-rank&dc&qid=1649385822&rnid=8929975011&ref=sr_nr_n_5", "Nintendo Switch")
             price_data()
@@ -100,11 +100,11 @@ def checker_thread():
         if not captcha:
             captcha = gc.initialize_webpages(xbox_one_no_referral, "Xbox One")
             price_data()
-            time.sleep(151)
+            time.sleep(76)
         if not captcha:
             captcha = gc.initialize_webpages(series_x_no_referral, "Xbox Series X")
             price_data()
-            time.sleep(151)
+            time.sleep(76)
         if not captcha:
             captcha = gc.initialize_hardware("https://www.amazon.ca/s?i=videogames&bbn=8929975011&rh=n%3A8929975011%2Cn%3A3198031%2Cp_89%3AMicrosoft&s=popularity-rank&dc&qid=1649386036&rnid=7590290011&ref=sr_nr_p_89_1", "Xbox Series X")
             price_data()
