@@ -459,7 +459,6 @@ def check_regex(title, game):
         #         print(f"We have found a match in the database.  We will now remove {title} from the database")
         #         db.session.delete(game)
         #         db.session.commit()
-
         return False
     else:
         return True
