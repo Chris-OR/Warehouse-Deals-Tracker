@@ -177,6 +177,8 @@ def initialize_webpages(url, console):
             searching = False
         except Exception as e:
             print(e)
+            captcha = True
+            return captcha
             time.sleep(random.randint(3, 20))
 
         # if len(proxy_list) != 0:
@@ -485,6 +487,8 @@ def initialize_hardware(url, console):
             searching = False
         except Exception as e:
             print(e)
+            captcha = True
+            return captcha
             time.sleep(random.randint(3, 20))
     # webpage = r
     webpage = response.text
