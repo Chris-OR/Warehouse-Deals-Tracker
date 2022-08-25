@@ -462,7 +462,7 @@ def check_regex(title, game, price):
         #         db.session.delete(game)
         #         db.session.commit()
         return False
-    elif re.compile(r'playstation 5 console').search(title.lower()) and int(price) > 650:
+    elif re.compile(r'playstation 5 console').search(title.lower()) and int(price.replace(",", "")) > 650:
         print("tracked a PS5 but it was above retail")
         return False
     else:
