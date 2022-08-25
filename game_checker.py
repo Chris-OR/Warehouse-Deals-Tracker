@@ -286,7 +286,7 @@ def initialize_webpages(url, console):
             date = dt.datetime.now()
             date = date.strftime("%b %d %Y")
             game = Games.query.filter_by(title=game_titles[i]).first()
-            if check_regex(game_titles[i], game):
+            if check_regex(game_titles[i], game, game_price[i]):
                 print(f"{game_titles[i]} is ${game_price[i]}")
                 # there is a new game not yet added to the database
                 if not game:
@@ -443,7 +443,7 @@ def clear_stock(console, ware):
         game.in_stock = False
 
 
-def check_regex(title, game):
+def check_regex(title, game, price):
     game_regex = re.compile(r'bluetooth|playstation 3|fifa 15|invisibleshield|hori compact stand|pdp gaming|goplay grip provides|onyx legacy16 wired usb|rds industries, inc')
     mo = game_regex.search(title.lower())
     if mo:
@@ -461,6 +461,9 @@ def check_regex(title, game):
         #         print(f"We have found a match in the database.  We will now remove {title} from the database")
         #         db.session.delete(game)
         #         db.session.commit()
+        return False
+    elif re.compile(r'playstation 5 console').search(title.lower()) and int(price) > 650:
+        print("tracked a PS5 but it was above retail")
         return False
     else:
         return True
@@ -550,7 +553,7 @@ def initialize_hardware(url, console):
             date = date.strftime("%b %d %Y")
             game = Hardware.query.filter_by(title=game_titles[i]).first()
             # print(f"{game_titles[i]} is ${game_price[i]}")
-            if check_regex(game_titles[i], game):
+            if check_regex(game_titles[i], game, game_price[i]):
                 # hardware deals only looks for deals on hardware that we added ourselves
                 if not game:
                     # print(f"{game_titles[i]} is not in the database and thus was skipped")
