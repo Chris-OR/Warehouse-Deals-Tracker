@@ -180,8 +180,6 @@ def get_headers():
     user_agent_rotator = UserAgent(software_names=software_names, operating_systems=operating_systems, limit=100)
     user_agent = user_agent_rotator.get_random_user_agent()
 
-    print(user_agent)
-
     headers = {
         # "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
         "User-Agent": user_agent,
