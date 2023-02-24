@@ -213,7 +213,7 @@ def initialize_webpages(url, console):
             print(e)
             captcha = True
             return captcha
-            time.sleep(random.randint(3, 20))
+            time.sleep(random.randint(60, 120))
 
         # if len(proxy_list) != 0:
         #     try:
@@ -574,6 +574,11 @@ def initialize_hardware(url, console):
         game_price = [game.getText() for game in game_price if "$" in game.getText()]
         game_price = [game.replace("$", "") for game in game_price]
 
+    if len(game_titles) != len(game_price):
+        game_price = webpage_soup.select(selector=".a-spacing-small .a-section .a-row .a-color-base")
+        game_price = [game.getText() for game in game_price if "$" in game.getText()]
+        game_price = [game.replace("$", "") for game in game_price]
+
     if len(game_titles) == len(game_price) and not captcha and len(game_titles) != 0:
         clear_stock(console, ware)
         print(f"the length of game_titles is {len(game_titles)} and the length of game_price is {len(game_price)}")
@@ -838,6 +843,10 @@ def send_telegram_message(title, price, url, console, low, average, new_game, pr
                     bot.sendMessage(user.chatID, message, parse_mode=telegram.ParseMode.HTML)
             except Exception as e:
                 print(e)
+                if e == "Forbidden: bot was blocked by the user":
+                    print(f"deleting {user} from the database because they blocked the telegram bot")
+                    db.session.delete(user)
+
         # print(console, title, price, flair, console, url)
         try:
             post = reddit.subreddit("WarehouseConsoleDeals").submit(title=f"[{console}] {title} is ${price}",
