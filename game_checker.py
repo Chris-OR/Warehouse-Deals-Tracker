@@ -176,7 +176,7 @@ db.session.commit()
 session = requests.Session()
 
 
-def get_proxies():
+async def get_proxies():
     # Create a proxy broker object
     broker = Broker()
 
