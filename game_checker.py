@@ -175,10 +175,7 @@ db.create_all()
 db.session.commit()
 
 gateway = ApiGateway("https://www.amazon.ca", access_key_id=os.environ.get("AWS_ACCESS_KEY"), access_key_secret=os.environ.get("AWS_ACCESS_SECRET"))
-gateway.start()
-
-session = requests.Session()
-session.mount("https://www.amazon.ca", gateway)
+proxy = gateway.get_proxy()
 
 def get_headers():
     software_names = [SoftwareName.CHROME.value]
@@ -213,7 +210,7 @@ def initialize_webpages(url, console):
 
     while searching:
         try:
-            response = session.get(url, headers=get_headers())
+            response = requests.get(url, headers=get_headers(), proxies={'http': proxy, 'https': proxy})
             response.raise_for_status()
             searching = False
         except Exception as e:
