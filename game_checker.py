@@ -11,7 +11,7 @@ from amazoncaptcha import AmazonCaptcha
 from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import SoftwareName, OperatingSystem
 
-from fp.fp import FreeProxy
+from requests_ip_rotator import ApiGateway, EXTRA_REGIONS
 
 from proxy_requests import ProxyRequests
 
@@ -174,6 +174,11 @@ class SwitchTelegramUsers(db.Model):
 db.create_all()
 db.session.commit()
 
+gateway = ApiGateway("https://www.amazon.ca")
+gateway.start()
+
+session = requests.Session()
+session.mount("https://www.amazon.ca", gateway)
 
 def get_headers():
     software_names = [SoftwareName.CHROME.value]
@@ -208,7 +213,7 @@ def initialize_webpages(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies=FreeProxy().get())
+            response = session.get(url, headers=get_headers())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -368,7 +373,7 @@ def initialize_webpages(url, console):
                 try:
                     if float(game.price) != float(game_price[i]):
                         print(f"checking for new price on {game_titles[i]}")
-                        response = requests.get(link_no_tag[i], headers=get_headers(), proxies=FreeProxy().get())
+                        response = requests.get(link_no_tag[i], headers=get_headers(), proxies=urllib.request.getproxies())
                         response.raise_for_status()
                         webpage = response.text
                         webpage_soup = BeautifulSoup(webpage, "html.parser")
@@ -521,7 +526,7 @@ def initialize_hardware(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies=FreeProxy().get())
+            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -618,7 +623,7 @@ def initialize_hardware(url, console):
                         if float(game.price) != float(game_price[i]):
                             print(f"checking for new price on {game_titles[i]}")
                             response = requests.get(link_no_tag[i], headers=get_headers(),
-                                                    proxies=FreeProxy().get())
+                                                    proxies=urllib.request.getproxies())
                             response.raise_for_status()
                             webpage = response.text
                             webpage_soup = BeautifulSoup(webpage, "html.parser")
