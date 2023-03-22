@@ -173,6 +173,22 @@ db.create_all()
 db.session.commit()
 
 
+def scrape_proxies():
+    url = 'https://www.sslproxies.org/'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    table = soup.find(id='proxylisttable')
+    rows = table.tbody.find_all('tr')
+    proxies = []
+    for row in rows:
+        columns = row.find_all('td')
+        if columns:
+            ip = columns[0].text.strip()
+            port = columns[1].text.strip()
+            proxies.append(f"{ip}:{port}")
+    return proxies
+
+
 def get_headers():
     software_names = [SoftwareName.CHROME.value]
     operating_systems = [OperatingSystem.WINDOWS.value, OperatingSystem.LINUX.value]
@@ -206,7 +222,7 @@ def initialize_webpages(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
+            response = requests.get(url, headers=get_headers(), proxies=scrape_proxies())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -366,7 +382,7 @@ def initialize_webpages(url, console):
                 try:
                     if float(game.price) != float(game_price[i]):
                         print(f"checking for new price on {game_titles[i]}")
-                        response = requests.get(link_no_tag[i], headers=get_headers(), proxies=urllib.request.getproxies())
+                        response = requests.get(link_no_tag[i], headers=get_headers(),proxies=scrape_proxies())
                         response.raise_for_status()
                         webpage = response.text
                         webpage_soup = BeautifulSoup(webpage, "html.parser")
@@ -519,7 +535,7 @@ def initialize_hardware(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
+            response = requests.get(url, headers=get_headers(), proxies=scrape_proxies())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -616,7 +632,7 @@ def initialize_hardware(url, console):
                         if float(game.price) != float(game_price[i]):
                             print(f"checking for new price on {game_titles[i]}")
                             response = requests.get(link_no_tag[i], headers=get_headers(),
-                                                    proxies=urllib.request.getproxies())
+                                                    proxies=scrape_proxies())
                             response.raise_for_status()
                             webpage = response.text
                             webpage_soup = BeautifulSoup(webpage, "html.parser")
