@@ -173,22 +173,6 @@ db.create_all()
 db.session.commit()
 
 
-def scrape_proxies():
-    url = 'https://www.sslproxies.org/'
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    table = soup.find(id='proxylisttable')
-    rows = table.tbody.find_all('tr')
-    proxies = []
-    for row in rows:
-        columns = row.find_all('td')
-        if columns:
-            ip = columns[0].text.strip()
-            port = columns[1].text.strip()
-            proxies.append(f"{ip}:{port}")
-    return proxies
-
-
 def get_headers():
     software_names = [SoftwareName.CHROME.value]
     operating_systems = [OperatingSystem.WINDOWS.value, OperatingSystem.LINUX.value]
@@ -197,8 +181,8 @@ def get_headers():
     user_agent = user_agent_rotator.get_random_user_agent()
 
     headers = {
-        # "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
-        "User-Agent": user_agent,
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
+        # "User-Agent": user_agent,
         "Accept-Encoding": "gzip,deflate,br",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.9",
@@ -222,7 +206,7 @@ def initialize_webpages(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies=scrape_proxies())
+            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -382,7 +366,7 @@ def initialize_webpages(url, console):
                 try:
                     if float(game.price) != float(game_price[i]):
                         print(f"checking for new price on {game_titles[i]}")
-                        response = requests.get(link_no_tag[i], headers=get_headers(),proxies=scrape_proxies())
+                        response = requests.get(link_no_tag[i], headers=get_headers(), proxies=urllib.request.getproxies())
                         response.raise_for_status()
                         webpage = response.text
                         webpage_soup = BeautifulSoup(webpage, "html.parser")
@@ -535,7 +519,7 @@ def initialize_hardware(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies=scrape_proxies())
+            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -632,7 +616,7 @@ def initialize_hardware(url, console):
                         if float(game.price) != float(game_price[i]):
                             print(f"checking for new price on {game_titles[i]}")
                             response = requests.get(link_no_tag[i], headers=get_headers(),
-                                                    proxies=scrape_proxies())
+                                                    proxies=urllib.request.getproxies())
                             response.raise_for_status()
                             webpage = response.text
                             webpage_soup = BeautifulSoup(webpage, "html.parser")
