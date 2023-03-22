@@ -181,14 +181,15 @@ def get_proxies():
     broker = Broker()
 
     # Start the broker to fetch proxies
-    broker.start()
+    broker.begin()
 
     # Fetch 10 proxies and return as a list of URLs
     proxies = []
-    for proxy in broker.get_proxies():
+    while len(proxies) < 10:
+        proxy = broker.get()[0]
+        if proxy.types['http'] == 'Transparent':
+            continue
         proxies.append(f"{proxy.host}:{proxy.port}")
-        if len(proxies) >= 10:
-            break
 
     # Stop the broker
     broker.stop()
