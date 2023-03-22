@@ -206,7 +206,8 @@ def initialize_webpages(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
+            # response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
+            console.log(urllib.request.getproxies())
             response.raise_for_status()
             searching = False
         except Exception as e:
