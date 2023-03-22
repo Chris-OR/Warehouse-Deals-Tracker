@@ -174,7 +174,7 @@ class SwitchTelegramUsers(db.Model):
 db.create_all()
 db.session.commit()
 
-gateway = ApiGateway("https://www.amazon.ca")
+gateway = ApiGateway("https://www.amazon.ca", access_key_id=os.environ.get("AWS_ACCESS_KEY"), access_key_secret=os.environ.get("AWS_ACCESS_SECRET"))
 gateway.start()
 
 session = requests.Session()
