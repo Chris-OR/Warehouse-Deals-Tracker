@@ -7,7 +7,6 @@ import urllib
 import time
 from flask import Flask
 from amazoncaptcha import AmazonCaptcha
-from proxybroker import Broker
 
 from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import SoftwareName, OperatingSystem
@@ -173,41 +172,6 @@ class SwitchTelegramUsers(db.Model):
 db.create_all()
 db.session.commit()
 
-session = requests.Session()
-
-
-async def get_proxies():
-    # Create a proxy broker object
-    broker = Broker()
-
-    # Define a callback function to handle each proxy
-    async def handle_proxy(proxy):
-        if proxy.types['http'] != 'Transparent':
-            return f"{proxy.host}:{proxy.port}"
-
-    # Fetch 10 proxies and return as a list of URLs
-    proxies = []
-    broker.subscribe(handle_proxy)
-    await broker.fetch(limit=10)
-    while len(proxies) < 10:
-        if broker.empty():
-            break
-        proxy = await broker.get()
-        if proxy:
-            proxies.append(proxy)
-
-    # Stop the broker
-    await broker.stop()
-
-    return proxies
-
-
-proxy_list = get_proxies()
-proxies = {
-    'http': proxy_list[0],
-    'https': proxy_list[0]
-}
-
 
 def get_headers():
     software_names = [SoftwareName.CHROME.value]
@@ -217,13 +181,15 @@ def get_headers():
     user_agent = user_agent_rotator.get_random_user_agent()
 
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Connection': 'keep-alive',
-        'Referer': 'https://www.google.com/',
-        'Upgrade-Insecure-Requests': '1'
+        # "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
+        "User-Agent": user_agent,
+        "Accept-Encoding": "gzip,deflate,br",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "DNT": "1",
+        "Connection": "close",
+        "Upgrade-Insecure-Requests": "1",
+        "Referer": "https://www.google.com/",
     }
     return headers
 
@@ -240,7 +206,7 @@ def initialize_webpages(url, console):
 
     while searching:
         try:
-            response = session.get(url, headers=get_headers(), proxies=proxies)
+            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -400,7 +366,7 @@ def initialize_webpages(url, console):
                 try:
                     if float(game.price) != float(game_price[i]):
                         print(f"checking for new price on {game_titles[i]}")
-                        response = session.get(link_no_tag[i], headers=get_headers(), proxies=proxies)
+                        response = requests.get(link_no_tag[i], headers=get_headers(), proxies=urllib.request.getproxies())
                         response.raise_for_status()
                         webpage = response.text
                         webpage_soup = BeautifulSoup(webpage, "html.parser")
@@ -553,7 +519,7 @@ def initialize_hardware(url, console):
 
     while searching:
         try:
-            response = session.get(url, headers=get_headers(), proxies=proxies)
+            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -649,8 +615,8 @@ def initialize_hardware(url, console):
                     try:
                         if float(game.price) != float(game_price[i]):
                             print(f"checking for new price on {game_titles[i]}")
-                            response = session.get(link_no_tag[i], headers=get_headers(),
-                                                    proxies=proxies)
+                            response = requests.get(link_no_tag[i], headers=get_headers(),
+                                                    proxies=urllib.request.getproxies())
                             response.raise_for_status()
                             webpage = response.text
                             webpage_soup = BeautifulSoup(webpage, "html.parser")
@@ -890,7 +856,6 @@ def send_telegram_message(title, price, url, console, low, average, new_game, pr
                 if e == "Forbidden: bot was blocked by the user":
                     print(f"deleting {user} from the database because they blocked the telegram bot")
                     db.session.delete(user)
-                    db.session.commit()
 
         # print(console, title, price, flair, console, url)
         try:

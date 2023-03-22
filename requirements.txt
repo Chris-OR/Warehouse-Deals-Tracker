@@ -33,4 +33,3 @@ PyTelegramBotAPI~=4.5.0
 aiohttp~=3.8.1
 telebot~=0.0.4
 random-user-agent==1.0.1
-proxybroker~=0.3.2
