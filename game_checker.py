@@ -180,19 +180,24 @@ def get_proxies():
     # Create a proxy broker object
     broker = Broker()
 
-    # Start the broker to fetch proxies
-    broker.begin()
+    # Define a callback function to handle each proxy
+    async def handle_proxy(proxy):
+        if proxy.types['http'] != 'Transparent':
+            return f"{proxy.host}:{proxy.port}"
 
     # Fetch 10 proxies and return as a list of URLs
     proxies = []
+    broker.subscribe(handle_proxy)
+    await broker.fetch(limit=10)
     while len(proxies) < 10:
-        proxy = broker.get()[0]
-        if proxy.types['http'] == 'Transparent':
-            continue
-        proxies.append(f"{proxy.host}:{proxy.port}")
+        if broker.empty():
+            break
+        proxy = await broker.get()
+        if proxy:
+            proxies.append(proxy)
 
     # Stop the broker
-    broker.stop()
+    await broker.stop()
 
     return proxies
 
