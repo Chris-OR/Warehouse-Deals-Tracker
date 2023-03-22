@@ -7,6 +7,7 @@ import urllib
 import time
 from flask import Flask
 from amazoncaptcha import AmazonCaptcha
+from proxybroker import Broker
 
 from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import SoftwareName, OperatingSystem
@@ -175,6 +176,33 @@ db.session.commit()
 session = requests.Session()
 
 
+def get_proxies():
+    # Create a proxy broker object
+    broker = Broker()
+
+    # Start the broker to fetch proxies
+    broker.start()
+
+    # Fetch 10 proxies and return as a list of URLs
+    proxies = []
+    for proxy in broker.get_proxies():
+        proxies.append(f"{proxy.host}:{proxy.port}")
+        if len(proxies) >= 10:
+            break
+
+    # Stop the broker
+    broker.stop()
+
+    return proxies
+
+
+proxy_list = get_proxies()
+proxies = {
+    'http': proxy_list[0],
+    'https': proxy_list[0]
+}
+
+
 def get_headers():
     software_names = [SoftwareName.CHROME.value]
     operating_systems = [OperatingSystem.WINDOWS.value, OperatingSystem.LINUX.value]
@@ -183,7 +211,7 @@ def get_headers():
     user_agent = user_agent_rotator.get_random_user_agent()
 
     headers = {
-        # "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'en-US,en;q=0.5',
@@ -206,7 +234,7 @@ def initialize_webpages(url, console):
 
     while searching:
         try:
-            response = session.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
+            response = session.get(url, headers=get_headers(), proxies=proxies)
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -366,7 +394,7 @@ def initialize_webpages(url, console):
                 try:
                     if float(game.price) != float(game_price[i]):
                         print(f"checking for new price on {game_titles[i]}")
-                        response = session.get(link_no_tag[i], headers=get_headers(), proxies=urllib.request.getproxies())
+                        response = session.get(link_no_tag[i], headers=get_headers(), proxies=proxies)
                         response.raise_for_status()
                         webpage = response.text
                         webpage_soup = BeautifulSoup(webpage, "html.parser")
@@ -519,7 +547,7 @@ def initialize_hardware(url, console):
 
     while searching:
         try:
-            response = session.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
+            response = session.get(url, headers=get_headers(), proxies=proxies)
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -616,7 +644,7 @@ def initialize_hardware(url, console):
                         if float(game.price) != float(game_price[i]):
                             print(f"checking for new price on {game_titles[i]}")
                             response = session.get(link_no_tag[i], headers=get_headers(),
-                                                    proxies=urllib.request.getproxies())
+                                                    proxies=proxies)
                             response.raise_for_status()
                             webpage = response.text
                             webpage_soup = BeautifulSoup(webpage, "html.parser")
