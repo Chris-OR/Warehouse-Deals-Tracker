@@ -11,8 +11,6 @@ from amazoncaptcha import AmazonCaptcha
 from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import SoftwareName, OperatingSystem
 
-from requests_ip_rotator import ApiGateway, EXTRA_REGIONS
-
 from proxy_requests import ProxyRequests
 
 from flask_sqlalchemy import SQLAlchemy
@@ -174,8 +172,6 @@ class SwitchTelegramUsers(db.Model):
 db.create_all()
 db.session.commit()
 
-gateway = ApiGateway("https://www.amazon.ca", access_key_id=os.environ.get("AWS_ACCESS_KEY"), access_key_secret=os.environ.get("AWS_ACCESS_SECRET"))
-proxy = gateway.get_proxy()
 
 def get_headers():
     software_names = [SoftwareName.CHROME.value]
@@ -210,7 +206,7 @@ def initialize_webpages(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies={'http': proxy, 'https': proxy})
+            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
             response.raise_for_status()
             searching = False
         except Exception as e:
