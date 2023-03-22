@@ -188,7 +188,7 @@ def get_headers():
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'en-US,en;q=0.5',
         'Connection': 'keep-alive',
-        'Referer': 'https://www.example.com/',
+        'Referer': 'https://www.google.com/',
         'Upgrade-Insecure-Requests': '1'
     }
     return headers
