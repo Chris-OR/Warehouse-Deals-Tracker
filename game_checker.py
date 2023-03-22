@@ -172,6 +172,7 @@ class SwitchTelegramUsers(db.Model):
 db.create_all()
 db.session.commit()
 
+session = requests.Session()
 
 def get_headers():
     software_names = [SoftwareName.CHROME.value]
@@ -180,9 +181,16 @@ def get_headers():
     user_agent_rotator = UserAgent(software_names=software_names, operating_systems=operating_systems, limit=100)
     user_agent = user_agent_rotator.get_random_user_agent()
 
+
     headers = {
         # "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
         "User-Agent": user_agent,
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Connection': 'keep-alive',
+        'Referer': 'https://www.example.com/',
+        'Upgrade-Insecure-Requests': '1'
     }
     return headers
 
@@ -199,7 +207,7 @@ def initialize_webpages(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
+            response = session.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -359,7 +367,7 @@ def initialize_webpages(url, console):
                 try:
                     if float(game.price) != float(game_price[i]):
                         print(f"checking for new price on {game_titles[i]}")
-                        response = requests.get(link_no_tag[i], headers=get_headers(), proxies=urllib.request.getproxies())
+                        response = session.get(link_no_tag[i], headers=get_headers(), proxies=urllib.request.getproxies())
                         response.raise_for_status()
                         webpage = response.text
                         webpage_soup = BeautifulSoup(webpage, "html.parser")
@@ -512,7 +520,7 @@ def initialize_hardware(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
+            response = session.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -608,7 +616,7 @@ def initialize_hardware(url, console):
                     try:
                         if float(game.price) != float(game_price[i]):
                             print(f"checking for new price on {game_titles[i]}")
-                            response = requests.get(link_no_tag[i], headers=get_headers(),
+                            response = session.get(link_no_tag[i], headers=get_headers(),
                                                     proxies=urllib.request.getproxies())
                             response.raise_for_status()
                             webpage = response.text
