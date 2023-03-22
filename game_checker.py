@@ -11,6 +11,8 @@ from amazoncaptcha import AmazonCaptcha
 from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import SoftwareName, OperatingSystem
 
+from fp.fp import FreeProxy
+
 from proxy_requests import ProxyRequests
 
 from flask_sqlalchemy import SQLAlchemy
@@ -206,7 +208,7 @@ def initialize_webpages(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
+            response = requests.get(url, headers=get_headers(), proxies=FreeProxy().get())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -366,7 +368,7 @@ def initialize_webpages(url, console):
                 try:
                     if float(game.price) != float(game_price[i]):
                         print(f"checking for new price on {game_titles[i]}")
-                        response = requests.get(link_no_tag[i], headers=get_headers(), proxies=urllib.request.getproxies())
+                        response = requests.get(link_no_tag[i], headers=get_headers(), proxies=FreeProxy().get())
                         response.raise_for_status()
                         webpage = response.text
                         webpage_soup = BeautifulSoup(webpage, "html.parser")
@@ -519,7 +521,7 @@ def initialize_hardware(url, console):
 
     while searching:
         try:
-            response = requests.get(url, headers=get_headers(), proxies=urllib.request.getproxies())
+            response = requests.get(url, headers=get_headers(), proxies=FreeProxy().get())
             response.raise_for_status()
             searching = False
         except Exception as e:
@@ -616,7 +618,7 @@ def initialize_hardware(url, console):
                         if float(game.price) != float(game_price[i]):
                             print(f"checking for new price on {game_titles[i]}")
                             response = requests.get(link_no_tag[i], headers=get_headers(),
-                                                    proxies=urllib.request.getproxies())
+                                                    proxies=FreeProxy().get())
                             response.raise_for_status()
                             webpage = response.text
                             webpage_soup = BeautifulSoup(webpage, "html.parser")
