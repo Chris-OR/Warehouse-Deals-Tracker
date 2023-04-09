@@ -2002,13 +2002,13 @@ def confirm_mute_console(msg, console_to_mute):
 #     x_bot.send_message(msg.chat.id, "You may type /start to receive notifications. Type /stop to stop receiving notifications. You may start and stop notifications at any time." )
 #
 
-new_user = PSTelegramUsers(
-            chatID=5254877958,
-            subscribed=True
-        )
-db.session.add(new_user)
-db.session.commit()
-print(f"added chatID: {5254877958} to the PS Telegram Users database")
+# new_user = PSTelegramUsers(
+#             chatID=5254877958,
+#             subscribed=True
+#         )
+# db.session.add(new_user)
+# db.session.commit()
+# print(f"added chatID: {5254877958} to the PS Telegram Users database")
 
 def check_user(chat_id, console, stop):
     if console == "ps":
