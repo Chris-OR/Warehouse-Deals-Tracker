@@ -143,7 +143,7 @@ class ActivePosts(db.Model):
 
 
 class PSTelegramUsers(db.Model):
-    chatID = db.Column(db.Integer, primary_key=True)
+    chatID = db.Column(db.Bigint, primary_key=True)
     subscribed = db.Column(db.Boolean, nullable=False)
     unsubscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
     subscribed_games = db.Column(MutableList.as_mutable(db.PickleType), default=[])
